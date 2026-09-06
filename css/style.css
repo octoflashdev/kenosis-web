@@ -92,6 +92,13 @@ a:hover { text-decoration: underline; }
   border: 1px solid transparent; transition: transform .2s, box-shadow .2s, border-color .2s;
 }
 .btn:hover { text-decoration: none; transform: translateY(-2px); }
+.btn-icon, .footer-icon {
+  width: 1.15em; height: 1.15em;
+  vertical-align: -0.18em; margin-right: .5em;
+}
+.footer-icon { width: 1.3em; height: 1.3em; margin-right: .35em; vertical-align: -0.25em; }
+.footer-social a { display: inline-flex; align-items: center; }
+.btn-icon path { fill-rule: evenodd; }
 .btn.primary { background: var(--grad); color: #fff; box-shadow: 0 8px 30px rgba(90,120,255,.35); }
 .btn.ghost { border-color: var(--card-border); color: var(--text); background: var(--card); }
 .btn.ghost:hover { border-color: var(--accent-1); }

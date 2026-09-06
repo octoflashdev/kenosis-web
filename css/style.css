@@ -186,12 +186,35 @@ a:hover { text-decoration: underline; }
   background: none; border: none; color: #fff; font-size: 2.4rem; cursor: pointer;
 }
 
-/* Reveal on scroll */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.visible { opacity: 1; transform: none; }
+/* Reveal on scroll — only hides elements when JS is running (html.js) */
+.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.js .reveal.visible { opacity: 1; transform: none; }
+
+/* Feature grid */
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+@media (max-width: 800px) { .feature-grid { grid-template-columns: 1fr; } }
+.feature-icon { font-size: 1.6rem; margin-bottom: .7rem; }
+.feature p { color: var(--text-dim); font-size: .92rem; }
+
+/* Permissions table */
+.perm-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.perm-table th, .perm-table td { text-align: left; padding: .7rem 1rem; border-bottom: 1px solid var(--card-border); }
+.perm-table th { color: var(--text-dim); text-transform: uppercase; font-size: .72rem; letter-spacing: .1em; }
+.perm-table .denied { color: #ff6b81; font-weight: 600; }
+.perm-table-wrap { overflow-x: auto; border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--card); }
+
+/* FAQ */
+.faq details { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1rem 1.4rem; margin-bottom: .8rem; }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq p { color: var(--text-dim); margin-top: .6rem; font-size: .95rem; }
+.faq-wrap { max-width: 760px; margin: 0 auto; }
+
+/* CTA band */
+.cta-band { text-align: center; padding-bottom: 5rem; }
+.cta-band h2 { margin-bottom: 1.4rem; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
   * { transition: none !important; }
 }

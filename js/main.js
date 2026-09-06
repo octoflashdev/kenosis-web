@@ -5,6 +5,8 @@ const VIDEOS = [
 ];
 
 (function () {
+  document.documentElement.classList.add('js'); // enables scroll-reveal only when JS runs
+
   const grid = document.getElementById('video-grid');
   const placeholder =
     '<div class="placeholder"><span class="plus">＋</span>' +

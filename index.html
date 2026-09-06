@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kenosis AI — Offline Video Fact-Checker</title>
-<meta name="description" content="Kenosis AI analyzes videos with on-device AI. No network, no cloud, no telemetry.">
+<meta name="description" content="Kenosis AI analyzes videos with on-device AI. No network, no cloud, no telemetry. The app ships without the Android INTERNET permission.">
 <link rel="icon" href="assets/icon.png">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -17,9 +17,11 @@
   </a>
   <div class="nav-links">
     <a href="#how">How it works</a>
+    <a href="#features">Features</a>
     <a href="#videos">Videos</a>
     <a href="#screenshots">Screenshots</a>
     <a href="#privacy">Privacy</a>
+    <a href="#faq">FAQ</a>
   </div>
 </nav>
 
@@ -27,17 +29,22 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-copy reveal">
-      <p class="eyebrow">Open source &middot; Fully offline</p>
+      <p class="eyebrow">Open source &middot; Fully offline &middot; Android</p>
       <h1>Fact-check any video.<br><span class="grad">Right on your phone.</span></h1>
       <p class="lead">
-        Share a video from any app. Kenosis AI transcribes it locally with whisper.cpp,
-        then analyzes the claims with a local LLM — flagging likely-false statements with reasoning.
+        Share a video from any app — TikTok, YouTube, your gallery. Kenosis AI transcribes it
+        locally with <strong>whisper.cpp</strong>, then a local LLM (<strong>Gemma via llama.cpp</strong>)
+        extracts factual claims and flags likely-false statements with reasoning.
+      </p>
+      <p class="lead">
+        <strong>The app ships without the Android INTERNET permission.</strong> It physically cannot
+        phone home — no network, no cloud, no telemetry. It works in airplane mode.
       </p>
       <div class="cta-row">
         <a class="btn primary" href="#videos">Watch it in action</a>
         <a class="btn ghost" href="#screenshots">See screenshots</a>
       </div>
-      <p class="hero-note">No account. No upload. Works in airplane mode.</p>
+      <p class="hero-note">No account. No upload. No permissions screen surprises.</p>
     </div>
     <div class="hero-phone reveal">
       <div class="phone">
@@ -53,17 +60,54 @@
     <div class="step card reveal">
       <div class="step-num">1</div>
       <h3>Share a video</h3>
-      <p>Use the share sheet from TikTok, YouTube, your gallery — any app. Kenosis AI opens automatically.</p>
+      <p>Use the share sheet from TikTok, YouTube, your gallery — any app. Kenosis AI opens automatically via the share-target entry point.</p>
     </div>
     <div class="step card reveal">
       <div class="step-num">2</div>
       <h3>Local transcription</h3>
-      <p>The audio track is extracted natively and transcribed on-device with whisper.cpp. Nothing leaves the phone.</p>
+      <p>The audio track is extracted natively (MediaExtractor / MediaCodec, no FFmpeg) and transcribed on-device with whisper.cpp. Nothing leaves the phone.</p>
     </div>
     <div class="step card reveal">
       <div class="step-num">3</div>
       <h3>Claim analysis</h3>
-      <p>A local llama.cpp model extracts factual claims and flags likely-false or unsupported statements — with reasoning you can read.</p>
+      <p>A local llama.cpp model extracts factual claims and flags likely-false or unsupported statements — with reasoning you can read, and follow-up chat about the video.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <h2 class="reveal">More than a fact-checker</h2>
+  <p class="section-sub reveal">A complete on-device AI assistant — every feature runs locally.</p>
+  <div class="feature-grid">
+    <div class="feature card reveal">
+      <div class="feature-icon">💬</div>
+      <h3>Private AI chat</h3>
+      <p>Chat with a local LLM about anything. Your conversations never leave the device.</p>
+    </div>
+    <div class="feature card reveal">
+      <div class="feature-icon">📄</div>
+      <h3>Chat about documents</h3>
+      <p>Attach PDFs, EPUBs, Word, PowerPoint or Markdown files and ask questions — on-device RAG with NPU-accelerated embeddings (Qualcomm, Google Tensor, MediaTek).</p>
+    </div>
+    <div class="feature card reveal">
+      <div class="feature-icon">📚</div>
+      <h3>Book-style reader</h3>
+      <p>Read documents laid out like a book, with text-to-speech read-aloud powered by the Kokoro voice model.</p>
+    </div>
+    <div class="feature card reveal">
+      <div class="feature-icon">🎙️</div>
+      <h3>Transcriptions</h3>
+      <p>Transcribe any shared video or long recording locally. Live transcript view, organized into a files library.</p>
+    </div>
+    <div class="feature card reveal">
+      <div class="feature-icon">⚡</div>
+      <h3>NPU acceleration</h3>
+      <p>Embeddings run on your phone's neural processing unit — Qualcomm, Google Tensor and MediaTek SoCs are all supported.</p>
+    </div>
+    <div class="feature card reveal">
+      <div class="feature-icon">🔒</div>
+      <h3>Screenshot block</h3>
+      <p>FLAG_SECURE prevents screenshots and screen recordings of the app, and the privacy unlock asks for your PIN.</p>
     </div>
   </div>
 </section>
@@ -76,6 +120,7 @@
 
 <section class="section" id="screenshots">
   <h2 class="reveal">Screenshots</h2>
+  <p class="section-sub reveal">Click any screenshot to view it full-size.</p>
   <div class="shot-grid" id="shot-grid">
     <figure class="shot reveal">
       <img src="assets/screenshots/01-chat-offline.png" alt="Chat / analysis screen offline" loading="lazy">
@@ -85,12 +130,59 @@
   </div>
 </section>
 
-<section class="section privacy" id="privacy">
+<section class="section" id="privacy">
   <h2 class="reveal">Private by architecture</h2>
+  <p class="section-sub reveal">Most apps say "we value your privacy" in tiny grey text. Kenosis AI proves it — in the Android manifest.</p>
   <div class="badges">
-    <div class="badge card reveal"><strong>No network</strong><span>The app ships without the Android INTERNET permission.</span></div>
-    <div class="badge card reveal"><strong>No cloud</strong><span>Whisper and the LLM run locally via whisper.cpp and llama.cpp.</span></div>
-    <div class="badge card reveal"><strong>No telemetry</strong><span>Zero analytics, zero tracking. Airplane mode works fine.</span></div>
+    <div class="badge card reveal"><strong>No INTERNET permission</strong><span>Android enforces it: the app cannot make a network connection even if it wanted to. A CI gate fails the build if it ever appears.</span></div>
+    <div class="badge card reveal"><strong>No storage permissions</strong><span>Files are accessed via Android's Storage Access Framework — the app only ever gets a temporary handle to the one file you pick.</span></div>
+    <div class="badge card reveal"><strong>No telemetry</strong><span>Zero analytics, zero tracking, no accounts. Airplane mode works fine.</span></div>
+  </div>
+  <div class="perm-table-wrap reveal" style="margin-top:1.5rem">
+    <table class="perm-table">
+      <thead><tr><th>Permission</th><th>Declared?</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>INTERNET</td><td class="denied">✗ absent — intentionally</td><td>App cannot phone home; Android enforces this</td></tr>
+        <tr><td>READ / WRITE_EXTERNAL_STORAGE</td><td class="denied">✗ absent</td><td>Storage Access Framework instead — user picks the file</td></tr>
+        <tr><td>CAMERA</td><td class="denied">✗ absent</td><td>Video comes in via share intent</td></tr>
+        <tr><td>RECORD_AUDIO</td><td class="denied">✗ absent</td><td>Whisper transcription runs on-device, no audio capture</td></tr>
+        <tr><td>CONTACTS / LOCATION</td><td class="denied">✗ absent</td><td>No social or location features</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <h2 class="reveal">FAQ</h2>
+  <div class="faq-wrap faq reveal">
+    <details>
+      <summary>Does it really work offline?</summary>
+      <p>Yes — completely. The app ships without the Android INTERNET permission, so it cannot connect to anything. Transcription (whisper.cpp) and analysis (llama.cpp) both run on-device. Airplane mode is fine.</p>
+    </details>
+    <details>
+      <summary>Where do the AI models come from?</summary>
+      <p>Whisper and the Gemma-based LLM are downloaded once, on your terms, and stored locally. After that everything runs on-device.</p>
+    </details>
+    <details>
+      <summary>What devices are supported?</summary>
+      <p>Modern Android phones. NPU-accelerated embeddings work on Qualcomm, Google Tensor (Pixel) and MediaTek SoCs; other devices fall back to CPU.</p>
+    </details>
+    <details>
+      <summary>Is it open source?</summary>
+      <p>The app is Apache-2.0 licensed. The bundled LLM is distributed under Google's Gemma Terms of Use, which governs its redistribution.</p>
+    </details>
+    <details>
+      <summary>Why is the transcript better than auto-captions?</summary>
+      <p>It's whisper.cpp running on your device — no server round-trip, works on videos that never had captions, and you keep the full transcript in your files library.</p>
+    </details>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <h2 class="reveal">Install it. Turn off the internet. <span class="grad">It still works.</span></h2>
+  <div class="cta-row reveal" style="justify-content:center">
+    <a class="btn primary" href="#">Get it on Google Play</a>
+    <a class="btn ghost" href="#">Source code</a>
   </div>
 </section>
 

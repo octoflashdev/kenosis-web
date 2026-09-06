@@ -97,7 +97,8 @@ a:hover { text-decoration: underline; }
   vertical-align: -0.18em; margin-right: .5em;
 }
 .footer-icon { width: 1.3em; height: 1.3em; margin-right: .35em; vertical-align: -0.25em; }
-.footer-social a { display: inline-flex; align-items: center; }
+.footer-social a { display: inline-flex; align-items: center; gap: .3em; }
+.footer-social a > svg { margin-right: 0; vertical-align: initial; }
 .btn-icon path { fill-rule: evenodd; }
 .btn.primary { background: var(--grad); color: #fff; box-shadow: 0 8px 30px rgba(90,120,255,.35); }
 .btn.ghost { border-color: var(--card-border); color: var(--text); background: var(--card); }

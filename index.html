@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kenosis AI — Offline Video Fact-Checker</title>
+<meta name="description" content="Kenosis AI analyzes videos with on-device AI. No network, no cloud, no telemetry.">
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="#top">
+    <img src="assets/icon.png" alt="Kenosis AI logo" class="brand-icon">
+    <span>Kenosis <em>AI</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#videos">Videos</a>
+    <a href="#screenshots">Screenshots</a>
+    <a href="#privacy">Privacy</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Open source &middot; Fully offline</p>
+      <h1>Fact-check any video.<br><span class="grad">Right on your phone.</span></h1>
+      <p class="lead">
+        Share a video from any app. Kenosis AI transcribes it locally with whisper.cpp,
+        then analyzes the claims with a local LLM — flagging likely-false statements with reasoning.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="#videos">Watch it in action</a>
+        <a class="btn ghost" href="#screenshots">See screenshots</a>
+      </div>
+      <p class="hero-note">No account. No upload. Works in airplane mode.</p>
+    </div>
+    <div class="hero-phone reveal">
+      <div class="phone">
+        <img src="assets/screenshots/01-chat-offline.png" alt="Kenosis AI analysis screen" loading="eager">
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="how">
+  <h2 class="reveal">How it works</h2>
+  <div class="steps">
+    <div class="step card reveal">
+      <div class="step-num">1</div>
+      <h3>Share a video</h3>
+      <p>Use the share sheet from TikTok, YouTube, your gallery — any app. Kenosis AI opens automatically.</p>
+    </div>
+    <div class="step card reveal">
+      <div class="step-num">2</div>
+      <h3>Local transcription</h3>
+      <p>The audio track is extracted natively and transcribed on-device with whisper.cpp. Nothing leaves the phone.</p>
+    </div>
+    <div class="step card reveal">
+      <div class="step-num">3</div>
+      <h3>Claim analysis</h3>
+      <p>A local llama.cpp model extracts factual claims and flags likely-false or unsupported statements — with reasoning you can read.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="videos">
+  <h2 class="reveal">Video showcase</h2>
+  <p class="section-sub reveal">Demos of Kenosis AI working end-to-end — share, transcribe, analyze.</p>
+  <div class="video-grid" id="video-grid"><!-- rendered by js/main.js --></div>
+</section>
+
+<section class="section" id="screenshots">
+  <h2 class="reveal">Screenshots</h2>
+  <div class="shot-grid" id="shot-grid">
+    <figure class="shot reveal">
+      <img src="assets/screenshots/01-chat-offline.png" alt="Chat / analysis screen offline" loading="lazy">
+      <figcaption>Analysis chat — running fully offline</figcaption>
+    </figure>
+    <!-- add more screenshots here -->
+  </div>
+</section>
+
+<section class="section privacy" id="privacy">
+  <h2 class="reveal">Private by architecture</h2>
+  <div class="badges">
+    <div class="badge card reveal"><strong>No network</strong><span>The app ships without the Android INTERNET permission.</span></div>
+    <div class="badge card reveal"><strong>No cloud</strong><span>Whisper and the LLM run locally via whisper.cpp and llama.cpp.</span></div>
+    <div class="badge card reveal"><strong>No telemetry</strong><span>Zero analytics, zero tracking. Airplane mode works fine.</span></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <img src="assets/icon.png" alt="" class="brand-icon">
+    <p>
+      Kenosis AI — open-source, <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.
+      The bundled LLM is distributed under Google's <a href="https://ai.google.dev/gemma-api/terms">Gemma Terms of Use</a>.
+    </p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

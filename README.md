@@ -1,6 +1,10 @@
 # Kenosis AI — website
 
-Static landing page for [Kenosis AI](https://github.com/) (../kenosis-ai). No build step — plain HTML/CSS/JS, deployed to GitHub Pages.
+Static landing page for **Kenosis AI** (app source at `../kenosis-ai`, not open source). No build step — plain HTML/CSS/JS, deployed to GitHub Pages.
+
+- Play Store: https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai
+- Reddit: https://www.reddit.com/r/Kenosis_AI/
+- Bug reports: octoflash.dev@gmail.com (revealed on-site behind a human check to deter scrapers)
 
 ## Local preview
 

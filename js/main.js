@@ -44,4 +44,24 @@ const VIDEOS = [
   lb.addEventListener('click', (e) => { if (e.target !== lbImg) closeLb(); });
   document.querySelector('.lightbox-close').addEventListener('click', closeLb);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLb(); });
+
+  // Bug report — email hidden behind a human check so scrapers don't harvest it
+  const bugLink = document.getElementById('bug-report-link');
+  const bugReveal = document.getElementById('bug-reveal');
+  const bugAnswer = document.getElementById('bug-answer');
+  const bugEmail = document.getElementById('bug-email');
+  const bugError = document.getElementById('bug-error');
+  bugLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    bugReveal.hidden = false;
+    bugAnswer.focus();
+  });
+  bugAnswer.addEventListener('input', () => {
+    if (Number(bugAnswer.value) === 12) {
+      bugEmail.hidden = false;
+      bugError.hidden = true;
+    } else if (bugAnswer.value !== '') {
+      bugError.hidden = false;
+    }
+  });
 })();

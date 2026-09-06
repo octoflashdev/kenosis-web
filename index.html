@@ -29,7 +29,7 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-copy reveal">
-      <p class="eyebrow">Open source &middot; Fully offline &middot; Android</p>
+      <p class="eyebrow">Private by design &middot; Fully offline &middot; Android</p>
       <h1>Fact-check any video.<br><span class="grad">Right on your phone.</span></h1>
       <p class="lead">
         Share a video from any app — TikTok, YouTube, your gallery. Kenosis AI transcribes it
@@ -168,8 +168,8 @@
       <p>Modern Android phones. NPU-accelerated embeddings work on Qualcomm, Google Tensor (Pixel) and MediaTek SoCs; other devices fall back to CPU.</p>
     </details>
     <details>
-      <summary>Is it open source?</summary>
-      <p>The app is Apache-2.0 licensed. The bundled LLM is distributed under Google's Gemma Terms of Use, which governs its redistribution.</p>
+      <summary>How do I report a bug?</summary>
+      <p>Email us — see the "Report a bug" link in the footer. Please include your device model, Android version, and what you were doing when the bug happened.</p>
     </details>
     <details>
       <summary>Why is the transcript better than auto-captions?</summary>
@@ -181,18 +181,30 @@
 <section class="section cta-band">
   <h2 class="reveal">Install it. Turn off the internet. <span class="grad">It still works.</span></h2>
   <div class="cta-row reveal" style="justify-content:center">
-    <a class="btn primary" href="#">Get it on Google Play</a>
-    <a class="btn ghost" href="#">Source code</a>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai">Get it on Google Play</a>
+    <a class="btn ghost" href="https://www.reddit.com/r/Kenosis_AI/">Join us on Reddit</a>
   </div>
 </section>
 
 <footer class="footer">
   <div class="footer-inner">
     <img src="assets/icon.png" alt="" class="brand-icon">
-    <p>
-      Kenosis AI — open-source, <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.
-      The bundled LLM is distributed under Google's <a href="https://ai.google.dev/gemma-api/terms">Gemma Terms of Use</a>.
-    </p>
+    <div class="footer-links">
+      <p>
+        Kenosis AI — the fully offline AI assistant. The bundled LLM is distributed under
+        Google's <a href="https://ai.google.dev/gemma-api/terms">Gemma Terms of Use</a>.
+      </p>
+      <p>
+        <a href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai">Google Play</a> ·
+        <a href="https://www.reddit.com/r/Kenosis_AI/">r/Kenosis_AI</a> ·
+        <a href="#" id="bug-report-link">Report a bug</a>
+      </p>
+      <div class="bug-reveal" id="bug-reveal" hidden>
+        <label id="bug-captcha">Human check — what is 7 + 5? <input id="bug-answer" type="number" inputmode="numeric" style="width:5rem" autocomplete="off"></label>
+        <p id="bug-email" hidden>✉️ octoflash.dev@gmail.com</p>
+        <p id="bug-error" class="bug-error" hidden>Not quite — try again.</p>
+      </div>
+    </div>
   </div>
 </footer>
 

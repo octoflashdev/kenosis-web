@@ -34,10 +34,12 @@ h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); text-align: center; margin-bottom: .
 h3 { font-size: 1.15rem; }
 
 .grad {
+  /* fallback color keeps text readable if a dark-mode plugin strips the gradient */
+  color: var(--accent-1);
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 a { color: var(--accent-1); text-decoration: none; }
@@ -54,7 +56,7 @@ a:hover { text-decoration: underline; }
 }
 .brand { display: flex; align-items: center; gap: .55rem; font-weight: 700; font-size: 1.1rem; color: var(--text); }
 .brand:hover { text-decoration: none; }
-.brand em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.brand em { font-style: normal; color: var(--accent-1); background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .brand-icon { width: 30px; height: 30px; border-radius: 8px; }
 .nav-links { display: flex; gap: 1.4rem; }
 .nav-links a { color: var(--text-dim); font-size: .92rem; }
@@ -173,7 +175,7 @@ a:hover { text-decoration: underline; }
 /* Privacy */
 .badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
 @media (max-width: 800px) { .badges { grid-template-columns: 1fr; } }
-.badge strong { display: block; margin-bottom: .3rem; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 1.1rem; }
+.badge strong { display: block; margin-bottom: .3rem; color: var(--accent-1); background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.1rem; }
 .badge span { color: var(--text-dim); font-size: .92rem; }
 
 /* Footer */

@@ -13,27 +13,35 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## Adding a screenshot
+## Media
+
+The site ships **no video files** — demos are animated PNGs (APNG), so the page stays light.
+
+### Adding a screenshot
 
 1. Copy the file into `assets/screenshots/`.
-2. Add a `<figure class="shot">` block to `#shot-grid` in `index.html` (copy the existing one).
+2. Reference it from a feature card in the `#features` section of `index.html` (screenshots open full-size in a lightbox).
 
-## Adding a video
+### Adding an animated demo
 
-1. Copy the file into `assets/videos/` (mp4/webm).
-2. Add one entry to the `VIDEOS` array in `js/main.js`:
+1. Cut a screen recording (`videocaptures/foo.mp4`, outside the repo).
+2. Export an animated PNG, then wire it into the `#demos` grid in `index.html`:
 
-```js
-{ src: 'assets/videos/demo.mp4', title: 'Demo', desc: 'What it shows', poster: 'assets/videos/demo-poster.jpg' /* optional */ },
+```sh
+ffmpeg -t 8 -i foo.mp4 -vf "fps=10,scale=360:-2:flags=lanczos" -plays 0 -f apng assets/previews/foo.png
 ```
+
+Keep exports under ~3 MB each — they load on the homepage.
 
 ## Deploy (GitHub Pages)
 
-- **Via workflow:** the included `.github/workflows/deploy.yml` publishes the site on every push to `main`. Enable Pages under Settings → Pages → Source: GitHub Actions.
+- **Via workflow:** the included `.github/workflows/static.yml` publishes the site on every push to `main`. Enable Pages under Settings → Pages → Source: GitHub Actions.
 - **Via branch:** Settings → Pages → deploy from `main` / root.
 
 ## Structure
 
-- `index.html` — all sections (hero, how-it-works, videos, screenshots, privacy, footer)
+- `index.html` — all sections (hero, features, demos, privacy, FAQ, footer)
 - `css/style.css` — dark theme design tokens
-- `js/main.js` — `VIDEOS` config, scroll-reveal, screenshot lightbox
+- `js/main.js` — scroll-reveal, lightbox, bug-report captcha
+- `assets/screenshots/` — feature screenshots
+- `assets/previews/` — animated PNG demos

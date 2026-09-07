@@ -1,27 +1,8 @@
-// Kenosis AI site — videos are configured here.
-// Add your file to assets/videos/ and one entry to this list.
-const VIDEOS = [
-  // { src: 'assets/videos/demo-share.mp4', title: 'Sharing a video', desc: 'From the share sheet to analysis.' },
-];
+// Kenosis AI site — interactive bits.
+// Demos are animated PNGs (APNG) in assets/previews/ — no video files on the site.
 
 (function () {
   document.documentElement.classList.add('js'); // enables scroll-reveal only when JS runs
-
-  const grid = document.getElementById('video-grid');
-  const placeholder =
-    '<div class="placeholder"><span class="plus">＋</span>' +
-    '<strong>No videos yet</strong><span>Add one to <code>assets/videos/</code> and list it in <code>js/main.js</code>.</span></div>';
-
-  if (!VIDEOS.length) {
-    grid.innerHTML = placeholder;
-  } else {
-    grid.innerHTML = VIDEOS.map(
-      (v) =>
-        '<figure class="video-card card">' +
-        `<video controls preload="metadata" src="${v.src}"${v.poster ? ` poster="${v.poster}"` : ''}></video>` +
-        `<h3>${v.title}</h3><p>${v.desc || ''}</p></figure>`
-    ).join('');
-  }
 
   // Reveal on scroll
   const io = new IntersectionObserver(
@@ -30,10 +11,10 @@ const VIDEOS = [
   );
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-  // Lightbox for screenshots
+  // Lightbox for screenshots and animated demos
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lightbox-img');
-  document.querySelectorAll('#shot-grid .shot img').forEach((img) => {
+  document.querySelectorAll('.feature-media img, .demo img').forEach((img) => {
     img.addEventListener('click', () => {
       lbImg.src = img.src;
       lbImg.alt = img.alt;

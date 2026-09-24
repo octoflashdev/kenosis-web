@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  /* Kenosis AI — Play Store feature graphic 1024x500 (site palette) */
+  :root {
+    --bg: #0a0e14;
+    --accent-1: #4f8cff;
+    --accent-2: #a26bff;
+    --text: #e6ebf4;
+    --text-dim: #8b94a8;
+    --card-border: rgba(120, 150, 255, 0.25);
+    --grad: linear-gradient(100deg, var(--accent-1), var(--accent-2));
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1024px; height: 500px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(45% 70% at 22% 40%, rgba(79,140,255,.20), transparent 70%),
+      radial-gradient(40% 60% at 60% 20%, rgba(162,107,255,.16), transparent 70%),
+      var(--bg);
+    color: var(--text);
+    font-family: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center;
+  }
+  .copy { padding: 0 0 0 56px; max-width: 600px; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: .22em; font-size: 17px;
+    color: var(--accent-1); font-weight: 700; margin-bottom: 18px;
+  }
+  h1 { font-size: 58px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; }
+  .grad {
+    color: var(--accent-1);
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sub { margin-top: 20px; color: var(--text-dim); font-size: 24px; font-weight: 600; }
+  .sub strong { color: var(--text); }
+  .plane { margin-top: 14px; color: var(--text); font-size: 22px; font-weight: 600; }
+  .plane .sym { color: var(--accent-1); font-weight: 700; }
+  .phone { margin-left: auto; margin-right: 64px; position: relative; flex-shrink: 0; }
+  .phone img {
+    width: 214px; height: 428px; max-width: none;
+    object-fit: fill; display: block; border-radius: 28px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 24px 70px rgba(0,0,0,.65), 0 0 50px rgba(79,140,255,.14);
+  }
+</style>
+</head>
+<body>
+  <div class="copy">
+    <div class="eyebrow">Privacy first &middot; 100% offline</div>
+    <h1>The only AI app<br>without <span class="grad">INTERNET<br>permission</span></h1>
+    <div class="sub"><strong>No network. No cloud. No telemetry.</strong></div>
+    <div class="plane"><svg class="sym" width="22" height="22" viewBox="0 0 24 24" fill="#4f8cff" style="vertical-align:-3px"><path d="M21,16V14L13,9V3.5C13,2.67 12.33,2 11.5,2C10.67,2 10,2.67 10,3.5V9L2,14V16L10,13.5V19L8,20.5V21.5L11.5,20.5L15,21.5V20.5L13,19V13.5L21,16Z"/></svg>&nbsp; Works in airplane mode</div>
+  </div>
+  <div class="phone">
+    <img src="chat-card.png" width="214" height="428" alt="Kenosis AI chat">
+  </div>
+</body>
+</html>

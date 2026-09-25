@@ -1,1 +1,3 @@
 __pycache__/
+# release binaries are distributed via GitHub Releases, never committed
+internet-search-plugin/*.apk

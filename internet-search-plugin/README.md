@@ -1,83 +1,46 @@
-# Kenosis Internet Search Plugin
+# Kenosis Internet Search
 
-`kenosis_plugin_internet` — the internet-isolated plugin app for [Kenosis AI](https://www.kenosis-ai.com).
+The network plugin for **[Kenosis AI](https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai)** — an offline-first, on-device AI assistant.
 
-Kenosis AI is an **offline-first** on-device AI assistant: the host app holds no
-`INTERNET` permission and cannot touch the network. This plugin is the **only
-component in the ecosystem with network access**. The host app discovers it,
-binds it over a **LOCAL AIDL binder**, and calls its tools to fetch live web
-content. The host and plugin are separate Android applications (separate APKs,
-separate packages); they talk only over the binder, never over a socket.
+## What this is
 
-## The plugin contract
+Kenosis AI has **no `INTERNET` permission** — the host app cannot touch the
+network. Plugins are the ecosystem's **only components with network access**;
+this is the first of them (a LiveCast plugin is in preparation). It is a
+separate Android app the host discovers, binds over a **local AIDL binder**,
+and calls to fetch live web content. The host and plugins talk only over the
+binder, never over a socket.
 
-Both apps ship an identical copy of
-`android/app/src/main/aidl/hr/exel/kenosis/plugin/IKenosisPlugin.aidl`:
-
-```aidl
-package hr.exel.kenosis.plugin;
-
-interface IKenosisPlugin {
-    String getManifest();               // JSON tool manifest
-    String invoke(String toolName, String paramsJson);  // JSON {ok, data|error}
-}
-```
-
-The host binds the service declared in `AndroidManifest.xml` by the intent
-action `hr.exel.kenosis_ai.PLUGIN_SERVICE`, calls `getManifest()` once per attach
-to learn the tool list, then `invoke()` per tool call. The tool manifest is
-served over the binder — it is NOT duplicated in manifest `<meta-data>`.
+Its launcher screen is a **live, transparent log of every request it makes**
+on the host's behalf — the search-engine request itself (the query you asked,
+encoded in the request URL) is logged alongside every result page it fetched —
+open-source transparency so you can see exactly what was requested. Tap a row
+for details.
 
 ## Tools
 
-### `web_search`
-Search the public web and return a text observation. The host picks the engine
-via an `engine` param (`google` | `duckduckgo` | `qwant`); the plugin normalizes
-an unknown/missing value to a default. Each engine resolves the SERP to a text
-result:
+- **`web_search`** — search the public web, return a text observation. The host
+  picks the engine (`google` | `duckduckgo` | `qwant`).
+- **`browser_fetch`** — fetch a single URL and return its text (HTTP + HTML→text,
+  with a WebView fallback for JS pages).
 
-- **Google IFL** (`btnI=1`) — fast path to a top pick; on a miss/app-gate/thin
-  result, falls back to walking the regular SERP's absolute `http(s)` anchors.
-- **DuckDuckGo** — `html.duckduckgo.com/html/?q=…` HTML endpoint, anchor walk.
-- **Qwant** — v3 API, with a DataDome challenge shell fallback path.
+## Get the main app
 
-App/gateway walls (Facebook, app-store deep links, login gates) are filtered out
-so the observation is real article text, not a bot wall.
+➡️ **[Kenosis AI on Google Play](https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai)**
 
-### `browser_fetch`
-Fetch a single URL and return its text. Fast path is plain HTTP via OkHttp +
-HTML→text via jsoup; fallback is a hidden OS `WebView` render (`android.webkit`,
-no extra dependency) for pages that need JavaScript. Fetch + render are capped to
-stay under the host's invoke timeout.
+The host app is distributed separately and is not covered by this repository's
+license.
 
 ## Build
 
-Flutter plugin-app (it is a Flutter application, not a shared Flutter package).
-The Gradle wrapper is committed.
+Flutter app (not a shared package). The Gradle wrapper is committed.
 
 ```bash
 flutter pub get
-flutter build apk --debug          # debug build, .debug applicationId suffix
-
-# Local unit tests (no device needed):
-cd android && ./gradlew :app:testDebugUnitTest
+flutter build apk --debug     # debug build, .debug applicationId suffix
 ```
-
-A fresh clone creates `android/local.properties` automatically via `flutter pub
-get` / the Flutter tool — it is gitignored and not shipped.
-
-## Dependencies
-
-| Dependency | Version | License |
-|---|---|---|
-| [OkHttp](https://square.github.io/okhttp/) | 4.12.0 | Apache-2.0 |
-| [jsoup](https://jsoup.org/) | 1.18.1 | MIT |
-
-Both are license-clean for redistribution in an APK (no GPL / copyleft).
 
 ## License
 
-Licensed under the **Apache License, Version 2.0** — see [LICENSE](LICENSE).
-
-The Kenosis AI host application is distributed separately and is not covered by
-this repository's license. This plugin is the open-sourced network component.
+**Apache License 2.0** — see [LICENSE](LICENSE). Dependencies: OkHttp 4.12.0
+(Apache-2.0), jsoup 1.18.1 (MIT). No copyleft code is linked into the APK.

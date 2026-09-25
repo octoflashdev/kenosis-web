@@ -355,10 +355,13 @@ class InternetPluginService : Service() {
 
         /**
          * In-process URL log — every browser_fetch / web_search call appends a
-         * record. Read by the plugin app's UI (MainActivity method channel) so
-         * users can see exactly what URLs the plugin requested (open-source
-         * transparency). Synchronized: written on binder threads, read on the
-         * UI thread. Capped at 200 entries to bound memory.
+         * record, and every search round records the SEARCH-ENGINE request
+         * itself (the IFL/SERP/API URL carrying the encoded query) via
+         * [logSearchRequest] — the log shows searches, not just the result
+         * pages fetched after them. Read by the plugin app's UI (MainActivity
+         * method channel) so users can see exactly what the plugin requested
+         * (open-source transparency). Synchronized: written on binder threads,
+         * read on the UI thread. Capped at 200 entries to bound memory.
          */
         data class FetchRecord(
             val timestamp: Long,
@@ -430,7 +433,7 @@ class InternetPluginService : Service() {
             return """
                 {
                   "name": "Internet Search",
-                  "version": "0.3.0",
+                  "version": "1.9.0",
                   "tools": [
                     {
                       "name": "browser_fetch",
@@ -583,6 +586,9 @@ class InternetPluginService : Service() {
      */
     private fun invokeWebSearchGoogle(query: String, budget: Int): String {
         val iflUrl = GOOGLE_IFL_URL.format(URLEncoder.encode(query, "UTF-8"))
+        // The IFL request ALWAYS goes out (resolveIflTarget below) — log it
+        // so the fetch log shows the search itself, not only the result page.
+        logSearchRequest(query, iflUrl)
         val iflTarget = resolveIflTarget(iflUrl)?.takeUnless { isAppGatedUrl(it) }
         // Phase 1: try the IFL pick alone — ONE cheap redirect-disabled
         // request, no SERP walk. The common case (IFL pick renders) stays a
@@ -666,6 +672,7 @@ class InternetPluginService : Service() {
      */
     private fun googleSerpCandidates(query: String): List<String> {
         val serpUrl = GOOGLE_SERP_URL.format(URLEncoder.encode(query, "UTF-8"))
+        logSearchRequest(query, serpUrl)
         val links = try {
             webviewFetcher.fetchLinks(serpUrl)
                 .get(WEBVIEW_TIMEOUT_S, TimeUnit.SECONDS)
@@ -700,6 +707,7 @@ class InternetPluginService : Service() {
         serpIsJson: Boolean,
     ): String {
         return try {
+            logSearchRequest(query, serpUrl)
             val serpBody = fetchSerpBody(serpUrl, engine, serpIsJson)
             val all = resolver(serpBody)
             val candidates = all.filterNot { isAppGatedUrl(it) }
@@ -1029,6 +1037,30 @@ class InternetPluginService : Service() {
                     chars = 0,
                     path = "",
                     status = error,
+                ),
+            )
+            if (_fetchLog.size > FETCH_LOG_CAP) _fetchLog.removeAt(0)
+        }
+    }
+
+    /** Appends a SEARCH-REQUEST record — the engine round-trip itself (google
+     *  IFL, the google/DDG SERP render, the qwant API call). The URL carries
+     *  the encoded query, so the plugin UI shows searches too, not only the
+     *  result pages fetched afterwards. status "search" renders as a neutral
+     *  (non-error) row in the plugin app's log. */
+    private fun logSearchRequest(query: String, requestedUrl: String) {
+        synchronized(_fetchLog) {
+            _fetchLog.add(
+                FetchRecord(
+                    timestamp = System.currentTimeMillis(),
+                    tool = "web_search",
+                    query = query,
+                    requestedUrl = requestedUrl,
+                    finalUrl = null,
+                    title = "search request",
+                    chars = 0,
+                    path = "",
+                    status = "search",
                 ),
             )
             if (_fetchLog.size > FETCH_LOG_CAP) _fetchLog.removeAt(0)

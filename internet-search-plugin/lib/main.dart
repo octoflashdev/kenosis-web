@@ -8,7 +8,8 @@ void main() => runApp(const KenosisPluginApp());
 
 /// One human sentence per known failure signature the service logs.
 ///
-/// The fetch log's `status` field is "ok" or `error:<message>` where the
+/// The fetch log's `status` field is "ok" (fetched page), "search" (the
+/// search-engine request row — never an error), or `error:<message>` where the
 /// message is whatever the failing step threw/recorded (see
 /// `InternetPluginService.kt` — every `logFetchError` call site). Those raw
 /// strings are honest but terse; this maps each known signature to what a
@@ -51,8 +52,9 @@ String describeFetchError(String status) {
 ///
 /// Kenosis (the offline host) binds this app's `InternetPluginService` over
 /// binder and invokes its tools (browser_fetch + web_search). This screen is
-/// the launcher surface: a status header plus a live log of every URL the
-/// plugin has fetched on behalf of the host (open-source transparency — users
+/// the launcher surface: a status header plus a live log of every request the
+/// plugin makes on behalf of the host — search-engine requests included, not
+/// just the result pages fetched after them (open-source transparency — users
 /// can see exactly what was requested). Tapping a row expands its details:
 /// for a failed (red) row that means WHAT happened — a plain-language
 /// explanation plus the raw reason from the service.
@@ -190,7 +192,11 @@ class _StatusScreenState extends State<StatusScreen> {
                         final chars = r['chars'] as int? ?? 0;
                         final path = r['path'] as String? ?? '';
                         final status = r['status'] as String? ?? 'ok';
-                        final isError = status != 'ok';
+                        // "ok" = fetched page; "search" = the engine request
+                        // itself (logged, not an error); anything else is an
+                        // "error:<reason>" row from the service.
+                        final isSearchRequest = status == 'search';
+                        final isError = status.startsWith('error:');
                         final ts = r['timestamp'] as int? ?? 0;
                         final time = ts > 0
                             ? DateTime.fromMillisecondsSinceEpoch(ts).toLocal()
@@ -220,6 +226,8 @@ class _StatusScreenState extends State<StatusScreen> {
                                   if (title.isNotEmpty) title,
                                   if (isError)
                                     status
+                                  else if (isSearchRequest)
+                                    'search request'
                                   else
                                     '$chars chars · $path',
                                   if (time != null)

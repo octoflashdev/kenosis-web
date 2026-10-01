@@ -1,10 +1,13 @@
 package hr.exel.kenosis_plugin_internet
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import hr.exel.kenosis.plugin.IKenosisPlugin
+import java.io.File
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import kotlinx.coroutines.CoroutineScope
@@ -259,6 +262,65 @@ class InternetPluginService : Service() {
             }
         }
 
+        // -- Bot-wall / human-check detection (+75) -------------------------- //
+
+        /**
+         * Substrings (lowercased) that identify a bot-wall challenge page in
+         * place of results. DataDome (Qwant) serves `captcha-delivery.com`
+         * frames and a "Press & Hold" CTA; DuckDuckGo's anomaly wall carries
+         * a `/captcha` form and its "bots use DuckDuckGo too" copy. Generic
+         * human-verification phrasing covers engines that rotate vendors.
+         * The probe scans only the first 100 KB (every real marker sits in
+         * the head/first paint) so a huge body never pays a full lowercase
+         * copy.
+         */
+        private val CAPTCHA_MARKERS = listOf(
+            "captcha-delivery.com", // DataDome challenge frame (Qwant)
+            "datadome",
+            "press & hold", // DataDome challenge CTA
+            "/captcha", // DuckDuckGo anomaly form action
+            "unfortunately, bots use duckduckgo too", // DDG anomaly copy
+            "verify you are a human",
+            "are you a human",
+            "human verification",
+        )
+
+        /**
+         * Pure, unit-testable: does this SERP body look like a bot-wall
+         * challenge rather than results? Applied when the resolver yields
+         * ZERO results — the body came back HTTP-200-shaped but empty, which
+         * is exactly what a challenge page (or a JSON-API blocked interstitial
+         * rendered in the WebView) parses to. Distinguishes "no results for
+         * this query" from "the engine wants a human check" — the +74 live
+         * failure read as the former and gave the user nothing to do.
+         */
+        fun looksLikeCaptchaPage(body: String): Boolean {
+            if (body.isEmpty()) return false
+            val probe = body.take(100_000).lowercase()
+            return CAPTCHA_MARKERS.any { it in probe }
+        }
+
+        /**
+         * Pure, unit-testable: is this the exception [fetchRawBody] throws for
+         * an HTTP status engines use for bot walls? Message-matched (not
+         * typed) because that throw site is a plain IllegalStateException
+         * carrying "HTTP <code>".
+         */
+        fun isBotWallHttpError(e: Exception?): Boolean =
+            e?.message == "HTTP 403" || e?.message == "HTTP 429"
+
+        /**
+         * The error-envelope text for an engine actively showing a human
+         * check. This string is what the HOST's model relays to the user
+         * (run_plugin_tool_round wraps the envelope error verbatim), so it
+         * carries the actionable instruction. The "human check" signature is
+         * STABLE — the plugin UI's describeFetchError keys on it.
+         */
+        fun humanCheckMessage(engine: String): String =
+            "$engine is showing a human check (captcha). Open the " +
+                "Internet Search plugin app, complete the check, then " +
+                "search again."
+
         /** Whole-string bare-domain pattern (+73 i): one or more labels each
          *  followed by a dot, a 2+-letter TLD, an optional :port, and an
          *  optional path/query/fragment — `example.com`, `www.site.org/path?q=1`,
@@ -379,6 +441,96 @@ class InternetPluginService : Service() {
         private const val FETCH_LOG_CAP = 200
         private val _fetchLog = Collections.synchronizedList(mutableListOf<FetchRecord>())
 
+        /** Disk backing for the URL log. The log used to be in-process only:
+         *  Android tears the plugin process down between host rounds (the
+         *  host's binder drops it once a turn finishes and the cached process
+         *  gets killed), so opening the plugin app often landed in a FRESH
+         *  process with an empty log — "Requested URLs (0)" right after a
+         *  fetch the logcat had just shown (2026-09-27 regression report).
+         *  Loaded once on service create, rewritten after every append
+         *  (single-thread executor — never on the caller's thread). */
+        @Volatile private var logFile: File? = null
+        private val logWrite = Executors.newSingleThreadExecutor()
+
+        /** Pure record→JSON (public for the unit-test pin). Nullables go out
+         *  as [JSONObject.NULL] so `optString().ifEmpty { null }` reads them
+         *  back as null — the round-trip is asserted in [FetchLogJsonTest]. */
+        fun recordToJson(r: FetchRecord): JSONObject =
+            JSONObject()
+                .put("timestamp", r.timestamp)
+                .put("tool", r.tool)
+                .put("query", r.query ?: JSONObject.NULL)
+                .put("requestedUrl", r.requestedUrl)
+                .put("finalUrl", r.finalUrl ?: JSONObject.NULL)
+                .put("title", r.title)
+                .put("chars", r.chars)
+                .put("path", r.path)
+                .put("status", r.status)
+
+        /** Pure JSON→record (public for the unit-test pin): null on a
+         *  malformed row (missing/ill-typed required field) so ONE bad row
+         *  in the file never wipes the whole hydrated log. */
+        fun recordFromJson(o: JSONObject): FetchRecord? = runCatching {
+            FetchRecord(
+                timestamp = o.getLong("timestamp"),
+                tool = o.getString("tool"),
+                query = o.optString("query").ifEmpty { null },
+                requestedUrl = o.getString("requestedUrl"),
+                finalUrl = o.optString("finalUrl").ifEmpty { null },
+                title = o.getString("title"),
+                chars = o.getInt("chars"),
+                path = o.getString("path"),
+                status = o.getString("status"),
+            )
+        }.getOrNull()
+
+        /** Pure encode of the log, oldest-first (public for the unit-test
+         *  pin) — the shape [persistFetchLog] writes to disk. */
+        fun encodeFetchLogOldestFirst(records: List<FetchRecord>): String {
+            val arr = JSONArray()
+            for (r in records) arr.put(recordToJson(r))
+            return arr.toString()
+        }
+
+        /** Pure decode of the log file text (public for the unit-test pin).
+         *  Malformed rows are skipped; the result is capped at [cap] exactly
+         *  like live appends (keep the NEWEST, drop the oldest). */
+        fun decodeFetchLog(text: String, cap: Int = FETCH_LOG_CAP): List<FetchRecord> {
+            val out = mutableListOf<FetchRecord>()
+            val arr = runCatching { JSONArray(text) }.getOrNull() ?: return out
+            for (i in 0 until arr.length()) {
+                val o = runCatching { arr.getJSONObject(i) }.getOrNull() ?: continue
+                recordFromJson(o)?.let { out.add(it) }
+            }
+            while (out.size > cap) out.removeAt(0)
+            return out
+        }
+
+        /** [Context] arrives with the service — safe to call repeatedly. */
+        fun initFetchLogPersistence(context: Context) {
+            synchronized(_fetchLog) {
+                if (logFile != null) return
+                val f = File(context.filesDir, "fetch_log.json")
+                logFile = f
+                if (f.exists()) {
+                    val loaded = decodeFetchLog(f.readText())
+                    _fetchLog.clear()
+                    _fetchLog.addAll(loaded)
+                }
+            }
+        }
+
+        /** Persists the CURRENT log (oldest-first) off the caller's thread.
+         *  Call AFTER appending, inside or outside the [_fetchLog] lock — the
+         *  executor serializes writers; the snapshot is taken under lock. */
+        private fun persistFetchLog() {
+            val f = logFile ?: return
+            val encoded = synchronized(_fetchLog) {
+                encodeFetchLogOldestFirst(_fetchLog.toList())
+            }
+            logWrite.execute { runCatching { f.writeText(encoded) } }
+        }
+
         /** Read-only snapshot of the fetch log (newest first) for the UI. */
         val fetchLog: List<FetchRecord> get() = _fetchLog.reversed()
 
@@ -415,6 +567,21 @@ class InternetPluginService : Service() {
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    // Fetch-and-forget: cookies are DENIED by default (user directive, +75)
+    // and flip ON only while a human check is pending ([CaptchaCookies]).
+    // Service onCreate runs once per process, before any fetch — the plain
+    // OkHttp client below carries no cookies either way (no CookieJar).
+    override fun onCreate() {
+        super.onCreate()
+        CaptchaCookies.setAllowed(false)
+        initFetchLogPersistence(this)
+    }
+
+    // Plain HTTP fast path. No CookieJar installed — OkHttp is STATELESS:
+    // no cookies ride along on fetches, nothing accumulates per-site. The
+    // "not a web browser" rule; only the WebView recovery path (a gated
+    // human check) ever exchanges cookies.
     private val http: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .connectTimeout(HTTP_TIMEOUT_S, TimeUnit.SECONDS)
@@ -433,7 +600,7 @@ class InternetPluginService : Service() {
             return """
                 {
                   "name": "Internet Search",
-                  "version": "1.9.0",
+                  "version": "1.9.1",
                   "tools": [
                     {
                       "name": "browser_fetch",
@@ -512,8 +679,13 @@ class InternetPluginService : Service() {
         } catch (e: Exception) {
             Log.w(TAG, "browser_fetch($url) failed: $e")
             val msg = e.message ?: e.javaClass.simpleName
+            // The app log keeps the RAW reason (describeFetchError in
+            // main.dart glosses it); the envelope the MODEL reads gets the
+            // plain-language class + the search-instead coach — on-device
+            // 2026-09-26 the model invented dead URLs and got nothing back
+            // that told it to search rather than retry.
             logFetchError("browser_fetch", query = null, url, "error:$msg")
-            err("Fetch failed: $msg")
+            err(describeFetchFailure(msg, url))
         }
     }
 
@@ -719,6 +891,17 @@ class InternetPluginService : Service() {
                 )
             }
             if (candidates.isEmpty()) {
+                // +75: a zero-result body that smells like a bot-wall
+                // challenge (HTTP-200 shape — DuckDuckGo's anomaly wall, or a
+                // WebView-rendered DataDome interstitial) is NOT "no
+                // results": arm the gate + return the actionable envelope.
+                // The +74 failure read exactly like a benign empty SERP and
+                // gave the user nothing to do.
+                if (all.isEmpty() && looksLikeCaptchaPage(serpBody)) {
+                    markCaptcha(engine, serpUrl, "challenge page served in place of results")
+                    logFetchError("web_search", query = query, serpUrl, "error:${humanCheckMessage(engine)}")
+                    return err(humanCheckMessage(engine))
+                }
                 // Log the miss — the SERP WAS fetched but resolved to nothing
                 // openable (rate-limit page, empty results, all-app-gated,
                 // blank challenge render). Without this record the plugin
@@ -929,7 +1112,14 @@ class InternetPluginService : Service() {
         // passes the thin-text gate but misses the actual data.
         var webviewResult: WebViewContent? = null
         var webviewError: Exception? = null
-        if (WEBVIEW_FALLBACK_ENABLED &&
+        // A transport-dead fast path (DNS / connect / unreachable) dooms the
+        // WebView fallback too — a dead host serves no bot wall to beat.
+        // Skipping it saves up to WEBVIEW_TIMEOUT_S of a guaranteed-nothing
+        // render (device evidence 2026-09-26: one invented bbcdn.com URL
+        // burned 10 s OkHttp + 15 s WebView for the same empty result).
+        // Bot-wall fast errors (an HTTP response arrived) still retry.
+        val fastTransportDead = isTransportDeadError(fastError)
+        if (WEBVIEW_FALLBACK_ENABLED && !fastTransportDead &&
             (alwaysWebview || fastResult == null || shouldFallback(fastResult.text))
         ) {
             try {
@@ -973,7 +1163,9 @@ class InternetPluginService : Service() {
                     ?: cause?.javaClass?.simpleName
                     ?: "unknown error"
                 Log.w(TAG, "fetchAndExtract($url) failed both paths: $msg")
-                throw IllegalStateException("Fetch failed: $msg")
+                // RAW reason (no "Fetch failed:" prefix — the callers add
+                // their own envelope wording; the prefix used to double up).
+                throw IllegalStateException(msg)
             }
         }
     }
@@ -1013,6 +1205,7 @@ class InternetPluginService : Service() {
                 ),
             )
             if (_fetchLog.size > FETCH_LOG_CAP) _fetchLog.removeAt(0)
+            persistFetchLog()
         }
     }
 
@@ -1040,6 +1233,7 @@ class InternetPluginService : Service() {
                 ),
             )
             if (_fetchLog.size > FETCH_LOG_CAP) _fetchLog.removeAt(0)
+            persistFetchLog()
         }
     }
 
@@ -1064,6 +1258,7 @@ class InternetPluginService : Service() {
                 ),
             )
             if (_fetchLog.size > FETCH_LOG_CAP) _fetchLog.removeAt(0)
+            persistFetchLog()
         }
     }
 
@@ -1102,6 +1297,22 @@ class InternetPluginService : Service() {
             _webviewFetcher ?: WebViewPageFetcher(this).also { _webviewFetcher = it }
         }
 
+    /** Arms [CaptchaGate] for [engine] and posts the check-needed system
+     *  notification (deduped per engine inside [CaptchaNotifications]).
+     *  The solve URL is the blocked URL's SITE ORIGIN ([solveUrlForHuman]) —
+     *  the visible WebView must show a page a human can act on, not a JSON
+     *  API body. Cookies turn ON here (the clearance flow is the plugin's
+     *  only legitimate cookie consumer — see [CaptchaCookies]) and OFF again
+     *  at every clear below. */
+    private fun markCaptcha(engine: String, url: String, reason: String) {
+        val now = System.currentTimeMillis()
+        val solveUrl = solveUrlForHuman(url)
+        CaptchaGate.set(engine, solveUrl, reason, now)
+        CaptchaCookies.setAllowed(true)
+        CaptchaNotifications.notify(this, engine, solveUrl, now)
+        Log.w(TAG, "FC: [InternetPlugin] human check needed for $engine ($reason) — gate armed")
+    }
+
     /** SERP body fetch with a bot-block fallback. Plain OkHttp is fast but
      *  its TLS fingerprint is trivially flagged by SERP-edge bot walls —
      *  Qwant's DataDome returned HTTP 403 on-device for api.qwant.com
@@ -1109,39 +1320,73 @@ class InternetPluginService : Service() {
      *  desktop IP, so the block is fingerprint/reputation based, not the
      *  request shape. The hidden WebView is a real Chrome with a real TLS
      *  stack — the exact machinery that has served the google IFL path
-     *  on-device for months — so a JSON-API SERP blocked on the fast path is
-     *  re-fetched in the renderer (Chrome renders application/json as text;
-     *  [resolveQwantResultUrls] tolerates the viewer's toolbar text). HTML
-     *  SERPs are NOT retried that way: innerText strips the anchors the
-     *  HTML resolvers need, so they keep the honest HTTP error.
+     *  on-device for months — so a blocked SERP is re-fetched in the
+     *  renderer:
+     *   - JSON APIs (qwant) via [fetchAndExtract] — Chrome renders
+     *     application/json as text; [resolveQwantResultUrls] tolerates the
+     *     viewer's toolbar text.
+     *   - HTML SERPs (duckduckgo, +75) via [WebViewPageFetcher.fetchHtml] —
+     *     the raw post-JS DOM, because the innerText walk strips the anchor
+     *     markup [resolveDdgResultUrls] parses. Before +75 HTML SERPs kept
+     *     the honest HTTP error, so a bot-walled duckduckgo never recovered
+     *     even after the user solved a challenge.
      *
-     *  When the WebView retry ALSO fails (challenge shell that never
-     *  self-heals — DataDome hung blank through the full 12.5 s render
-     *  poll on-device, +73 live test), the error is re-wrapped to say what
-     *  the user can act on: the engine's bot protection may be blocking this
-     *  device — try another engine. A bare "the page rendered no readable
-     *  content" for a SERP read as an app bug in the live test. */
+     *  +75 the retry is also the CAPTCHA RECOVERY PATH: the clearance cookie
+     *  the user earns solving the challenge in the plugin app's VISIBLE
+     *  WebView lives in the process-wide CookieManager — this retry sends
+     *  it, the engine serves the real SERP, and the gate clears. On a
+     *  bot-wall signature ([isBotWallHttpError], or a retry that still
+     *  returns challenge HTML) the gate arms ([markCaptcha]) and the error
+     *  envelope tells the user what to do ([humanCheckMessage]) — the +74
+     *  failure surfaced a bare "bot protection may be blocking this device"
+     *  with nothing to act on. A successful fast path clears the gate: the
+     *  engine answers, any pending check is moot. */
     private fun fetchSerpBody(serpUrl: String, engine: String, serpIsJson: Boolean): String {
         try {
-            return fetchRawBody(serpUrl)
+            val body = fetchRawBody(serpUrl)
+            CaptchaGate.clear(engine)
+            CaptchaCookies.setAllowed(false) // check resolved — back to deny-by-default
+            return body
         } catch (e: Exception) {
-            if (!serpIsJson) throw e
+            val botWall = isBotWallHttpError(e)
+            if (botWall) markCaptcha(engine, serpUrl, e.message ?: "blocked")
+            if (!botWall && !serpIsJson) throw e
             Log.w(TAG, "web_search[$engine] serp fast path failed ($e) — retrying SERP in the webview")
-            val outcome = try {
-                fetchAndExtract(serpUrl, alwaysWebview = true)
+            val body: String = try {
+                if (serpIsJson) {
+                    fetchAndExtract(serpUrl, alwaysWebview = true).text
+                } else {
+                    webviewFetcher.fetchHtml(serpUrl)
+                        .get(WEBVIEW_TIMEOUT_S, TimeUnit.SECONDS)
+                }
             } catch (e2: Exception) {
                 Log.w(TAG, "web_search[$engine] serp webview retry failed: $e2")
+                if (botWall) {
+                    throw IllegalStateException(humanCheckMessage(engine))
+                }
                 throw IllegalStateException(
                     "the search engine blocked or could not serve its results " +
                         "(its bot protection may be blocking this device)",
                 )
             }
+            if (botWall && looksLikeCaptchaPage(body)) {
+                // The retry landed on the challenge itself (no earned cookie
+                // yet) — surface it as the check it is, not as garbage text.
+                throw IllegalStateException(humanCheckMessage(engine))
+            }
+            if (botWall) {
+                // The retry got REAL results — the earned clearance cookie
+                // worked; the check is satisfied. Cookies back to denied
+                // (the earned jar stays on disk, dormant — see CaptchaCookies).
+                CaptchaGate.clear(engine)
+                CaptchaCookies.setAllowed(false)
+            }
             Log.i(
                 TAG,
-                "FC: [InternetPlugin] web_search[$engine] serp served via ${outcome.path} " +
-                    "(${outcome.text.length} chars)",
+                "FC: [InternetPlugin] web_search[$engine] serp served via webview " +
+                    "(${body.length} chars)",
             )
-            return outcome.text
+            return body
         }
     }
 

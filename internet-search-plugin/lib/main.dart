@@ -3,8 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 void main() => runApp(const KenosisPluginApp());
+
+/// 'qwant' → 'Qwant' for user-facing labels.
+String _capitalize(String s) => s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
 
 /// One human sentence per known failure signature the service logs.
 ///
@@ -29,12 +33,27 @@ String describeFetchError(String status) {
     return 'Every result opens in its own app (Facebook, Instagram, TikTok '
         'or X) — none of them can be read in the in-app browser.';
   }
+  if (msg.contains('human check')) {
+    return 'The search engine wants to verify a human before it serves '
+        'results. Complete the check shown at the top of this app, then '
+        'search again in Kenosis AI.';
+  }
   if (msg.contains('bot protection')) {
     return 'The search engine blocked this device as a possible bot. Try a '
         'different search engine.';
   }
   if (msg.contains('WebView JS extraction returned null')) {
     return 'The page rendered, but its text could not be extracted from it.';
+  }
+  if (msg.contains('ERR_NAME_NOT_RESOLVED') ||
+      msg.contains('Unable to resolve host')) {
+    return 'The site does not exist (DNS lookup failed) — the address was '
+        'wrong or made up.';
+  }
+  if (msg.contains('ERR_ADDRESS_UNREACHABLE') ||
+      msg.contains('Failed to connect')) {
+    return "The site's server could not be reached from this device's "
+        'network.';
   }
   if (msg.contains('timeout')) {
     return 'The page took too long to load — the fetch was abandoned.';
@@ -84,6 +103,15 @@ class _StatusScreenState extends State<StatusScreen> {
   List<Map<String, dynamic>> _fetchLog = const [];
   Timer? _refreshTimer;
 
+  /// Pending human check from [CaptchaGate] (service side), polled with the
+  /// same 2s channel hop as the fetch log. Null = no check pending.
+  Map<String, dynamic>? _captcha;
+
+  /// The sinceMs of the banner the user dismissed — hides the banner until a
+  /// NEW gate arms (the poll would otherwise bring the dismissed one straight
+  /// back every 2s).
+  int? _dismissedCaptchaSince;
+
   /// Key of the expanded row (timestamp:tool:requestedUrl), NOT an index —
   /// the log is newest-first and the 2s poll can shift indexes at any time;
   /// a stable key keeps the expansion pinned to its record across polls.
@@ -92,16 +120,21 @@ class _StatusScreenState extends State<StatusScreen> {
   @override
   void initState() {
     super.initState();
-    _loadFetchLog();
+    _refresh();
     // Poll every 2s — the service may be fetching in the background while
     // the user has the plugin app open. Cheap: same-process method channel.
-    _refreshTimer = Timer.periodic(const Duration(seconds: 2), (_) => _loadFetchLog());
+    _refreshTimer = Timer.periodic(const Duration(seconds: 2), (_) => _refresh());
   }
 
   @override
   void dispose() {
     _refreshTimer?.cancel();
     super.dispose();
+  }
+
+  Future<void> _refresh() async {
+    await _loadFetchLog();
+    await _loadCaptcha();
   }
 
   Future<void> _loadFetchLog() async {
@@ -123,6 +156,45 @@ class _StatusScreenState extends State<StatusScreen> {
     }
   }
 
+  Future<void> _loadCaptcha() async {
+    Map<String, dynamic>? captcha;
+    try {
+      final json = await _channel.invokeMethod<String>('getCaptcha');
+      if (json != null && json.isNotEmpty) {
+        captcha = (jsonDecode(json) as Map).cast<String, dynamic>();
+      }
+    } on PlatformException catch (_) {
+      // Channel not ready yet (early init) — no banner this tick.
+    } on FormatException catch (_) {
+      // Bad JSON — no banner this tick.
+    }
+    if (!mounted) return;
+    // A dismissed gate stays hidden until a NEW one arms (different sinceMs).
+    final dismissed = _dismissedCaptchaSince;
+    if (captcha != null && dismissed != null && captcha['sinceMs'] == dismissed) {
+      captcha = null;
+    }
+    setState(() => _captcha = captcha);
+  }
+
+  Future<void> _solveCaptcha() async {
+    final captcha = _captcha;
+    if (captcha == null) return;
+    final engine = captcha['engine'] as String? ?? '';
+    final url = captcha['url'] as String? ?? '';
+    if (url.isEmpty) return;
+    await Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (_) => CaptchaSolveScreen(engine: engine, url: url),
+    ));
+    // Back from the solve screen: re-poll; when the gate cleared, confirm.
+    await _loadCaptcha();
+    if (mounted && _captcha == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Check completed — try your search again in Kenosis AI.'),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -131,6 +203,18 @@ class _StatusScreenState extends State<StatusScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            // ---- Human-check banner (+75) ----
+            if (_captcha != null)
+              _CaptchaBanner(
+                captcha: _captcha!,
+                onSolve: _solveCaptcha,
+                onDismiss: () => setState(() {
+                  _dismissedCaptchaSince = _captcha?['sinceMs'] as int?;
+                  // Hide immediately — the next poll would otherwise keep
+                  // showing the dismissed gate for up to 2s.
+                  _captcha = null;
+                }),
+              ),
             // ---- Status header ----
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -144,7 +228,10 @@ class _StatusScreenState extends State<StatusScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 6),
-                  Text('Status: ready', style: TextStyle(fontSize: 14, color: scheme.onSurfaceVariant)),
+                  Text(
+                    _captcha != null ? 'Status: human check needed' : 'Status: ready',
+                    style: TextStyle(fontSize: 14, color: scheme.onSurfaceVariant),
+                  ),
                   const SizedBox(height: 12),
                   Text(
                     'Open Kenosis AI, tap the plugin badge in the chat and attach '
@@ -366,6 +453,196 @@ class _DetailRow extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Warning card at the top of the status screen — the in-plugin half of the
+/// +75 captcha notification. The service armed [CaptchaGate] because an
+/// engine answered a search with a bot-wall challenge; the challenge is
+/// invisible inside the headless fetcher, so this banner is where the user
+/// sees it and [CaptchaSolveScreen] is where they solve it.
+class _CaptchaBanner extends StatelessWidget {
+  const _CaptchaBanner({
+    required this.captcha,
+    required this.onSolve,
+    required this.onDismiss,
+  });
+
+  final Map<String, dynamic> captcha;
+  final VoidCallback onSolve;
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final engine = _capitalize(captcha['engine'] as String? ?? 'the engine');
+    return Card(
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      color: scheme.errorContainer,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.verified_user_outlined, color: scheme.onErrorContainer),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    '$engine needs a human check',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: scheme.onErrorContainer,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'The search engine is asking for a verification before it '
+              'serves results. Complete the check, then search again in '
+              'Kenosis AI.',
+              style: TextStyle(fontSize: 13, color: scheme.onErrorContainer),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: onDismiss,
+                  child: const Text('Dismiss'),
+                ),
+                const SizedBox(width: 8),
+                FilledButton.icon(
+                  onPressed: onSolve,
+                  icon: const Icon(Icons.open_in_browser),
+                  label: const Text('Solve now'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Full-screen VISIBLE WebView loaded with the exact blocked SERP URL — where
+/// the user actually completes the bot-wall challenge (DataDome press-and-
+/// hold, DuckDuckGo anomaly check). The system WebView's CookieManager is
+/// process-wide and persisted, so the clearance cookies earned here are the
+/// same cookies the plugin's hidden fetches send afterwards — that is the
+/// whole mechanism (the fast OkHttp path stays fingerprint-blocked on Qwant;
+/// the hidden-WebView SERP retry recovers on the earned cookie).
+///
+/// Auto-detects completion by reading the page's text after each navigation:
+/// a real page (or a JSON body, for Qwant's API URL) is long and carries no
+/// challenge markers. The Done button is the manual fallback — the detection
+/// is heuristic and must never trap the user on the screen.
+class CaptchaSolveScreen extends StatefulWidget {
+  const CaptchaSolveScreen({super.key, required this.engine, required this.url});
+
+  final String engine;
+  final String url;
+
+  @override
+  State<CaptchaSolveScreen> createState() => _CaptchaSolveScreenState();
+}
+
+class _CaptchaSolveScreenState extends State<CaptchaSolveScreen> {
+  static const _channel = MethodChannel('kenosis_plugin/ui');
+
+  /// Read after each page load: {len, challenge} — the completion heuristic.
+  /// RAW Dart string: JS needs no escaping here (no backslashes used).
+  static const _challengeCheckJs = '''
+(function () {
+  var t = document.body ? document.body.innerText : '';
+  var l = t.toLowerCase();
+  var challenge = l.indexOf('press & hold') >= 0 || l.indexOf('captcha') >= 0 ||
+      l.indexOf('anomaly') >= 0 || l.indexOf('verify you are a human') >= 0 ||
+      l.indexOf('are you a human') >= 0;
+  return JSON.stringify({len: t.length, challenge: challenge});
+})()
+''';
+
+  late final WebViewController _controller;
+  bool _finished = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageFinished: (_) => _checkSolved(),
+      ))
+      ..loadRequest(Uri.parse(widget.url));
+  }
+
+  /// After each navigation, decide whether the challenge is gone: enough text
+  /// AND no challenge markers. On success, clear the gate (cancels the
+  /// system notification — the banner disappears on the 2s poll) and pop.
+  Future<void> _checkSolved() async {
+    if (_finished || !mounted) return;
+    try {
+      final result = await _controller.runJavaScriptReturningResult(_challengeCheckJs);
+      final data = (result is String)
+          ? jsonDecode(result) as Map
+          : result as Map;
+      final len = (data['len'] as num?)?.toInt() ?? 0;
+      final challenge = data['challenge'] == true;
+      if (len > 400 && !challenge) {
+        _finish();
+      }
+    } catch (_) {
+      // Heuristic only — a failed read just leaves the Done button as the
+      // way out; never trap the user on this screen.
+    }
+  }
+
+  /// Clears [CaptchaGate] + cancels the notification, then returns to the
+  /// status screen (which confirms on its next poll).
+  Future<void> _finish() async {
+    if (_finished) return;
+    _finished = true;
+    try {
+      await _channel.invokeMethod<void>('captchaSolved', {'engine': widget.engine});
+    } on PlatformException catch (_) {
+      // Channel down — the gate expires on its own TTL anyway.
+    }
+    if (mounted) Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final engine = _capitalize(widget.engine);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Complete the $engine check'),
+        actions: [
+          TextButton(
+            onPressed: _finish,
+            child: const Text('Done'),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              'If a security check appears below, complete it. When the page '
+              'loads normally, the check is done — tap Done and search again '
+              'in Kenosis AI.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          Expanded(child: WebViewWidget(controller: _controller)),
         ],
       ),
     );

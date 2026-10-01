@@ -238,6 +238,26 @@ class WebViewPageFetcher(context: Context) {
   return {title: (document.title || '').trim(), text: links.join('\n')};
 })()"""
 
+        /**
+         * Raw-HTML walk (+75): return the page's full `outerHTML` (capped) in
+         * the SAME {title, text} envelope — `text` CARRIES the HTML. Used by
+         * [fetchHtml] for the duckduckgo SERP retry, where the resolver needs
+         * the anchor markup, not text or hrefs alone. A challenge/bot-wall
+         * page's outerHTML is never blank (head + script tags count), so the
+         * blank-render retry loop completes on the first extraction — right
+         * for this walk: challenge HTML goes back to the caller, whose
+         * resolver + captcha detection take over; a real SERP HTML parses
+         * into results directly.
+         *
+         * ESCAPING: Kotlin RAW string — single backslashes for JS escapes
+         * (see [LINK_WALK_JS] for the +73 doubled-backslash regression).
+         */
+        private const val HTML_WALK_JS = """(function () {
+  var html = document.documentElement ? document.documentElement.outerHTML : '';
+  if (html.length > 500000) { html = html.substring(0, 500000); }
+  return {title: (document.title || '').trim(), text: html};
+})()"""
+
     }
 
     private val appContext = context.applicationContext
@@ -269,6 +289,24 @@ class WebViewPageFetcher(context: Context) {
     fun fetchLinks(url: String): Future<Pair<String, String>> =
         startFetch(url, LINK_WALK_JS) { json ->
             json.optString("title", "") to json.optString("text", "")
+        }
+
+    /**
+     * Fetch `url` in a hidden WebView and return its RAW HTML
+     * ([HTML_WALK_JS] — `documentElement.outerHTML`, capped). The SERP retry
+     * for HTML engines (duckduckgo): the DOM/text walks destroy the anchor
+     * MARKUP the resolvers parse ([InternetPluginService.resolveDdgResultUrls]
+     * needs `a.result__a` elements, innerText is plain text), so the retry
+     * hands the post-JS DOM back verbatim. A challenge shell returns its
+     * challenge HTML — the caller's resolver then yields nothing and the
+     * captcha path takes over; a SOLVED challenge (clearance cookie from the
+     * visible solve-it WebView, shared process-wide via CookieManager)
+     * returns the real SERP and the resolver reads it. Same pipeline, caps,
+     * and failure semantics as [fetch].
+     */
+    fun fetchHtml(url: String): Future<String> =
+        startFetch(url, HTML_WALK_JS) { json ->
+            json.optString("text", "")
         }
 
     private fun <R> startFetch(
@@ -415,18 +453,20 @@ class WebViewPageFetcher(context: Context) {
             userAgentString = realWebviewUa(
                 android.webkit.WebSettings.getDefaultUserAgent(appContext),
             )
-            // First-party cookies left default (accepted) so logged-out JS
-            // pages render. Third-party cookies are enabled on the
-            // CookieManager below — see the note there. No DOM storage
-            // changes — leave platform defaults.
+            // First-party acceptance is the process-wide CookieManager flag
+            // (CaptchaCookies): DENIED except while a human check is pending.
+            // Third-party follows the gate below. No DOM storage changes —
+            // leave platform defaults.
         }
-        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
-        // Third-party cookies are ON (unlike a user browser profile): this is
-        // a throwaway headless fetcher with no user identity or session, and
-        // the SERP bot walls (Qwant's DataDome, +73 live test) only complete
-        // their challenge flow when the challenge domains (e.g.
-        // *.captcha-delivery.com) can set their cookies. First-party cookies
-        // stay at the platform default (accepted) — logged-out JS pages work.
+        // Third-party cookies only while a human check is pending: the SERP
+        // bot walls (Qwant's DataDome, +73 live test) only complete their
+        // challenge flow when the challenge domains (e.g.
+        // *.captcha-delivery.com) can set their cookies. Outside that flow
+        // this is a throwaway headless fetcher with no user identity or
+        // session — fetch-and-forget (user directive, +75): no cookies at
+        // all, first- or third-party.
+        CookieManager.getInstance()
+            .setAcceptThirdPartyCookies(webView, CaptchaGate.pending != null)
         return webView
     }
 

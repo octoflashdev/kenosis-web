@@ -5,6 +5,9 @@
          the permission-check CI script); it reaches this app over LOCAL binder
          only (AIDL IKenosisPlugin). -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- +75: the "human check needed" notification (CaptchaNotifications) —
+         runtime permission on 33+, requested once by MainActivity on open. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:label="Kenosis AI - Internet Search plugin"
         android:name="${applicationName}"

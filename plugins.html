@@ -99,14 +99,13 @@
     <div class="feature card reveal">
       <div class="feature-icon">📡</div>
       <h3>LiveCast</h3>
-      <p>A LAN transcript projector. When the Kenosis AI host runs a LiveCast session — realtime
-      lecture transcription — this app serves a self-contained dark-theme projector page
-      (auto-scroll, digest cards, QR code, no CDN) to any device on the same Wi-Fi.</p>
+      <p>Your phone becomes a projector. Kenosis AI transcribes a lecture, a talk, a meeting —
+      live, in real time — and LiveCast shares that transcript with any device on the same Wi-Fi.
+      Open a link or scan a QR code and follow along on a laptop, a tablet, or a second phone.</p>
       <p>
-        The offline host does the transcribing — this app only <strong>serves</strong> the transcript
-        page on your own network. LAN-only, read-only transcript state: nothing goes to the app maker
-        or any third party, and the server lives only while the host session runs.<br>
-        Only permission: <strong>INTERNET</strong> — the LAN socket.
+        The main app does all the work — it listens and transcribes on-device, fully offline.
+        This plugin simply serves what the main app already produced, on your own network:
+        nothing is uploaded anywhere, and the connection exists only while the session runs.
       </p>
       <p>Apache-2.0 · networking NanoHTTPD (BSD-2) — no trackers, no analytics.<br>
       <em>Requires a Kenosis AI build with LiveCast (Beta) — rolling out with the next host update.</em></p>

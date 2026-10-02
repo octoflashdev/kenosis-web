@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.9.1+1
+version: 1.9.2+2
 
 environment:
   sdk: ^3.12.2
@@ -35,6 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   webview_flutter: ^4.14.1
+  # Theme-mode persistence (light/dark/auto) — encrypted at rest, same
+  # dependency + KV key ('theme_mode') as the host app.
+  flutter_secure_storage: ^10.3.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +60,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # Bundled legal pages (drawer → Privacy Notice / Open-source licenses).
+  assets:
+    - assets/legal/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

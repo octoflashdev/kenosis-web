@@ -1,7 +1,9 @@
 package hr.exel.kenosis_plugin_internet
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -64,6 +66,13 @@ class MainActivity : FlutterActivity() {
                     "getFetchLog" -> {
                         result.success(InternetPluginService.snapshotFetchLogJson())
                     }
+                    "clearFetchLog" -> {
+                        // UI Delete-all: wipe the log in RAM + on disk in one
+                        // step (the persisted EMPTY array — a process restart
+                        // rehydrating from fetch_log.json can't resurrect it).
+                        InternetPluginService.clearFetchLog()
+                        result.success(null)
+                    }
                     "getCaptcha" -> {
                         result.success(captchaJson())
                     }
@@ -77,6 +86,22 @@ class MainActivity : FlutterActivity() {
                         // CaptchaCookies; the earned jar stays dormant).
                         CaptchaCookies.setAllowed(false)
                         result.success(null)
+                    }
+                    "openExternalUrl" -> {
+                        // Play Store hand-off (Get Kenosis AI / About). The
+                        // plugin holds INTERNET — unlike the offline host —
+                        // so a user-initiated store link is sanctioned here
+                        // (always behind the Dart-side confirm alert).
+                        // ACTION_VIEW: the Play app intercepts its own deep
+                        // links; startActivity is not subject to package
+                        // visibility, so no <queries> entry is needed.
+                        val url = call.argument<String>("url")
+                        if (url.isNullOrBlank()) {
+                            result.error("badArgs", "url missing", null)
+                        } else {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            result.success(runCatching { startActivity(intent) }.isSuccess)
+                        }
                     }
                     else -> result.notImplemented()
                 }

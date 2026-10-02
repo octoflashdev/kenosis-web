@@ -531,6 +531,25 @@ class InternetPluginService : Service() {
             logWrite.execute { runCatching { f.writeText(encoded) } }
         }
 
+        /** Clears the URL log (the UI's "Delete all") and persists the EMPTY
+         *  array — disk and RAM agree in one step, so a process restart
+         *  rehydrating from fetch_log.json cannot resurrect the cleared rows
+         *  (initFetchLogPersistence loads exactly what was last written).
+         *  Same writer discipline as [persistFetchLog]: snapshot under the
+         *  [_fetchLog] lock, write off-thread on the single-thread executor.
+         *  Returns the JSON persisted (public for the unit-test pin, like
+         *  the codec above — in JVM tests logFile is null, so the returned
+         *  encoded payload IS the by-construction disk content). */
+        fun clearFetchLog(): String {
+            val encoded = synchronized(_fetchLog) {
+                _fetchLog.clear()
+                encodeFetchLogOldestFirst(_fetchLog.toList())
+            }
+            val f = logFile ?: return encoded
+            logWrite.execute { runCatching { f.writeText(encoded) } }
+            return encoded
+        }
+
         /** Read-only snapshot of the fetch log (newest first) for the UI. */
         val fetchLog: List<FetchRecord> get() = _fetchLog.reversed()
 

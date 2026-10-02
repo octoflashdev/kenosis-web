@@ -5,6 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'legal/legal_document_repository.dart';
+import 'legal/legal_document_repository_impl.dart';
+import 'presentation/views/about_screen.dart';
+import 'presentation/views/plugin_drawer.dart';
+import 'presentation/widgets/theme_scope.dart';
+import 'services/external_links_service.dart';
+import 'services/external_links_service_impl.dart';
+import 'services/theme_service.dart';
+import 'services/theme_service_impl.dart';
+import 'storage/secure_storage_adapter.dart';
+
+/// This plugin's public source tree on GitHub (About → Report bug).
+const String kInternetSourceUrl =
+    'https://github.com/octoflashdev/kenosis-web/tree/main/internet-search-plugin';
+
 void main() => runApp(const KenosisPluginApp());
 
 /// 'qwant' → 'Qwant' for user-facing labels.
@@ -77,21 +92,115 @@ String describeFetchError(String status) {
 /// can see exactly what was requested). Tapping a row expands its details:
 /// for a failed (red) row that means WHAT happened — a plain-language
 /// explanation plus the raw reason from the service.
-class KenosisPluginApp extends StatelessWidget {
-  const KenosisPluginApp({super.key});
+///
+/// The app widget is the plugin's composition root (the host's main.dart
+/// role): it owns the [ThemeService] and the [LegalDocumentRepository] and
+/// injects them down the tree via constructors — the plugin apps have no
+/// service locator. Both seams are optional so widget tests can inject fakes.
+class KenosisPluginApp extends StatefulWidget {
+  const KenosisPluginApp({
+    super.key,
+    this.themeService,
+    this.legalRepository,
+    this.linksService,
+  });
+
+  /// Injectable for tests; production builds use the encrypted-KV-backed
+  /// service (light/dark/auto, persisted, defaults to following the system).
+  final ThemeService? themeService;
+
+  /// Injectable for tests; production builds load the bundled legal assets.
+  final LegalDocumentRepository? legalRepository;
+
+  /// Injectable for tests; production builds speak over the plugin's UI
+  /// channel (Play Store hand-off after the confirm alert).
+  final ExternalLinksService? linksService;
+
+  @override
+  State<KenosisPluginApp> createState() => _KenosisPluginAppState();
+}
+
+class _KenosisPluginAppState extends State<KenosisPluginApp> {
+  late final ThemeService _theme =
+      widget.themeService ?? ThemeServiceImpl(SecureStorageAdapter());
+  late final LegalDocumentRepository _legal =
+      widget.legalRepository ?? LegalDocumentRepositoryImpl();
+  late final ExternalLinksService _links = widget.linksService ??
+      ChannelExternalLinksService(const MethodChannel('kenosis_plugin/ui'));
+
+  @override
+  void initState() {
+    super.initState();
+    // Hydrate the persisted theme mode (default: follow the system). Storage
+    // hiccups (channel missing in widget tests, a broken Keystore on device)
+    // degrade to the default mode — never crash the app.
+    unawaited(_theme.hydrate().catchError((Object _) {}));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kenosis AI - Internet Search plugin',
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      home: const StatusScreen(),
+    // Rebuild the whole MaterialApp when the user toggles light/dark/auto in
+    // the drawer switcher (the host's +69 pattern).
+    return ListenableBuilder(
+      listenable: _theme.modeListenable,
+      builder: (context, _) => MaterialApp(
+        title: 'Kenosis AI - Internet Search plugin',
+        themeMode: _theme.currentMode,
+        theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
+        darkTheme: ThemeData(
+          colorSchemeSeed: Colors.indigo,
+          brightness: Brightness.dark,
+          useMaterial3: true,
+        ),
+        // ThemeScope carries the mode listenable + setter into the tree so
+        // the drawer switcher stays a thin view (no service-locator lookup).
+        builder: (context, child) => ThemeScope(
+          modeListenable: _theme.modeListenable,
+          onChanged: _theme.setMode,
+          child: child!,
+        ),
+        home: StatusScreen(
+          legalRepository: _legal,
+          linksService: _links,
+          appTitle: 'Internet Search plugin',
+          identityIcon: Icons.public,
+          privacyLine: 'Only downloads the pages you (or the chat) request — '
+              'no analytics, and nothing is sent to the app maker or any '
+              'third party.',
+          sourceUrl: kInternetSourceUrl,
+        ),
+      ),
     );
   }
 }
 
 class StatusScreen extends StatefulWidget {
-  const StatusScreen({super.key});
+  const StatusScreen({
+    super.key,
+    required this.legalRepository,
+    required this.linksService,
+    required this.appTitle,
+    required this.identityIcon,
+    required this.privacyLine,
+    required this.sourceUrl,
+  });
+
+  final LegalDocumentRepository legalRepository;
+
+  /// Play Store hand-off behind the confirm alert (drawer + About).
+  final ExternalLinksService linksService;
+
+  /// The plugin's short name (drawer header / About title).
+  final String appTitle;
+
+  /// The plugin's identity icon (status header + About).
+  final IconData identityIcon;
+
+  /// The one-sentence privacy claim shown in About.
+  final String privacyLine;
+
+  /// This plugin's public source tree (About → Report bug).
+  final String sourceUrl;
 
   @override
   State<StatusScreen> createState() => _StatusScreenState();
@@ -195,11 +304,89 @@ class _StatusScreenState extends State<StatusScreen> {
     }
   }
 
+  /// Opens the requested-URL log sheet: every logged URL as a selectable
+  /// row, plus the confirmed Delete-all (the badge's action).
+  void _showUrlLogSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => _UrlLogSheet(
+        records: _fetchLog,
+        onDeleteAll: () => _confirmDeleteAll(sheetContext),
+      ),
+    );
+  }
+
+  /// Confirmed wipe: service-side [clearFetchLog] (never-throw — the local
+  /// clear still empties this view if the channel is down) + instant local
+  /// feedback; the 2 s poll keeps it empty afterwards.
+  Future<void> _confirmDeleteAll(BuildContext sheetContext) async {
+    final confirmed = await showDialog<bool>(
+      context: sheetContext,
+      builder: (ctx) => AlertDialog(
+        scrollable: true,
+        title: const Text('Delete all requested URLs?'),
+        content: const Text('This removes the local log only.'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text('Delete all',
+                style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    try {
+      await _channel.invokeMethod<void>('clearFetchLog');
+    } on PlatformException catch (_) {
+      // Channel down — the local clear below still empties this view.
+    }
+    if (mounted) setState(() => _fetchLog = const []);
+    if (sheetContext.mounted) Navigator.pop(sheetContext);
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('Internet Search plugin')),
+      appBar: AppBar(
+        title: const Text('Internet Search plugin'),
+        actions: [
+          // Delete-all badge: the requested-URL count over a log icon; the
+          // sheet it opens lists every logged URL (selectable) and offers
+          // the confirmed wipe. Hidden label when the log is empty.
+          Badge.count(
+            count: _fetchLog.length,
+            isLabelVisible: _fetchLog.isNotEmpty,
+            child: IconButton(
+              icon: const Icon(Icons.history),
+              tooltip: 'Requested URLs',
+              onPressed: _showUrlLogSheet,
+            ),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      // Shell drawer (host ChatHistoryDrawer shape): theme switcher, the
+      // main-app hand-off, and the legal pages. Flutter draws the hamburger
+      // automatically once a drawer is set.
+      drawer: PluginDrawer(
+        legalRepository: widget.legalRepository,
+        linksService: widget.linksService,
+        appTitle: widget.appTitle,
+        aboutScreen: AboutScreen(
+          legalRepository: widget.legalRepository,
+          linksService: widget.linksService,
+          appTitle: 'Kenosis AI - ${widget.appTitle}',
+          icon: widget.identityIcon,
+          privacyLine: widget.privacyLine,
+          sourceUrl: widget.sourceUrl,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -643,6 +830,106 @@ class _CaptchaSolveScreenState extends State<CaptchaSolveScreen> {
             ),
           ),
           Expanded(child: WebViewWidget(controller: _controller)),
+        ],
+      ),
+    );
+  }
+}
+/// Bottom sheet behind the AppBar badge: every currently-logged URL as a
+/// selectable row (copyable — the transparency surface), plus the
+/// Delete-all action behind a confirm dialog. Read-only view of the list
+/// already polled into state — no channel call of its own.
+class _UrlLogSheet extends StatelessWidget {
+  const _UrlLogSheet({required this.records, required this.onDeleteAll});
+
+  final List<Map<String, dynamic>> records;
+  final VoidCallback onDeleteAll;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      height: 440,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+            child: Text(
+              'Requested URLs (${records.length})',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+            child: Text(
+              'Everything this plugin was asked to fetch, newest first. '
+              'Deleting the log does not affect the main app.',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+            ),
+          ),
+          Expanded(
+            child: records.isEmpty
+                ? Center(
+                    child: Text(
+                      'No URLs requested yet.',
+                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: records.length,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemBuilder: (context, i) {
+                      final r = records[i];
+                      final url = (r['finalUrl'] as String?) ??
+                          (r['requestedUrl'] as String?) ??
+                          (r['query'] as String?) ??
+                          '';
+                      final isError = (r['status'] as String? ?? 'ok')
+                          .startsWith('error:');
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          children: [
+                            Icon(
+                              isError ? Icons.error_outline : Icons.language,
+                              size: 16,
+                              color: isError ? scheme.error : scheme.primary,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: SelectableText(
+                                url,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: 'monospace',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+              child: SizedBox(
+                width: double.infinity,
+                child: records.isEmpty
+                    ? null
+                    : FilledButton.icon(
+                        onPressed: onDeleteAll,
+                        icon: const Icon(Icons.delete_sweep_outlined),
+                        label: const Text('Delete all'),
+                      ),
+              ),
+            ),
+          ),
         ],
       ),
     );

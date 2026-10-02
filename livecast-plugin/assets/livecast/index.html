@@ -1,0 +1,213 @@
+<!doctype html>
+<!-- LiveCast projector page — served by the Kenosis AI LiveCast plugin app
+     (NanoHTTPD on the phone, port 8090+) and opened on any device on the same
+     Wi-Fi. FULLY SELF-CONTAINED: no CDN, no external font, no build step —
+     the viewing laptop may be offline. Dark theme, 1 s polling of
+     /state?since=<lastSeq>&digestsSince=<count>, auto-scroll with scroll-lock
+     (stops following when you scroll up), connection dot, elapsed clock,
+     digest cards, epoch/gap reset detection. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveCast</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --line: #30363d;
+    --fg: #e6edf3; --dim: #8b949e; --accent: #58a6ff;
+    --ok: #3fb950; --bad: #f85149; --card: #1c2431;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg);
+    font: 15px/1.55 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header {
+    position: sticky; top: 0; z-index: 2;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line);
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--bad); flex: none;
+    transition: background .3s; }
+  .dot.ok { background: var(--ok); }
+  #clock { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--dim); font-size: 14px; }
+  #banner {
+    display: none; margin: 10px 16px 0; padding: 8px 12px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    color: var(--accent); font-size: 13px;
+  }
+  #transcript { padding: 8px 16px 40px; }
+  .seg { display: flex; gap: 12px; padding: 4px 0; border-bottom: 1px solid rgba(48,54,61,.4); }
+  .seg .t { flex: none; color: var(--dim); font-variant-numeric: tabular-nums;
+    font-size: 12.5px; padding-top: 3px; min-width: 52px; text-align: right; }
+  .seg .x { min-width: 0; overflow-wrap: anywhere; }
+  .seg.hi .x { color: var(--accent); }
+  .digest {
+    margin: 14px 0; padding: 10px 14px; background: var(--card);
+    border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px;
+  }
+  .digest .h { color: var(--accent); font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .digest .b { font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #empty { color: var(--dim); text-align: center; padding: 60px 20px; }
+</style>
+</head>
+<body>
+<header>
+  <div id="dot" class="dot" title="connection"></div>
+  <h1>LiveCast</h1>
+  <div id="clock">0:00</div>
+</header>
+<div id="banner"></div>
+<div id="transcript"><div id="empty">Waiting for the first segments…</div></div>
+<script>
+(function () {
+  "use strict";
+  var list = document.getElementById("transcript");
+  var empty = document.getElementById("empty");
+  var dot = document.getElementById("dot");
+  var clock = document.getElementById("clock");
+  var banner = document.getElementById("banner");
+
+  // Cursor state. lastSeq = -1 → the first poll replays everything retained.
+  var lastSeq = -1, digestsSince = 0, epoch = null;
+  var seenDigests = {};      // index → true (dedupe)
+  var haveSegments = false;
+
+  // Elapsed clock: polls report the audio-anchored sessionElapsedMs; between
+  // polls the clock ticks locally so it moves smoothly.
+  var sessionMs = 0, lastTickAt = 0;
+
+  function fmt(ms) {
+    var t = Math.max(0, Math.floor(ms / 1000));
+    var s = t % 60, m = Math.floor(t / 60) % 60, h = Math.floor(t / 3600);
+    var mm = (m < 10 ? "0" : "") + m, ss = (s < 10 ? "0" : "") + s;
+    return h > 0 ? h + ":" + mm + ":" + ss : m + ":" + ss;
+  }
+
+  function setBanner(text) {
+    if (!text) { banner.style.display = "none"; banner.textContent = ""; return; }
+    banner.textContent = text;
+    banner.style.display = "block";
+  }
+
+  function nearBottom() {
+    return window.innerHeight + window.scrollY >= document.body.scrollHeight - 80;
+  }
+  function scrollIfFollowing(was) {
+    // Scroll-lock: only follow when the reader was already at the bottom.
+    if (was) window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  function fullReset(reason) {
+    while (list.firstChild) list.removeChild(list.firstChild);
+    // Re-attach the placeholder (addSegment detaches it).
+    list.appendChild(empty);
+    empty.style.display = "block";
+    seenDigests = {};
+    haveSegments = false;
+    lastSeq = -1;
+    digestsSince = 0;
+    setBanner(reason);
+  }
+
+  function addSegment(s) {
+    if (!haveSegments) {
+      if (empty.parentNode === list) list.removeChild(empty);
+      empty.style.display = "none";
+      haveSegments = true;
+    }
+    var row = document.createElement("div");
+    row.className = "seg";
+    var t = document.createElement("div");
+    t.className = "t";
+    t.textContent = fmt(s.startMs);
+    var x = document.createElement("div");
+    x.className = "x";
+    x.textContent = s.text.trim();
+    row.appendChild(t);
+    row.appendChild(x);
+    list.appendChild(row);
+  }
+
+  function addDigest(d) {
+    if (seenDigests[d.index]) return;
+    seenDigests[d.index] = true;
+    var card = document.createElement("div");
+    card.className = "digest";
+    var h = document.createElement("div");
+    h.className = "h";
+    h.textContent = "Digest " + (d.index + 1) + " · " + fmt(d.fromMs) + "–" + fmt(d.toMs);
+    var b = document.createElement("div");
+    b.className = "b";
+    b.textContent = d.text;
+    card.appendChild(h);
+    card.appendChild(b);
+    list.appendChild(card);
+  }
+
+  function poll() {
+    var was = nearBottom();
+    fetch("/state?since=" + lastSeq + "&digestsSince=" + digestsSince)
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (env) {
+        dot.classList.add("ok");
+        if (!env || !env.ok) throw new Error(env && env.error || "bad envelope");
+        var d = env.data;
+
+        // Epoch change → the host started a NEW session: full DOM reset.
+        if (epoch !== null && d.epoch !== epoch) {
+          epoch = d.epoch;
+          sessionMs = d.sessionElapsedMs;
+          fullReset("New session started on the phone.");
+          return;
+        }
+        epoch = d.epoch;
+
+        // Gap detection: history we already rendered (lastSeq >= 0) is gone
+        // from the store (ring trimmed) → reset + banner.
+        if (lastSeq >= 0 && d.firstSeq > lastSeq + 1) {
+          var reason = "History trimmed — showing the most recent segments.";
+          sessionMs = d.sessionElapsedMs;
+          fullReset(reason);
+          // Replay from scratch in this same tick (since is now -1 → the
+          // NEXT poll returns everything retained; nothing more to do here).
+          return;
+        }
+
+        var segs = d.segments || [];
+        for (var i = 0; i < segs.length; i++) addSegment(segs[i]);
+        if (segs.length) {
+          lastSeq = segs[segs.length - 1].seq;
+          scrollIfFollowing(was);
+        }
+        var digs = d.digests || [];
+        for (var j = 0; j < digs.length; j++) addDigest(digs[j]);
+        digestsSince += digs.length;
+        if (digs.length) scrollIfFollowing(was);
+
+        sessionMs = d.sessionElapsedMs;
+        lastTickAt = Date.now();
+        clock.textContent = fmt(sessionMs);
+        if (!d.trimmed || d.firstSeq === 0) setBanner("");
+      })
+      .catch(function (e) {
+        dot.classList.remove("ok");
+        setBanner("Reconnecting… (" + (e.message || e) + ")");
+      });
+  }
+
+  setInterval(function () {
+    // Smooth the clock between polls.
+    var now = Date.now();
+    if (lastTickAt) {
+      var drifted = sessionMs + (now - lastTickAt);
+      clock.textContent = fmt(drifted);
+    }
+  }, 500);
+
+  poll();
+  setInterval(poll, 1000);
+})();
+</script>
+</body>
+</html>

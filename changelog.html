@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Kenosis AI — Changelog</title>
+<meta name="description" content="The major Kenosis AI features, newest first — each tagged with the release it arrived in.">
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="index.html">
+    <img src="assets/icon.png" alt="Kenosis AI logo" class="brand-icon">
+    <span>Kenosis <em>AI</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#features">Features</a>
+    <a href="index.html#demos">Demos</a>
+    <a href="index.html#privacy">Privacy</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="changelog.html">Changelog</a>
+    <a href="plugins.html">Plugins</a>
+    <a href="https://github.com/octoflashdev/kenosis-web/discussions">Forum</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner solo">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Major features</p>
+      <h1>What's new in <span class="grad">Kenosis AI</span></h1>
+      <p class="lead">
+        The major features, newest first — each with the release it arrived in.
+        For the full release-by-release history, open the Changelog in the app's About screen.
+      </p>
+      <p class="hero-note">
+        Highlights only. Minor fixes and smaller updates live in About → Changelog;
+        current behaviour is described on the <a href="index.html">homepage</a>.
+      </p>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="releases">
+  <div class="release-list">
+
+    <article class="release card" id="reader">
+      <div class="release-head"><h3>The reader, rebuilt</h3><span class="release-version">v1.9.34 – v1.9.37</span></div>
+      <p>Reading is now distraction-free: the toolbars are gone, replaced by one floating bar, and eBooks is a proper library.</p>
+      <ul>
+        <li>One floating bar for Contents, display, Listen and AI Chat, plus a back arrow, bookmark and pages-left count.</li>
+        <li>Contents follows your place; footnotes open in a popup; links inside a book are tappable; the book's own illustrations are shown.</li>
+        <li>Ragged or Justified text, Slide, Curl or Fade page turns, five margin steps, and a font from your phone or one you upload.</li>
+        <li>The library shows recently opened books, a Yet to Read grid, authors, sorting and one-tap Play on every cover.</li>
+        <li>Now Playing has the cover, highlighted sentence, scrubber, speed and a narrator picker; books and topics can be pinned to the drawer.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="languages">
+      <div class="release-head"><h3>English, German &amp; French</h3><span class="release-version">v1.9.36</span></div>
+      <p>The whole interface — every screen, menu and message — now speaks your language.</p>
+      <ul>
+        <li>English, German and French, chosen with the flag beside the dark-mode switch; the app remembers your choice.</li>
+        <li>About → Help translate opens the community translation page.</li>
+        <li>Legal documents remain in English.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="book-chat">
+      <div class="release-head"><h3>Book chat finds the right page</h3><span class="release-version">v1.9.35</span></div>
+      <p>Ask about a character and the assistant answers from the scene that tells you, not just the chapter's opening.</p>
+      <ul>
+        <li>On lighter on-device models, book chat now retrieves the part of the chapter where the answer actually lives.</li>
+        <li>If a model starts repeating itself, the answer stops at the first repeat and keeps the clean result.</li>
+        <li>Fact-checking is more reliable too.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="audiobooks">
+      <div class="release-head"><h3>Audiobooks that read along</h3><span class="release-version">v1.9.25 – v1.9.32</span></div>
+      <p>Import an audiobook and the book follows the voice — fully offline.</p>
+      <ul>
+        <li>Import MP3, AAC or ZIP, or transcribe audio already in Files with a tap.</li>
+        <li>The narrated sentence is highlighted line by line, in plays and poetry too, and play starts at the page you are reading.</li>
+        <li>Long books go chapter by chapter: finished chapters are playable while the rest transcribes in the background; the first chapter is ready in about a minute.</li>
+        <li>Stopping is only a pause — playback resumes exactly where it left off, even after a restart.</li>
+        <li>Everything stays on your device; LibriVox.org has thousands of free audiobooks to try.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="read-aloud">
+      <div class="release-head"><h3>Read-aloud, everywhere</h3><span class="release-version">v1.9.2 – v1.9.24</span></div>
+      <p>One read-aloud engine for the whole app, with the page following the voice.</p>
+      <ul>
+        <li>Pick the AI voice or your device's native system speech in Settings; native adds word karaoke.</li>
+        <li>The choice applies everywhere — chat answers included — and three sample books (Moby Dick, Pride &amp; Prejudice, Romeo &amp; Juliet) ship in eBooks.</li>
+        <li>Read-aloud keeps the spoken sentence in view: when the reader goes full-screen, the page follows the voice instead of drifting.</li>
+        <li>Previous and next sentence controls follow both ways.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="word-tools">
+      <div class="release-head"><h3>Words, highlights &amp; notes</h3><span class="release-version">v1.9.20 – v1.9.21</span></div>
+      <p>Long-press a word and the reader becomes a study tool.</p>
+      <ul>
+        <li>Copy it, share it, highlight it in five colours, attach a note, or look it up.</li>
+        <li>Look-up downloads an offline English dictionary once, then works with no internet at all.</li>
+        <li>Ask the on-device model what the word means in the sentence you are reading; dictionary meanings appear under the answer.</li>
+        <li>Highlights, notes and bookmarks are saved per book, and bookmarks sit next to the chapter list.</li>
+        <li>Double-tap a word to act on it directly; long-press the speaker to pick the read-aloud voice.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="dubbing">
+      <div class="release-head"><h3>Video dubbing in another language</h3><span class="release-version">v1.9.18</span></div>
+      <p>Export a video re-voiced with an AI voice, in the language you choose.</p>
+      <ul>
+        <li>Correct the transcript in the built-in editor first; the dub, burned-in subtitles and .srt all speak the corrected text.</li>
+        <li>Pick a voice in another language and the dub is translated.</li>
+        <li>Burn subtitles into the picture, or keep the original untouched — no quality loss when not burning.</li>
+        <li>The original video is remembered, so a repeat export starts right away; progress is shown and the save step says what was done.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="voice">
+      <div class="release-head"><h3>Voice, dictation &amp; translate</h3><span class="release-version">v1.9.0 – v1.9.17</span></div>
+      <p>Talk to the app and it answers out loud — all on-device.</p>
+      <ul>
+        <li>Voice assistant (Beta): tap the mic and talk; transcription, the answer and the spoken reply all run on your device; choose the model and Short, Normal or Detailed answers.</li>
+        <li>Dictation in chat: each spoken pause is transcribed offline and appended to your message; the mic rings pulse with your voice and it works in airplane mode.</li>
+        <li>Translate mode: pick the language you speak and the target; each turn shows the transcript above the translation; tap either to replay the recording.</li>
+        <li>Edit a transcript inline to re-translate; hands-free auto-listen can be set separately for answer and translate.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="plugins">
+      <div class="release-head"><h3>Plugins: the web on your terms</h3><span class="release-version">v1.9.0 – v1.9.17</span></div>
+      <p>Optional abilities live in separate apps — the host itself keeps no network access.</p>
+      <ul>
+        <li>Web search runs in a visible browser tab, so you see the search and the pages it reads; answers draw from up to three result pages.</li>
+        <li>By default you approve each search — Approve, Edit or Skip, including spoken yes/no in voice; automatic approval is optional.</li>
+        <li>Pages that don't need a browser are fetched directly; settings cover images, JavaScript and wipe-on-close.</li>
+        <li>Features → Plugins switches Internet Search and LiveCast on per plugin; an entry point appears only while the plugin is on.</li>
+        <li>The host still has no INTERNET permission — only the plugin apps hold network access.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="minicpm">
+      <div class="release-head"><h3>MiniCPM 5 1B for low-RAM phones</h3><span class="release-version">v1.9.0+75 – v1.9.0+76</span></div>
+      <p>A new 1B model brings on-device AI to phones that cannot run the larger Gemma models.</p>
+      <ul>
+        <li>Faster, more responsive answers and a bigger context window than the previous 1B.</li>
+        <li>Delivered as a 793 MB on-demand pack; a 4 GB phone runs chat, transcription, read-aloud and document chat.</li>
+        <li>The voice assistant is hidden at 4 GB or less — it needs more than 4 GB and a Gemma 4 model.</li>
+        <li>On phones with 6 GB or more, the app no longer suggests the 1B.</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<section class="section cta-band">
+  <h2 class="reveal">New here? <span class="grad">It's on Google Play.</span></h2>
+  <div class="cta-row reveal" style="justify-content:center">
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai">Get Kenosis AI</a>
+    <a class="btn ghost" href="index.html">Back to the site</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <img src="assets/icon.png" alt="" class="brand-icon">
+    <div class="footer-links">
+      <p>
+        Kenosis AI — the fully offline AI assistant. The bundled LLMs are distributed under
+        Google's <a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a> and the
+        <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0 license</a> (MiniCPM).
+      </p>
+      <p class="footer-social">
+        <a href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai" title="Google Play" aria-label="Google Play">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C21.11,11.4 21.11,12.6 20.16,13.19L17.89,14.5L15.38,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>Google Play</a> ·
+        <a href="https://github.com/octoflashdev/kenosis-web/discussions" title="Forum" aria-label="Community forum on GitHub Discussions">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12Z"/></svg>Forum</a> ·
+        <a href="changelog.html">Changelog</a> ·
+        <a href="#" id="bug-report-link">Report a bug</a>
+      </p>
+      <div class="bug-reveal" id="bug-reveal" hidden>
+        <label id="bug-captcha">Human check — what is 7 + 5? <input id="bug-answer" type="number" inputmode="numeric" style="width:5rem" autocomplete="off"></label>
+        <p id="bug-email" hidden>✉️ octoflash.sup@gmail.com</p>
+        <p id="bug-error" class="bug-error" hidden>Not quite — try again.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

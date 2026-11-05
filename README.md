@@ -37,9 +37,21 @@ Keep exports under ~3 MB each — they load on the homepage.
 - **Via workflow:** the included `.github/workflows/static.yml` publishes the site on every push to `main`. Enable Pages under Settings → Pages → Source: GitHub Actions.
 - **Via branch:** Settings → Pages → deploy from `main` / root.
 
+## Changelog page
+
+`changelog.html` is hand-curated: it announces only the **major features**, newest
+first, each tagged with the release range it arrived in. Minor fixes and smaller
+updates are left to the app's own in-app changelog, which reads
+`../kenosis-ai/docs/gitea_release_notes.md`.
+
+When a major feature ships, add a card at the top of the release list, take its
+release range from the notes, and get the copy approved before committing.
+
 ## Structure
 
 - `index.html` — all sections (hero, features, demos, privacy, FAQ, footer)
+- `plugins.html` — plugin catalog and architecture
+- `changelog.html` — major-feature changelog
 - `css/style.css` — dark theme design tokens
 - `js/main.js` — scroll-reveal, lightbox, bug-report captcha
 - `assets/screenshots/` — feature screenshots

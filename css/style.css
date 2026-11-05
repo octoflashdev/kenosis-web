@@ -16,7 +16,7 @@
 
 [hidden] { display: none !important; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
 
 body {
   background: var(--bg);
@@ -151,6 +151,7 @@ a:hover { text-decoration: underline; }
   display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
   margin-bottom: 1rem;
 }
+.feature-media.single { grid-template-columns: minmax(0, 240px); justify-content: center; }
 .feature-media img {
   border-radius: calc(var(--radius) - 4px);
   border: 1px solid var(--card-border);
@@ -220,6 +221,8 @@ a:hover { text-decoration: underline; }
 .perm-table th, .perm-table td { text-align: left; padding: .7rem 1rem; border-bottom: 1px solid var(--card-border); }
 .perm-table th { color: var(--text-dim); text-transform: uppercase; font-size: .72rem; letter-spacing: .1em; }
 .perm-table .denied { color: #ff6b81; font-weight: 600; }
+.perm-table .declared { color: #7dd3a8; font-weight: 600; }
+.perm-note { padding: .7rem 1rem; color: var(--text-dim); font-size: .82rem; border-top: 1px solid var(--card-border); }
 .perm-table-wrap { overflow-x: auto; border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--card); }
 
 /* FAQ */
@@ -227,6 +230,23 @@ a:hover { text-decoration: underline; }
 .faq summary { cursor: pointer; font-weight: 600; }
 .faq p { color: var(--text-dim); margin-top: .6rem; font-size: .95rem; }
 .faq-wrap { max-width: 760px; margin: 0 auto; }
+
+/* Changelog */
+.release-list { display: grid; gap: 1rem; max-width: 820px; margin: 0 auto; }
+.release { scroll-margin-top: 5.5rem; }
+.release:first-child { border-color: rgba(79,140,255,.45); }
+.release-head { display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; margin-bottom: .7rem; }
+.release-head h3 { font-size: 1.15rem; }
+.release-version {
+  color: var(--text-dim); font-size: .78rem; letter-spacing: .02em;
+  border: 1px solid var(--card-border); border-radius: 999px;
+  padding: .12rem .55rem; white-space: nowrap;
+}
+.release p, .release li { color: var(--text-dim); font-size: .95rem; }
+.release ul { margin: .1rem 0 0 1.1rem; display: grid; gap: .35rem; }
+.release p + p, .release p + ul, .release ul + p { margin-top: .7rem; }
+.release-hook { padding-top: 0; padding-bottom: 0; }
+.release-hook p { text-align: center; color: var(--text-dim); }
 
 /* CTA band */
 .cta-band { text-align: center; padding-bottom: 5rem; }

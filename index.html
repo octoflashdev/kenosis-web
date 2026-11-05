@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Kenosis AI — The only offline AI app on Google Play</title>
-<meta name="description" content="Kenosis AI runs chat, voice-to-voice AI chat, video transcription, an eBook reader and RAG entirely on-device. No network, no cloud, no telemetry — the app ships without the Android INTERNET permission.">
+<title>Kenosis AI — Private, offline AI without INTERNET permission</title>
+<meta name="description" content="Kenosis AI runs chat and voice, offline dictation and translate, video transcription and dubbing, an eBook reader with audiobooks, word tools and RAG entirely on-device. No network, no cloud, no telemetry — the app ships without the Android INTERNET permission.">
 <link rel="icon" href="assets/icon.png">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -21,6 +21,7 @@
     <a href="#demos">Demos</a>
     <a href="#privacy">Privacy</a>
     <a href="#faq">FAQ</a>
+    <a href="changelog.html">Changelog</a>
     <a href="plugins.html">Plugins</a>
     <a href="https://github.com/octoflashdev/kenosis-web/discussions">Forum</a>
   </div>
@@ -30,23 +31,24 @@
   <div class="hero-inner">
     <div class="hero-copy reveal">
       <p class="eyebrow">Private by design &middot; Fully offline &middot; Android</p>
-      <h1>The only AI app without <span class="grad">INTERNET permission</span> on the Play Store.</h1>
+      <h1>One of the only AI apps without <span class="grad">INTERNET permission</span>.</h1>
       <p class="lead">
         <strong>The app ships without the Android INTERNET permission.</strong> Android itself blocks
         every network connection — Kenosis AI physically cannot phone home. No network, no cloud,
         no telemetry. It works in airplane mode.
       </p>
       <p class="lead">
-        And it still does everything: AI chat, voice-to-voice conversation, video transcription,
-        an eBook reader with read-aloud and audiobook export, and RAG over your own documents —
-        all on-device. Need the live web? An <a href="plugins.html">open-source plugin</a> adds
-        web search — the host itself stays offline.
+        And it still does everything: AI chat and hands-free voice conversation (Beta), offline
+        dictation and translate, video transcription and dubbing, an eBook reader with read-aloud
+        and audiobooks, word tools, and RAG over your own documents — all on-device. The interface
+        runs in English, Deutsch and Français. Need the live web? An
+        <a href="plugins.html">open-source plugin</a> adds web search — the host itself stays offline.
       </p>
       <div class="cta-row">
         <a class="btn primary" href="#features">See it in action</a>
         <a class="btn ghost" href="#demos">Watch demos</a>
       </div>
-      <p class="hero-note">No account. No upload. No permissions screen surprises.</p>
+      <p class="hero-note">No account. No upload. Microphone only when you choose voice.</p>
     </div>
     <div class="hero-phone reveal">
       <div class="phone">
@@ -58,7 +60,7 @@
 
 <section class="section" id="features">
   <h2 class="reveal">Features</h2>
-  <p class="section-sub reveal">Every feature runs entirely on-device. Live animated demos are right below.</p>
+  <p class="section-sub reveal">Every built-in feature runs entirely on-device. Live animated demos are right below.</p>
   <div class="feature-grid">
 
     <div class="feature card reveal">
@@ -67,28 +69,36 @@
         <img class="zoomable" src="assets/screenshots/imports.png" alt="Add to chat — video, audio, images, e-books, PDF and Office docs" loading="lazy">
       </div>
       <div class="feature-icon">💬</div>
-      <h3>AI chat</h3>
-      <p>Chat with a local LLM that runs entirely on your phone — even in airplane mode. Suggested follow-ups keep the conversation going, nothing you type ever leaves the device, and attached images are analysed on-device by Ask Image.</p>
+      <h3>AI chat &amp; voice</h3>
+      <p>Chat with a local LLM that runs entirely on your phone — even in airplane mode. Suggested follow-ups keep the conversation going, and attached images are read by Ask Image — OCR plus chat about the picture. Dictate into the message field fully offline, or use Translate mode: pick the language you speak and the language to translate into, with the transcript above the translation and both replayable. Hands-free voice conversation is in Beta. Nothing you say or type leaves the device.</p>
+    </div>
+
+    <div class="feature card reveal">
+      <div class="feature-media single">
+        <img class="zoomable" src="assets/screenshots/ebook03.png" alt="Book-style reader with read-aloud" loading="lazy">
+      </div>
+      <div class="feature-icon">📚</div>
+      <h3>Read &amp; listen</h3>
+      <p>A library with recently opened books, a Yet to Read shelf, authors and sorting. Read full-screen with one floating bar: Contents that follows your place, footnotes in a popup, tappable links and the book's own illustrations. Make the page yours — ragged or justified text, Slide, Curl or Fade page turns, five margin steps, and fonts from your phone or your own files. Read-aloud includes a narrator picker beside speed.</p>
+    </div>
+
+    <div class="feature card reveal">
+      <div class="feature-media single">
+        <img class="zoomable" src="assets/screenshots/epub-audiobook-export02.png" alt="Narrated sentence highlighted in an imported audiobook" loading="lazy">
+      </div>
+      <div class="feature-icon">🎧</div>
+      <h3>Audiobooks that read along</h3>
+      <p>Import audiobooks your way — a single MP3 or AAC file, or a ZIP. The book follows the voice: the narrated sentence is highlighted as you listen, and play starts at the page you are reading. Chapters become playable while the rest transcribes in the background, and stopping is only a pause — the next run picks up exactly where it left off, even after a restart. Fully offline.</p>
     </div>
 
     <div class="feature card reveal">
       <div class="feature-media">
         <img class="zoomable" src="assets/screenshots/transcription.png" alt="Live transcription screen" loading="lazy">
-        <img class="zoomable" src="assets/screenshots/features01.png" alt="Model manager — Gemma, MiniCPM and Whisper downloaded on your terms via Play Store" loading="lazy">
+        <img class="zoomable" src="assets/screenshots/features01.png" alt="Model manager — Gemma 4, MiniCPM 5 1B, Whisper and Kokoro" loading="lazy">
       </div>
       <div class="feature-icon">🎙️</div>
-      <h3>Video transcription</h3>
-      <p>Import any video and transcribe it locally — the transcript streams in live, in 30-second chunks. It runs with the screen off and resumes if interrupted, exports to DOCX or subtitles, and can even dub the video with a new voice. No upload, no server, works offline.</p>
-    </div>
-
-    <div class="feature card reveal">
-      <div class="feature-media">
-        <img class="zoomable" src="assets/screenshots/ebook03.png" alt="Book-style reader with read-aloud" loading="lazy">
-        <img class="zoomable" src="assets/screenshots/epub-audiobook-export02.png" alt="Chaptered audiobook rendering" loading="lazy">
-      </div>
-      <div class="feature-icon">📚</div>
-      <h3>Read &amp; listen</h3>
-      <p>EPUBs, PDFs, DOCX, PPTX, TXT and Markdown — laid out like a book, with text-to-speech read-aloud. Export any of them as a chaptered .m4a audiobook.</p>
+      <h3>Video transcription &amp; dubbing</h3>
+      <p>Import any video and transcribe it locally — the transcript streams in live, in 30-second chunks. It runs with the screen off and resumes if interrupted, exports to DOCX or subtitles, and can dub the video with a new voice. Correct the transcript first and the dub, the burned-in subtitles and the .srt all speak the corrected text. Pick a voice in another language and the dub is translated; keep the original untouched if you prefer, with no quality loss. No upload, no server, works offline.</p>
     </div>
 
     <div class="feature card reveal">
@@ -98,7 +108,13 @@
       </div>
       <div class="feature-icon">🔎</div>
       <h3>RAG — chat with your documents</h3>
-      <p>Ask questions and get answers grounded in your own books and files. Document search runs on the NPU, so retrieval is fast — and fully offline.</p>
+      <p>Ask questions and get answers grounded in your own books and files. Document search is NPU-accelerated on Qualcomm, Google Tensor and MediaTek, with a CPU fallback elsewhere — and fully offline.</p>
+    </div>
+
+    <div class="feature card reveal">
+      <div class="feature-icon">✍️</div>
+      <h3>Word tools &amp; study</h3>
+      <p>Long-press a word in a book to copy or share it, highlight it in five colours, attach a note, or look it up in the offline English dictionary — downloaded once, then it works with no internet at all. Ask your on-device model what the word means in the sentence you are reading. Highlights, notes and bookmarks are saved per book, and the reader can suggest teacher-style starter questions from the text.</p>
     </div>
 
   </div>
@@ -128,14 +144,15 @@
   <p class="section-sub reveal">Most apps say "we value your privacy" in tiny grey text. Kenosis AI proves it — in the Android manifest.</p>
   <div class="badges">
     <div class="badge card reveal"><strong>No INTERNET permission</strong><span>Android enforces it: the app cannot make a network connection even if it wanted to. A CI gate fails the build if it ever appears.</span></div>
-    <div class="badge card reveal"><strong>No storage permissions</strong><span>Files are accessed via Android's Storage Access Framework — the app only ever gets a temporary handle to the one file you pick.</span></div>
+    <div class="badge card reveal"><strong>No storage permissions</strong><span>Files are accessed through Android's Storage Access Framework. The app reads only the file you pick, then keeps an encrypted copy in its private storage.</span></div>
     <div class="badge card reveal"><strong>No telemetry</strong><span>Zero analytics, zero tracking, no accounts. Airplane mode works fine.</span></div>
-    <div class="badge card reveal"><strong>Encrypted at rest</strong><span>Your library is encrypted on disk — a lost phone doesn't leak your files.</span></div>
-    <div class="badge card reveal"><strong>PIN lock</strong><span>An optional app-entrance PIN with a privacy badge — casual shoulder-surfers see nothing.</span></div>
+    <div class="badge card reveal"><strong>Encrypted at rest</strong><span>Your library is encrypted on disk. Keys are hardware-backed where the device supports it and software-backed otherwise — a lost phone doesn't simply hand over your files.</span></div>
+    <div class="badge card reveal"><strong>Privacy lock</strong><span>One switch blocks screenshots and screen recording, gates copy and export, and can use a built-in keyboard. It also warns you when an accessibility service is active.</span></div>
+    <div class="badge card reveal"><strong>PIN lock</strong><span>Enabling privacy lock sets a 4-digit app PIN you enter on each cold start; disabling it requires the PIN. Off by default.</span></div>
   </div>
   <div class="feature-grid" style="margin-top:1.5rem; max-width:420px">
     <div class="feature card reveal">
-      <div class="feature-media">
+      <div class="feature-media single">
         <img class="zoomable" src="assets/screenshots/privacy.png" alt="App-entrance PIN — the app locks behind a PIN you choose, with a privacy badge while it runs" loading="lazy">
       </div>
     </div>
@@ -145,11 +162,15 @@
       <thead><tr><th>Permission</th><th>Declared?</th><th>Why</th></tr></thead>
       <tbody>
         <tr><td>INTERNET</td><td class="denied">✗ absent — intentionally</td><td>App cannot phone home; Android enforces this</td></tr>
-        <tr><td>READ / WRITE_EXTERNAL_STORAGE</td><td class="denied">✗ absent</td><td>Storage Access Framework instead — user picks the file</td></tr>
+        <tr><td>READ / WRITE_EXTERNAL_STORAGE</td><td class="denied">✗ absent</td><td>Storage Access Framework instead — you pick the file</td></tr>
         <tr><td>CAMERA</td><td class="denied">✗ absent</td><td>Video comes in via share intent</td></tr>
         <tr><td>CONTACTS / LOCATION</td><td class="denied">✗ absent</td><td>No social or location features</td></tr>
+        <tr><td>RECORD_AUDIO</td><td class="declared">✓ declared</td><td>Only when you start voice or dictation; a microphone foreground service keeps the session alive with the screen off</td></tr>
+        <tr><td>POST_NOTIFICATIONS</td><td class="declared">✓ declared</td><td>Completion notices for long on-device jobs</td></tr>
+        <tr><td>WAKE_LOCK</td><td class="declared">✓ declared</td><td>Keeps the CPU working during transcription, indexing and read-aloud; released when the job ends</td></tr>
       </tbody>
     </table>
+    <p class="perm-note">Foreground-service entries (FOREGROUND_SERVICE, FOREGROUND_SERVICE_MICROPHONE, FOREGROUND_SERVICE_DATA_SYNC) and VIBRATE support those long-running jobs. None of them grant network access — INTERNET is still absent.</p>
   </div>
 </section>
 
@@ -162,19 +183,19 @@
     </details>
     <details>
       <summary>Where do the AI models come from?</summary>
-      <p>Whisper and the LLMs (including Gemma and MiniCPM 5 1B) are downloaded once via Play Store, on your terms, and stored locally. MiniCPM 5 1B is deliberately small — it's the floor model, chosen so that even a 4 GB-RAM phone runs the full chat, voice and RAG stack; bigger devices simply get more headroom.</p>
+      <p>Gemma 4 E2B and E4B, MiniCPM 5 1B, Whisper for transcription, Kokoro for read-aloud, embeddinggemma for document search, and on-demand pronunciation dictionaries. They are downloaded once via Play Store, on your terms, and stored locally. MiniCPM 5 1B is deliberately small — it is the floor model, chosen so that a 4 GB-RAM phone runs chat, transcription, read-aloud and RAG; the voice assistant needs more than 4 GB and a Gemma 4 model.</p>
     </details>
     <details>
       <summary>How can an offline app search the web?</summary>
-      <p>It can't — and that's the point. Web search comes from a separate, <a href="plugins.html">open-source plugin app</a>: the host keeps no INTERNET permission, the plugin shows a live log of every request it makes, and you approve each search before it happens.</p>
+      <p>It can't — and that's the point. Web search comes from a separate, <a href="plugins.html">open-source plugin app</a>: the host keeps no INTERNET permission, and the plugin shows a live log of every request it makes. By default you approve each search before it happens; automatic approval is optional.</p>
     </details>
     <details>
       <summary>What devices are supported?</summary>
-      <p>Modern Android phones — and modest ones too: the MiniCPM 5 1B floor model (a 793 MB on-demand pack) brings the whole app to 4 GB-RAM devices. NPU-accelerated embeddings work on Qualcomm, Google Tensor (Pixel) and MediaTek SoCs; other devices fall back to CPU.</p>
+      <p>Android 10+ phones. A 4 GB-RAM phone runs chat, transcription, read-aloud and RAG with the MiniCPM 5 1B floor model (a 793 MB on-demand pack); the voice assistant needs more than 4 GB and a Gemma 4 model. NPU-accelerated embeddings work on Qualcomm, Google Tensor (Pixel) and MediaTek SoCs; other devices fall back to CPU.</p>
     </details>
     <details>
       <summary>Is it free?</summary>
-      <p>Yes — the app is free to download with a 14-day trial of all features. A one-time lifetime purchase is available in the app; no subscription required to keep using it.</p>
+      <p>Yes — the app is free to download with a 14-day trial of all features. After the trial, keep using it with a monthly subscription that renews automatically unless cancelled — or pay once for a lifetime licence. No account either way.</p>
     </details>
     <details>
       <summary>How do I report a bug?</summary>
@@ -182,9 +203,21 @@
     </details>
     <details>
       <summary>Why is the transcript better than auto-captions?</summary>
-      <p>It's running on your device — no server round-trip, works on videos that never had captions, and you keep the full transcript in your files library. You can export transcription as subtitles, or even create audio from transcription (per example to replace original voice).</p>
+      <p>It's running on your device — no server round-trip, works on videos that never had captions, and you keep the full transcript in your files library. Export it as subtitles, or use it to dub the video with a new voice (for example, to replace the original voice) — translated if you pick a voice in another language.</p>
+    </details>
+    <details>
+      <summary>Can I import my own audiobook?</summary>
+      <p>Yes — a single MP3 or AAC file, or a ZIP. The book follows the voice: the narrated sentence is highlighted as you listen, chapters become playable while the rest transcribes in the background, and stopping is only a pause — playback resumes exactly where it left off. Nothing is uploaded.</p>
+    </details>
+    <details>
+      <summary>What languages does the app run in?</summary>
+      <p>English, German and French — every screen, menu and message, with your choice remembered. Legal documents remain in English.</p>
     </details>
   </div>
+</section>
+
+<section class="section release-hook">
+  <p class="reveal">New in 1.9.37 — the reader, rebuilt: footnotes, a Contents view, your own fonts. <a href="changelog.html">Read the changelog →</a></p>
 </section>
 
 <section class="section cta-band">
@@ -194,7 +227,7 @@
       <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C21.11,11.4 21.11,12.6 20.16,13.19L17.89,14.5L15.38,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
       Get it on Google Play
     </a>
-    <p class="hero-note reveal" style="margin-top:1rem">Free download · 14-day trial · lifetime option — no account, either way.</p>
+    <p class="hero-note reveal" style="margin-top:1rem">Free download · 14-day trial · monthly or lifetime · no account either way.</p>
   </div>
 </section>
 
@@ -204,7 +237,7 @@
     <div class="footer-links">
       <p>
         Kenosis AI — the fully offline AI assistant. The bundled LLMs are distributed under
-        Google's <a href="https://ai.google.dev/gemma-api/terms">Gemma Terms of Use</a> and the
+        Google's <a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a> and the
         <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0 license</a> (MiniCPM).
       </p>
       <p class="footer-social">
@@ -212,6 +245,7 @@
           <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C21.11,11.4 21.11,12.6 20.16,13.19L17.89,14.5L15.38,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>Google Play</a> ·
         <a href="https://github.com/octoflashdev/kenosis-web/discussions" title="Forum" aria-label="Community forum on GitHub Discussions">
           <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12Z"/></svg>Forum</a> ·
+        <a href="changelog.html">Changelog</a> ·
         <a href="#" id="bug-report-link">Report a bug</a>
       </p>
       <div class="bug-reveal" id="bug-reveal" hidden>

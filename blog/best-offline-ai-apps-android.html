@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>5 Best Offline AI Apps for Android (No Internet?)</title>
+<meta name="description" content="We compared the 5 most popular offline AI apps for Android and checked which ones really have no INTERNET permission. Features, table, verdict.">
+<link rel="canonical" href="https://www.kenosis-ai.com/blog/best-offline-ai-apps-android.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kenosis AI">
+<meta property="og:title" content="5 Best Offline AI Apps for Android — and Which One Has No Internet Permission">
+<meta property="og:description" content="Five popular offline AI apps, compared — plus the one verifiable difference most listings hide: the Android INTERNET permission.">
+<meta property="og:url" content="https://www.kenosis-ai.com/blog/best-offline-ai-apps-android.html">
+<meta property="og:image" content="https://www.kenosis-ai.com/assets/blog/offline-ai-apps-android-og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="5 Best Offline AI Apps for Android — comparison">
+<meta property="article:published_time" content="2026-11-07">
+<meta property="article:modified_time" content="2026-11-11">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="5 Best Offline AI Apps for Android — and Which One Has No Internet Permission">
+<meta name="twitter:description" content="Five popular offline AI apps, compared — plus the one verifiable difference most listings hide: the Android INTERNET permission.">
+<meta name="twitter:image" content="https://www.kenosis-ai.com/assets/blog/offline-ai-apps-android-og.png">
+<meta name="twitter:image:alt" content="5 Best Offline AI Apps for Android — comparison">
+<link rel="icon" href="../assets/icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<meta name="theme-color" content="#0a0e14">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "5 Best Offline AI Apps for Android — and Which One Has No Internet Permission",
+  "description": "We compared the 5 most popular offline AI apps for Android and checked which ones really have no INTERNET permission. Features, table, verdict.",
+  "image": "https://www.kenosis-ai.com/assets/blog/offline-ai-apps-android-og.png",
+  "datePublished": "2026-11-07",
+  "dateModified": "2026-11-11",
+  "inLanguage": "en",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.kenosis-ai.com/blog/best-offline-ai-apps-android.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Kenosis AI",
+    "url": "https://www.kenosis-ai.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.kenosis-ai.com/assets/icon.png"
+    }
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.kenosis-ai.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.kenosis-ai.com/blog/" },
+    { "@type": "ListItem", "position": 3, "name": "5 Best Offline AI Apps for Android" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is there an Android AI app without INTERNET permission?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Kenosis AI ships without the Android INTERNET permission, so the app itself cannot open a network connection. OfflineLLM, a sideloaded open-source app, also comments the permission out of its manifest. None of the five most popular offline AI apps we checked qualifies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can an app download AI models without the INTERNET permission?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Kenosis AI uses Play Store asset packs for its bundled models: Google Play downloads the model pack, and the app requests delivery without ever getting network access. It can also import your own GGUF file (BETA) from vendors such as Ling and MiniCPM. OfflineLLM uses only the manual route — you transfer a GGUF file to the phone and import it yourself."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is PocketPal fully offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Inference is offline once a model is downloaded. PocketPal's Android manifest still declares the INTERNET permission, because the app downloads models from Hugging Face and checks for updates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 'offline AI' the same as 'no internet permission'?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. 'Offline' usually means the AI model runs on the phone instead of a server. The INTERNET permission is a separate capability: an app can run models locally and still be allowed to open network connections for downloads, analytics, ads, updates, or a cloud fallback."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which offline AI app is best for books and audiobooks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Among the apps compared here, Kenosis AI is the only one with an eBook library, read-aloud with sentence highlighting, audiobook import and playback, and document Q&A in one app. Most of the other apps are chat-only."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do offline AI apps collect data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the app. Running inference locally does not guarantee that the app avoids analytics, crash reporting, or cloud features. Check the Play Data safety section, the app's privacy policy, and — for open-source apps — the manifest and dependencies. For closed-source apps, an APK permission inspector is the most direct check."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does airplane mode disable AI apps?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not if the model is already on the phone. Local inference, reading, and transcription continue in airplane mode. Model downloads, updates, and any cloud-backed features will not work until you reconnect."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="../index.html">
+    <img src="../assets/icon.png" alt="Kenosis AI logo" class="brand-icon">
+    <span>Kenosis <em>AI</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html#features">Features</a>
+    <a href="../index.html#demos">Demos</a>
+    <a href="../index.html#privacy">Privacy</a>
+    <a href="../index.html#faq">FAQ</a>
+    <a href="../changelog.html">Changelog</a>
+    <a href="../plugins.html">Plugins</a>
+    <a href="index.html">Blog</a>
+    <a href="https://github.com/octoflashdev/kenosis-web/discussions">Forum</a>
+  </div>
+</nav>
+
+<main class="article-wrap">
+<article class="article">
+
+<header class="article-head">
+  <p class="eyebrow">Comparison</p>
+  <h1>5 Best Offline AI Apps for Android — and Which One Has No Internet Permission</h1>
+  <p class="lead">
+    Every app below runs an AI model on your phone. All five of the most popular offline
+    AI apps still declare the <strong>Android INTERNET permission</strong> — the apps
+    that genuinely ship without it are smaller and less obvious. Here is what each app
+    actually does offline, what it costs, and how to check the claim yourself.
+  </p>
+  <p class="article-meta">
+    <span>Updated 11 November 2026</span>
+    <span class="dot">·</span>
+    <span>12 min read</span>
+    <span class="dot">·</span>
+    <span>Install counts, ratings and permission checks verified 7 November 2026; Kenosis install count updated 11 November 2026</span>
+  </p>
+  <div class="disclosure">
+    <strong>Disclosure:</strong> this site belongs to the makers of Kenosis AI.
+    We built the comparison from public Play listings, public Android manifests and
+    official docs, and every factual claim links to its source. Treat the Kenosis
+    placement with that in mind — the tables below are the honest summary.
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#short-answer">The short answer</a></li>
+      <li><a href="#only-kenosis">What only Kenosis AI can do</a></li>
+      <li><a href="#permission">What “offline” really means on Android</a></li>
+      <li><a href="#popular">The 5 most popular offline AI apps</a></li>
+      <li><a href="#permission-free">The permission-free options</a></li>
+      <li><a href="#comparison">Full comparison table</a></li>
+      <li><a href="#choose">Which app should you choose?</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#verdict">Verdict</a></li>
+    </ol>
+  </nav>
+</header>
+
+<section class="prose" id="short-answer">
+  <h2>The short answer</h2>
+  <p>
+    The five apps are ranked by Google Play installs, because that is the order most
+    people will encounter them in search. “Most popular” is not the same as “best” —
+    four of the five that show a rating sit between 2.8 and 3.5 stars — so the last
+    column says what each app is actually good at. The final two rows are the
+    permission-free options; the icon grid further down shows the capabilities only
+    Kenosis AI offers.
+  </p>
+
+  <div class="table-scroll">
+    <table class="compare">
+      <caption>The popular apps are ranked by Play installs; the two permission-free options follow (7 Nov 2026; Kenosis updated 11 Nov).</caption>
+      <thead>
+        <tr>
+          <th scope="col">App</th>
+          <th scope="col">Installs</th>
+          <th scope="col">INTERNET permission?</th>
+          <th scope="col">Best for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Google AI Edge Gallery</td>
+          <td>1M+</td>
+          <td><span class="badge badge-yes">Yes</span></td>
+          <td>Google’s latest on-device models, media search, audio scribe</td>
+        </tr>
+        <tr>
+          <td>PocketPal AI</td>
+          <td>1M+</td>
+          <td><span class="badge badge-yes">Yes</span></td>
+          <td>Model tinkering, benchmarks, hundreds of open models</td>
+        </tr>
+        <tr>
+          <td>AnythingLLM</td>
+          <td>50K+</td>
+          <td><span class="badge badge-yes">Yes</span></td>
+          <td>Local document RAG and agent-style workflows</td>
+        </tr>
+        <tr>
+          <td>Local AI</td>
+          <td>50K+</td>
+          <td><span class="badge badge-yes">Yes</span></td>
+          <td>A simple local chat with easy model switching</td>
+        </tr>
+        <tr>
+          <td>Offline AI Chat: Private</td>
+          <td>50K+</td>
+          <td><span class="badge badge-yes">Yes</span></td>
+          <td>Writing, study and translation with a big model catalog</td>
+        </tr>
+        <tr class="hl">
+          <td>Kenosis AI</td>
+          <td>500+</td>
+          <td><span class="badge badge-no">No</span></td>
+          <td>Books, audiobooks, voice, transcription, strictest permission</td>
+        </tr>
+        <tr>
+          <td>OfflineLLM</td>
+          <td>GitHub, 285★</td>
+          <td><span class="badge badge-no">No</span></td>
+          <td>Permission purists who want a minimal, open-source, sideload-only app</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">
+    Install counts and ratings are from each Google Play listing on 7 November 2026;
+    Kenosis’s install count was updated on 11 November 2026.
+    Permission status: open-source apps checked against their public AndroidManifest;
+    closed-source apps judged by the network features their own listing describes.
+    Details and source links are in the sections below.
+  </p>
+</section>
+
+<section class="prose" id="only-kenosis">
+  <h2>What only Kenosis AI can do</h2>
+  <p>
+    The grid below lists the apps in alphabetical order, with one icon per capability
+    across the top. A bright icon means the app’s own listing, README or public
+    manifest describes that capability; a ✗ means it does not; a dimmed icon with a
+    dot marks a partial or adjacent alternative. Every column is a capability that no
+    other app in this comparison offers in full. Hover any icon to see exactly what
+    it means.
+  </p>
+
+  <svg class="icon-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      <symbol id="i-reader" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+      <symbol id="i-speak" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></symbol>
+      <symbol id="i-audio" viewBox="0 0 24 24"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5z"/></symbol>
+      <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5"/></symbol>
+      <symbol id="i-voice" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4"/><path d="M8 23h8"/></symbol>
+      <symbol id="i-rag" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></symbol>
+      <symbol id="i-words" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="battle-matrix">
+    <ul class="battle-legend">
+      <li><svg class="bi" aria-hidden="true"><use href="#i-shield"/></svg> Play Store, no INTERNET permission</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-reader"/></svg> eBook reader</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-speak"/></svg> Read-aloud + sentence highlight</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-audio"/></svg> Audiobook import + playback</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-video"/></svg> Video transcription + dubbing</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-voice"/></svg> Dictation + hands-free voice</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-rag"/></svg> RAG over books + documents</li>
+      <li><svg class="bi" aria-hidden="true"><use href="#i-words"/></svg> Dictionary + word tools</li>
+    </ul>
+    <table class="compare battle-icons">
+      <caption>
+        Apps listed A–Z. Bright icon = offered, ✗ = not offered, dotted icon =
+        partial alternative. Google Edge = Google AI Edge Gallery; Offline AI Chat =
+        Offline AI Chat: Private. Checked against each app’s listing, manifest or
+        README on 7 November 2026.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">App</th>
+          <th scope="col"><svg class="m" role="img" data-tip="Play Store install with no INTERNET permission" aria-label="Play Store install with no INTERNET permission"><use href="#i-shield"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="eBook reader" aria-label="eBook reader"><use href="#i-reader"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="Read-aloud with sentence highlighting" aria-label="Read-aloud with sentence highlighting"><use href="#i-speak"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="Audiobook import and playback" aria-label="Audiobook import and playback"><use href="#i-audio"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="Video transcription and dubbing" aria-label="Video transcription and dubbing"><use href="#i-video"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="Offline dictation and hands-free voice" aria-label="Offline dictation and hands-free voice"><use href="#i-voice"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="RAG over books and documents" aria-label="RAG over books and documents"><use href="#i-rag"/></svg></th>
+          <th scope="col"><svg class="m" role="img" data-tip="Offline dictionary and word tools" aria-label="Offline dictionary and word tools"><use href="#i-words"/></svg></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">AnythingLLM</th>
+          <td><svg class="m m-off" role="img" data-tip="Play Store install with no INTERNET permission — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="eBook reader — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Read-aloud with sentence highlighting — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Audiobook import and playback — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Video transcription and dubbing — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="Offline dictation and hands-free voice — partial: voice input only" aria-label="Partial: voice input only"><use href="#i-voice"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="RAG over books and documents — partial: documents only" aria-label="Partial: documents only"><use href="#i-rag"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictionary and word tools — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+        </tr>
+        <tr>
+          <th scope="row">Google Edge</th>
+          <td><svg class="m m-off" role="img" data-tip="Play Store install with no INTERNET permission — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="eBook reader — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Read-aloud with sentence highlighting — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Audiobook import and playback — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="Video transcription and dubbing — partial: audio transcription only" aria-label="Partial: audio transcription only"><use href="#i-video"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictation and hands-free voice — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="RAG over books and documents — partial: media search only" aria-label="Partial: media search only"><use href="#i-rag"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictionary and word tools — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+        </tr>
+        <tr class="us">
+          <th scope="row">Kenosis AI</th>
+          <td><svg class="m m-on" role="img" data-tip="Play Store install with no INTERNET permission — yes" aria-label="Yes"><use href="#i-shield"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="eBook reader — yes" aria-label="Yes"><use href="#i-reader"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="Read-aloud with sentence highlighting — yes" aria-label="Yes"><use href="#i-speak"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="Audiobook import and playback — yes" aria-label="Yes"><use href="#i-audio"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="Video transcription and dubbing — yes" aria-label="Yes"><use href="#i-video"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="Offline dictation and hands-free voice — yes" aria-label="Yes"><use href="#i-voice"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="RAG over books and documents — yes" aria-label="Yes"><use href="#i-rag"/></svg></td>
+          <td><svg class="m m-on" role="img" data-tip="Offline dictionary and word tools — yes" aria-label="Yes"><use href="#i-words"/></svg></td>
+        </tr>
+        <tr>
+          <th scope="row">Local AI</th>
+          <td><svg class="m m-off" role="img" data-tip="Play Store install with no INTERNET permission — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="eBook reader — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Read-aloud with sentence highlighting — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Audiobook import and playback — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Video transcription and dubbing — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictation and hands-free voice — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="RAG over books and documents — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictionary and word tools — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+        </tr>
+        <tr>
+          <th scope="row">Offline AI Chat</th>
+          <td><svg class="m m-off" role="img" data-tip="Play Store install with no INTERNET permission — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="eBook reader — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Read-aloud with sentence highlighting — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Audiobook import and playback — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Video transcription and dubbing — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictation and hands-free voice — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="RAG over books and documents — partial: PDF Q&A on the premium tier" aria-label="Partial: PDF Q&amp;A on the premium tier"><use href="#i-rag"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="Offline dictionary and word tools — partial: translation only" aria-label="Partial: translation only"><use href="#i-words"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+        </tr>
+        <tr>
+          <th scope="row">OfflineLLM</th>
+          <td><svg class="m m-part" role="img" data-tip="Play Store install with no INTERNET permission — partial: no INTERNET permission, but sideload-only" aria-label="Partial: no INTERNET permission, but sideload-only"><use href="#i-shield"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="eBook reader — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="Read-aloud with sentence highlighting — partial: chat replies only" aria-label="Partial: chat replies only"><use href="#i-speak"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Audiobook import and playback — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Video transcription and dubbing — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictation and hands-free voice — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="RAG over books and documents — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-part" role="img" data-tip="Offline dictionary and word tools — partial: translator only" aria-label="Partial: translator only"><use href="#i-words"/><circle class="m-dot" cx="20.5" cy="3.5" r="2.8"/></svg></td>
+        </tr>
+        <tr>
+          <th scope="row">PocketPal AI</th>
+          <td><svg class="m m-off" role="img" data-tip="Play Store install with no INTERNET permission — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="eBook reader — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Read-aloud with sentence highlighting — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Audiobook import and playback — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Video transcription and dubbing — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictation and hands-free voice — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="RAG over books and documents — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+          <td><svg class="m m-off" role="img" data-tip="Offline dictionary and word tools — not offered" aria-label="No"><use href="#i-x"/></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">
+    OfflineLLM also ships without the INTERNET permission, but it is not on Google
+    Play and must be sideloaded, so its shield carries the partial dot. Kenosis AI is
+    not limited to Play packs either: it can sideload your own GGUF file (BETA) from
+    vendors such as Ling and MiniCPM. Partial alternatives: Google Edge — audio
+    transcription and media search only; AnythingLLM — document RAG and voice input
+    only; Offline AI Chat — premium PDF Q&amp;A and translation only; OfflineLLM —
+    chat read-aloud and a translator. The <a href="#comparison">full comparison table</a> also covers the
+    areas where competitors lead — installs, ratings, model breadth and open-source
+    licensing.
+  </p>
+</section>
+
+<section class="prose" id="permission">
+  <h2>What “offline” really means on Android</h2>
+  <p>
+    “Offline AI” usually means one thing: the model runs on your phone instead of on a
+    server. It does <strong>not</strong> mean the app is incapable of going online.
+  </p>
+
+  <h3>The permission that never prompts</h3>
+  <p>
+    Android apps that want to open a network connection must declare
+    <code>android.permission.INTERNET</code>. It is a normal, install-time permission —
+    Android grants it automatically and never shows a runtime prompt, and it does not
+    appear in the usual Settings → Apps → Permissions list. That is why an app can
+    truthfully say “works offline” while still holding the ability to send data
+    whenever it wants.
+  </p>
+  <p>
+    Most offline AI apps use that permission for something legitimate: downloading model
+    files from Hugging Face, checking for updates, or fetching a voice pack. Some also
+    use it for analytics, ads, crash reporting, or an optional cloud fallback. The
+    permission itself is not a verdict on the app — but if your requirement is
+    “the app must not be able to phone home”, it is the thing to check.
+  </p>
+
+  <h3>How an app can download models without the INTERNET permission</h3>
+  <p>
+    There are two honest answers.
+  </p>
+  <ul>
+    <li>
+      <strong>Play Store asset packs.</strong> Android’s Play Feature Delivery lets the
+      Play Store download a model pack on the app’s behalf. The app asks the Play Store
+      for the pack over an inter-process call; the Play Store, which does have network
+      access, performs the download. The app never gets a socket of its own. Kenosis AI
+      uses this route, which is why it can offer one-tap model downloads while its
+      manifest has no INTERNET permission.
+    </li>
+    <li>
+      <strong>Manual import.</strong> Download a GGUF model elsewhere, copy it to the
+      phone (USB, SD card, file manager), and import it with a file picker. OfflineLLM
+      works this way and has no Play listing; Kenosis AI also offers this route for
+      your own model files (BETA).
+    </li>
+  </ul>
+  <p>
+    The trade-off is real: Play asset packs tie bundled models to the Play Store and to
+    the catalog the developer ships. Manual import gives you any model you can find, at
+    the cost of more work. Neither route is “more private” by itself; what matters is
+    whether the app has the permission afterwards.
+  </p>
+
+  <div class="callout">
+    <h3>How to check any app yourself</h3>
+    <p>
+      <strong>Open source:</strong> read <code>app/src/main/AndroidManifest.xml</code> in the
+      repository and search for <code>android.permission.INTERNET</code>. Links to each
+      manifest are in the app sections below.
+    </p>
+    <p>
+      <strong>Installed app:</strong> inspect the APK with <code>apkanalyzer manifest
+      permissions app.apk</code> or <code>aapt dump permissions app.apk</code>, or use a
+      permission-viewer app. This is the only way to check a closed-source app directly.
+    </p>
+    <p>
+      <strong>Not a permission list:</strong> the Play Store’s Data safety section is
+      about data collection and sharing, not Android permissions. A “no data collected”
+      badge does not tell you whether the app can open a connection.
+    </p>
+  </div>
+
+  <p>
+    One caveat worth stating plainly: removing the INTERNET permission removes the app’s
+    own ability to open a connection. It does not control what other apps on your phone
+    do, and an app can still hand data to another app through intents or shared storage.
+    It is a strong boundary, not a mathematical proof of zero exfiltration.
+  </p>
+</section>
+
+<section class="prose" id="popular">
+  <h2>The 5 most popular offline AI apps</h2>
+  <p>
+    Ranked by Google Play installs on 7 November 2026. Ratings and install counts are
+    from the listings shown; permission status comes from the linked manifest or the
+    listing’s own network requirements.
+  </p>
+
+  <article class="app-review" id="edge-gallery">
+    <h3>1. Google AI Edge Gallery — 1M+ installs</h3>
+    <p class="verdict">
+      Best for trying Google’s newest on-device models and multimodal demos — not for
+      reading books or managing documents.
+    </p>
+    <p>
+      Google’s open-source showcase for running Gemma and other models locally. It
+      includes AI Chat with a “Thinking Mode”, Ask Image, Audio Scribe (transcribe and
+      translate recordings), Instant Media Search over your photo library, Video Moment
+      Finder, Prompt Lab, a set of Agent Skills, and on-device model management with
+      benchmarks.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd>Inference is on-device after a model is downloaded. The manifest declares <code>INTERNET</code> (line 31), which is used for model downloads and skills such as Wikipedia or maps. Google’s “no internet required” copy refers to inference, not to the permission.</dd>
+      <dt>Limits</dt>
+      <dd>No document RAG and no eBook reader; features are experimental and change quickly; performance depends heavily on the phone’s hardware.</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free · 1M+ installs · no rating shown on the listing at the time of writing · Apache-2.0 · updated 3 Nov 2026</dd>
+      <dt>Verdict</dt>
+      <dd>A great test bench for Google’s models; not a full offline assistant.</dd>
+    </dl>
+  </article>
+
+  <article class="app-review" id="pocketpal">
+    <h3>2. PocketPal AI — 1M+ installs</h3>
+    <p class="verdict">
+      Best for model tinkerers who want to download, benchmark and compare many open
+      LLMs on the same phone.
+    </p>
+    <p>
+      PocketPal is the best-known open-source local chat app: hundreds of models from
+      Hugging Face, full control over temperature, context length and system prompts,
+      built-in benchmarking, and “Pals” personas. It is MIT-licensed, with roughly 9,000
+      GitHub stars.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd>Inference is offline after download. The manifest declares <code>INTERNET</code> (line 12) for model downloads and updates.</dd>
+      <dt>Limits</dt>
+      <dd>Text chat only: no document RAG, no eBook reader, no transcription, no voice conversation. Larger models need 6–8 GB of RAM.</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free + in-app purchases · 1M+ installs · 3.3★ from about 3.81K reviews · MIT · updated 31 Oct 2026</dd>
+      <dt>Verdict</dt>
+      <dd>Excellent if your hobby is running many models; limited if you want an assistant that does things with your files.</dd>
+    </dl>
+  </article>
+
+  <article class="app-review" id="anythingllm">
+    <h3>3. AnythingLLM — 50K+ installs</h3>
+    <p class="verdict">
+      Best for chatting with your own documents on-device and experimenting with agent
+      workflows — with more setup than a plain chat app.
+    </p>
+    <p>
+      AnythingLLM Mobile runs GGUF models through llama.cpp, builds a local vector
+      index for on-device RAG over PDFs and Office files, keeps memory across chats, and
+      supports voice input and agent tools. It can also connect to remote providers or
+      an AnythingLLM Desktop instance when you want more power.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd>Local chat, RAG and memory work after a model is downloaded. The app declares <code>INTERNET</code> for model downloads, web tools and remote providers.</dd>
+      <dt>Limits</dt>
+      <dd>More setup and moving parts than the chat-only apps; the 2.8★ rating suggests rough edges; internet-dependent tools such as web research and calendar need connectivity; no reader or transcription.</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free · 50K+ installs · 2.8★ from 261 reviews · MIT · updated 2 Oct 2026</dd>
+      <dt>Verdict</dt>
+      <dd>The strongest local document-RAG option in this group, if you are comfortable with its setup.</dd>
+    </dl>
+  </article>
+
+  <article class="app-review" id="local-ai">
+    <h3>4. Local AI — 50K+ installs</h3>
+    <p class="verdict">
+      Best for a simple, no-frills local chat with a built-in model store.
+    </p>
+    <p>
+      Local AI is a closed-source chat app with a model hub that pulls open models from
+      Hugging Face, custom modes and parameter presets. Its listing leans on the same
+      promise as the others: private, offline conversations with no data sharing.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd>Chat works offline after a model is downloaded. The model hub requires network access, so the app declares <code>INTERNET</code>.</dd>
+      <dt>Limits</dt>
+      <dd>The most basic feature set here — no documents, voice, reader or transcription; the listing was last updated in August 2026, the oldest in this group; closed source.</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free · 50K+ installs · 2.9★ from 573 reviews · updated 25 Aug 2026</dd>
+      <dt>Verdict</dt>
+      <dd>Fine for a quick local chat; easy to outgrow.</dd>
+    </dl>
+  </article>
+
+  <article class="app-review" id="lamprof">
+    <h3>5. Offline AI Chat: Private — 50K+ installs</h3>
+    <p class="verdict">
+      Best for generic writing, study and translation with a large downloadable model
+      catalog — and the app that currently outranks Kenosis for “offline AI” searches,
+      for reasons explained below.
+    </p>
+    <p>
+      This is the app that appeared in the search that prompted this article. It is a
+      closed-source chat app with rewrite, summary, translation and study prompts, a
+      catalog of local models (Granite 350M, Gemma 4 E2B/E4B, Phi-4 Mini, plus premium
+      models including Gemma 4 12B, Qwen2-VL, DeepSeek R1 and FLUX.2), local history, and
+      premium PDF Q&amp;A, image input and image generation.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd>Inference is offline after a model is downloaded. The listing says the first download needs internet, so the app necessarily declares <code>INTERNET</code>; “private” describes where prompts are processed, not the permission.</dd>
+      <dt>Limits</dt>
+      <dd>Closed source; no eBook reader, transcription or voice conversation; several useful features are behind the premium tier; 3.5★.</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free + premium unlocks · 50K+ installs · 3.5★ from 225 reviews · updated 1 Nov 2026</dd>
+      <dt>Verdict</dt>
+      <dd>A capable generic chat app with good store presentation — and a useful lesson in why “offline” in a title is not a permission claim.</dd>
+    </dl>
+  </article>
+</section>
+
+<section class="prose" id="permission-free">
+  <h2>The permission-free options</h2>
+  <p>
+    Two apps in this comparison actually ship without the INTERNET permission. They take
+    opposite approaches.
+  </p>
+
+  <article class="app-review" id="kenosis">
+    <h3>Kenosis AI — 500+ installs</h3>
+    <p class="verdict">
+      Best for books, audiobooks, voice, transcription and the strictest permission
+      requirement — with the smallest install base in this comparison.
+    </p>
+    <p>
+      Kenosis AI combines an offline chat assistant with features the other apps do not
+      have: a full eBook library with read-aloud and sentence highlighting, audiobook
+      import (MP3, AAC or ZIP), video transcription and dubbing, offline dictation and
+      translation, hands-free voice conversation (Beta), RAG over your own books and
+      documents with NPU acceleration on Qualcomm, Google Tensor and MediaTek, and word
+      tools with an offline dictionary. The interface is available in English, German
+      and French.
+    </p>
+    <p>
+      Its bundled models — Gemma 4 E2B/E4B, MiniCPM 5 1B, Whisper, Kokoro and
+      embeddinggemma — arrive as Play Store asset packs. The Play Store does the
+      downloading; the app never gets network access. That is the architectural
+      difference behind the permission claim.
+    </p>
+    <p>
+      You can also <a href="../changelog.html#own-model">sideload your own GGUF model
+      file (BETA)</a> from vendors such as Ling and MiniCPM through the file picker, so
+      the model catalog is not limited to the Play packs. Imported models follow their
+      own chat templates and support thinking mode.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd><strong>No INTERNET permission.</strong> Bundled models are delivered by Play Store asset packs, and your own GGUF files can be imported locally, so model setup does not require the app to have a socket.</dd>
+      <dt>Limits</dt>
+      <dd>Only 500+ installs and no rating yet — it is the newcomer here; free 14-day trial, then a subscription or lifetime license; the bundled model catalog is curated and own-GGUF import is BETA; the host app is proprietary (the plugins are Apache-2.0).</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free download + 14-day trial · subscription or lifetime · 500+ installs · updated 3 Nov 2026</dd>
+      <dt>Verdict</dt>
+      <dd>The most feature-complete option for reading, listening and transcription, and the only Play-distributed app here that can honestly say it has no INTERNET permission.</dd>
+    </dl>
+  </article>
+
+  <article class="app-review" id="offlinellm">
+    <h3>OfflineLLM — sideload only</h3>
+    <p class="verdict">
+      Best for permission purists who want the smallest open-source app and do not mind
+      sideloading an APK and transferring model files by hand.
+    </p>
+    <p>
+      OfflineLLM is an open-source Android chat app built on llama.cpp. Its README
+      advertises “no INTERNET permission in the manifest, cannot phone home”, and the
+      manifest indeed has the permission commented out. It supports GGUF models imported
+      at runtime through a file picker, streaming responses, system prompts, Markdown,
+      system TTS read-aloud, a translator, biometric lock and optional Vulkan GPU
+      acceleration.
+    </p>
+    <dl>
+      <dt>Offline check</dt>
+      <dd><strong>No INTERNET permission</strong> (commented out in the manifest). Models must be downloaded elsewhere and imported manually. No Play Store listing — APK sideload, Android 13+, arm64-v8a.</dd>
+      <dt>Limits</dt>
+      <dd>No document RAG, no eBook reader, no voice conversation (TTS output only); a minimal UI; manual model management; not on Google Play.</dd>
+      <dt>Price &amp; signals</dt>
+      <dd>Free · 285 GitHub stars · Apache-2.0 per the README · actively updated</dd>
+      <dt>Verdict</dt>
+      <dd>The purest expression of the permission-free idea, at the cost of convenience.</dd>
+    </dl>
+  </article>
+</section>
+
+<section class="prose" id="comparison">
+  <h2>Full comparison table</h2>
+  <p>
+    Same five popular apps, plus Kenosis AI and OfflineLLM. “INTERNET permission” is
+    the Android manifest capability, not a marketing claim. “Model delivery” is how the
+    app gets model files onto the phone.
+  </p>
+
+  <div class="table-scroll wide">
+    <table class="compare wide">
+      <caption>Offline AI apps compared — installs, ratings and permission checks as of 7 November 2026; Kenosis install count updated 11 November 2026.</caption>
+      <thead>
+        <tr>
+          <th scope="col">App</th>
+          <th scope="col">Installs</th>
+          <th scope="col">Rating</th>
+          <th scope="col">Price</th>
+          <th scope="col">Chat / voice</th>
+          <th scope="col">Docs &amp; RAG</th>
+          <th scope="col">Reader / transcription</th>
+          <th scope="col">Open source</th>
+          <th scope="col">INTERNET permission</th>
+          <th scope="col">Model delivery</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-col="App">Google AI Edge Gallery</td>
+          <td data-col="Installs">1M+</td>
+          <td data-col="Rating">—</td>
+          <td data-col="Price">Free</td>
+          <td data-col="Chat / voice">Chat + audio scribe</td>
+          <td data-col="Docs & RAG">Media search only</td>
+          <td data-col="Reader / transcription">Transcription (audio), no reader</td>
+          <td data-col="Open source">Apache-2.0</td>
+          <td data-col="INTERNET permission"><span class="badge badge-yes">Yes</span></td>
+          <td data-col="Model delivery">In-app download / custom</td>
+        </tr>
+        <tr>
+          <td data-col="App">PocketPal AI</td>
+          <td data-col="Installs">1M+</td>
+          <td data-col="Rating">3.3★ (3.81K)</td>
+          <td data-col="Price">Free + IAP</td>
+          <td data-col="Chat / voice">Chat only</td>
+          <td data-col="Docs & RAG">No</td>
+          <td data-col="Reader / transcription">No</td>
+          <td data-col="Open source">MIT</td>
+          <td data-col="INTERNET permission"><span class="badge badge-yes">Yes</span></td>
+          <td data-col="Model delivery">In-app download</td>
+        </tr>
+        <tr>
+          <td data-col="App">AnythingLLM</td>
+          <td data-col="Installs">50K+</td>
+          <td data-col="Rating">2.8★ (261)</td>
+          <td data-col="Price">Free</td>
+          <td data-col="Chat / voice">Chat + voice input</td>
+          <td data-col="Docs & RAG">Yes, local RAG</td>
+          <td data-col="Reader / transcription">No</td>
+          <td data-col="Open source">MIT</td>
+          <td data-col="INTERNET permission"><span class="badge badge-yes">Yes</span></td>
+          <td data-col="Model delivery">Download or remote</td>
+        </tr>
+        <tr>
+          <td data-col="App">Local AI</td>
+          <td data-col="Installs">50K+</td>
+          <td data-col="Rating">2.9★ (573)</td>
+          <td data-col="Price">Free</td>
+          <td data-col="Chat / voice">Chat only</td>
+          <td data-col="Docs & RAG">No</td>
+          <td data-col="Reader / transcription">No</td>
+          <td data-col="Open source">No</td>
+          <td data-col="INTERNET permission"><span class="badge badge-yes">Yes</span></td>
+          <td data-col="Model delivery">In-app model store</td>
+        </tr>
+        <tr>
+          <td data-col="App">Offline AI Chat: Private</td>
+          <td data-col="Installs">50K+</td>
+          <td data-col="Rating">3.5★ (225)</td>
+          <td data-col="Price">Free + premium</td>
+          <td data-col="Chat / voice">Chat only</td>
+          <td data-col="Docs & RAG">PDF Q&amp;A (premium)</td>
+          <td data-col="Reader / transcription">No</td>
+          <td data-col="Open source">No</td>
+          <td data-col="INTERNET permission"><span class="badge badge-yes">Yes</span></td>
+          <td data-col="Model delivery">In-app download</td>
+        </tr>
+        <tr class="hl">
+          <td data-col="App">Kenosis AI</td>
+          <td data-col="Installs">500+</td>
+          <td data-col="Rating">—</td>
+          <td data-col="Price">Free trial, then paid</td>
+          <td data-col="Chat / voice">Chat + voice (Beta) + dictation</td>
+          <td data-col="Docs & RAG">Yes, books &amp; docs</td>
+          <td data-col="Reader / transcription">Reader, audiobooks, video transcription</td>
+          <td data-col="Open source">No (host); plugins yes</td>
+          <td data-col="INTERNET permission"><span class="badge badge-no">No</span></td>
+          <td data-col="Model delivery">Play Store packs or own GGUF</td>
+        </tr>
+        <tr>
+          <td data-col="App">OfflineLLM</td>
+          <td data-col="Installs">285★ GitHub</td>
+          <td data-col="Rating">—</td>
+          <td data-col="Price">Free</td>
+          <td data-col="Chat / voice">Chat + TTS</td>
+          <td data-col="Docs & RAG">No</td>
+          <td data-col="Reader / transcription">No</td>
+          <td data-col="Open source">Apache-2.0</td>
+          <td data-col="INTERNET permission"><span class="badge badge-no">No</span></td>
+          <td data-col="Model delivery">Manual GGUF import</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">
+    Ratings in parentheses are review counts. “—” means the listing did not show a rating
+    on 7 November 2026. Closed-source apps are marked “Yes” for INTERNET because their
+    own listings describe in-app model downloads or cloud features, which require the
+    permission; their manifests were not public. Kenosis AI’s permission status is the
+    developer’s claim, stated on its Play listing and this site; you can verify any
+    installed app with an APK inspector.
+  </p>
+</section>
+
+
+<section class="prose" id="choose">
+  <h2>Which app should you choose?</h2>
+  <ul>
+    <li><strong>You want to try the newest on-device models and multimodal demos:</strong> Google AI Edge Gallery.</li>
+    <li><strong>You want to benchmark and compare many open models:</strong> PocketPal AI.</li>
+    <li><strong>You want to chat with your own PDFs and documents locally:</strong> AnythingLLM, or Kenosis AI if you also want books and transcription.</li>
+    <li><strong>You want a no-frills local chat with a model store:</strong> Local AI, or Offline AI Chat: Private if you want more model options and do not mind premium features.</li>
+    <li><strong>You want books, audiobooks, read-aloud, dictation and video transcription:</strong> Kenosis AI — none of the other apps covers this surface.</li>
+    <li><strong>You want the strictest permission in a minimal open-source app and can sideload:</strong> OfflineLLM.</li>
+    <li><strong>You want the strictest permission with a Play Store install, a full feature set, and the option to import your own GGUF:</strong> Kenosis AI is the only app in this comparison that offers all three.</li>
+  </ul>
+</section>
+
+<section class="prose" id="faq">
+  <h2>FAQ</h2>
+
+  <div class="faq">
+    <details>
+      <summary>Is there an Android AI app without INTERNET permission?</summary>
+      <p>Yes. Kenosis AI ships without the Android INTERNET permission, so the app itself cannot open a network connection. OfflineLLM, a sideloaded open-source app, also comments the permission out of its manifest. None of the five most popular offline AI apps we checked qualifies.</p>
+    </details>
+    <details>
+      <summary>Can an app download AI models without the INTERNET permission?</summary>
+      <p>Yes. Kenosis AI uses Play Store asset packs for its bundled models: Google Play downloads the model pack, and the app requests delivery without ever getting network access. It can also import your own GGUF file (BETA) from vendors such as Ling and MiniCPM. OfflineLLM uses only the manual route — you transfer a GGUF file to the phone and import it yourself.</p>
+    </details>
+    <details>
+      <summary>Is PocketPal fully offline?</summary>
+      <p>Inference is offline once a model is downloaded. PocketPal’s Android manifest still declares the INTERNET permission, because the app downloads models from Hugging Face and checks for updates.</p>
+    </details>
+    <details>
+      <summary>Is “offline AI” the same as “no internet permission”?</summary>
+      <p>No. “Offline” usually means the AI model runs on the phone instead of a server. The INTERNET permission is a separate capability: an app can run models locally and still be allowed to open network connections for downloads, analytics, ads, updates, or a cloud fallback.</p>
+    </details>
+    <details>
+      <summary>Which offline AI app is best for books and audiobooks?</summary>
+      <p>Among the apps compared here, Kenosis AI is the only one with an eBook library, read-aloud with sentence highlighting, audiobook import and playback, and document Q&amp;A in one app. Most of the other apps are chat-only.</p>
+    </details>
+    <details>
+      <summary>Do offline AI apps collect data?</summary>
+      <p>It depends on the app. Running inference locally does not guarantee that the app avoids analytics, crash reporting, or cloud features. Check the Play Data safety section, the app’s privacy policy, and — for open-source apps — the manifest and dependencies. For closed-source apps, an APK permission inspector is the most direct check.</p>
+    </details>
+    <details>
+      <summary>Does airplane mode disable AI apps?</summary>
+      <p>Not if the model is already on the phone. Local inference, reading, and transcription continue in airplane mode. Model downloads, updates, and any cloud-backed features will not work until you reconnect.</p>
+    </details>
+  </div>
+</section>
+
+<section class="prose" id="verdict">
+  <h2>Verdict</h2>
+  <p>
+    The five most popular offline AI apps are all genuinely offline-capable after their
+    models are downloaded — and all five still declare the Android INTERNET permission.
+    That is not a scandal; most of them need it for model downloads, and some use it for
+    features you may want. But if your requirement is “the app must not be able to
+    phone home”, the field narrows to two: <strong>Kenosis AI</strong>, which is on the
+    Play Store, covers books, voice, transcription and RAG, and can also import your
+    own GGUF models, and <strong>OfflineLLM</strong>, which is sideload-only and
+    deliberately minimal.
+  </p>
+  <p>
+    Kenosis AI is our app, so judge the placement as you would any comparison written by
+    an interested party. The tables are the part that matters: every install count, rating,
+    feature claim and permission status is public and linked below, and you can check
+    your own installed apps with an APK inspector in a few minutes.
+  </p>
+  <p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai">Kenosis AI on Google Play</a>
+    <a class="btn ghost" href="../plugins.html">See the open-source plugins</a>
+  </p>
+</section>
+
+<section class="sources">
+  <h2>Sources and method</h2>
+  <ul>
+    <li><a href="https://play.google.com/store/apps/details?id=com.google.ai.edge.gallery">Google AI Edge Gallery on Google Play</a> · <a href="https://github.com/google-ai-edge/gallery">source</a> · <a href="https://github.com/google-ai-edge/gallery/blob/main/Android/src/app/src/main/AndroidManifest.xml">AndroidManifest</a></li>
+    <li><a href="https://play.google.com/store/apps/details?id=com.pocketpalai">PocketPal AI on Google Play</a> · <a href="https://github.com/a-ghorbani/pocketpal-ai">source</a> · <a href="https://github.com/a-ghorbani/pocketpal-ai/blob/main/android/app/src/main/AndroidManifest.xml">AndroidManifest</a></li>
+    <li><a href="https://play.google.com/store/apps/details?id=com.anythingllm">AnythingLLM on Google Play</a> · <a href="https://github.com/Mintplex-Labs/anything-llm">source</a> · <a href="https://docs.anythingllm.com/mobile/overview">mobile docs</a></li>
+    <li><a href="https://play.google.com/store/apps/details?id=com.ishanvohra2.localai">Local AI on Google Play</a></li>
+    <li><a href="https://play.google.com/store/apps/details?id=com.lamprof.ai">Offline AI Chat: Private on Google Play</a></li>
+    <li><a href="https://github.com/jegly/OfflineLLM">OfflineLLM on GitHub</a></li>
+    <li><a href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai">Kenosis AI on Google Play</a> · <a href="https://www.kenosis-ai.com/">kenosis-ai.com</a> · <a href="../changelog.html#own-model">changelog: bring your own model</a></li>
+  </ul>
+  <p>
+    Install counts, ratings, prices and “last updated” dates were read from the Play
+    listings on 7 November 2026. Permission checks: public manifests for open-source
+    apps; the listing’s own description of model downloads for closed-source apps.
+    No app was installed for this comparison; the table is a documentation audit, not a
+    hands-on benchmark. If you need a manifest-level answer for a closed-source app,
+    inspect its APK directly.
+  </p>
+</section>
+
+</article>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <img src="../assets/icon.png" alt="Kenosis AI" class="brand-icon">
+    <div class="footer-links">
+      <p>
+        Kenosis AI — the fully offline AI assistant. The bundled LLMs are distributed under
+        Google's <a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a> and the
+        <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0 license</a> (MiniCPM).
+      </p>
+      <p class="footer-social">
+        <a href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai" title="Google Play" aria-label="Google Play">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C21.11,11.4 21.11,12.6 20.16,13.19L17.89,14.5L15.38,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>Google Play</a> ·
+        <a href="https://github.com/octoflashdev/kenosis-web/discussions" title="Forum" aria-label="Community forum on GitHub Discussions">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12Z"/></svg>Community forum</a> ·
+        <a href="../blog/">Blog</a> ·
+        <a href="../changelog.html">What's new</a> ·
+        <a href="#" id="bug-report-link">Report a bug</a>
+      </p>
+      <p class="footer-social footer-share">Share:
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fbest-offline-ai-apps-android.html&amp;text=5%20Best%20Offline%20AI%20Apps%20for%20Android%20%E2%80%94%20and%20which%20one%20has%20no%20INTERNET%20permission" target="_blank" rel="noopener noreferrer">X</a> ·
+        <a href="https://bsky.app/intent/compose?text=5%20Best%20Offline%20AI%20Apps%20for%20Android%20%E2%80%94%20and%20which%20one%20has%20no%20INTERNET%20permission%20https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fbest-offline-ai-apps-android.html" target="_blank" rel="noopener noreferrer">Bluesky</a> ·
+        <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fbest-offline-ai-apps-android.html&amp;title=5%20Best%20Offline%20AI%20Apps%20for%20Android" target="_blank" rel="noopener noreferrer">Reddit</a> ·
+        <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fbest-offline-ai-apps-android.html&amp;t=5%20Best%20Offline%20AI%20Apps%20for%20Android" target="_blank" rel="noopener noreferrer">Hacker News</a> ·
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fbest-offline-ai-apps-android.html" target="_blank" rel="noopener noreferrer">LinkedIn</a> ·
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fbest-offline-ai-apps-android.html" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </p>
+      <div class="bug-reveal" id="bug-reveal" hidden>
+        <label id="bug-captcha">Human check — what is 7 + 5? <input id="bug-answer" type="number" inputmode="numeric" style="width:5rem" autocomplete="off"></label>
+        <p id="bug-email" hidden>✉️ octoflash.sup@gmail.com</p>
+        <p id="bug-error" class="bug-error" hidden>Not quite — try again.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

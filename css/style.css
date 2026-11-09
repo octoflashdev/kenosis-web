@@ -257,3 +257,10 @@ a:hover { text-decoration: underline; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
   * { transition: none !important; }
 }
+/* Policy page */
+.policy-body { max-width: 780px; margin: 0 auto; }
+.policy-body h2 { margin: 2.2rem 0 .5rem; font-size: 1.25rem; line-height: 1.3; }
+.policy-body p { margin-bottom: 1rem; color: var(--text-dim); }
+.policy-body p.lead { color: var(--text); }
+.policy-body strong { color: var(--text); }
+.footer-note { margin-top: .6rem; color: var(--text-dim); font-size: .88rem; }

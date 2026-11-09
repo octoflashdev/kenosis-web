@@ -92,30 +92,45 @@
 <header class="hero" id="top">
   <div class="hero-inner">
     <div class="hero-copy reveal">
-      <p class="eyebrow">Private by design &middot; Fully offline &middot; Android</p>
-      <h1>One of the only AI apps without <span class="grad">INTERNET permission</span>.</h1>
+      <p class="eyebrow">Read &amp; listen &middot; On-device AI &middot; No INTERNET permission</p>
+      <h1>Your books, read aloud by an AI <span class="grad">that can NOT go online.</span></h1>
       <p class="lead">
-        <strong>The app ships without the Android INTERNET permission.</strong> Android itself blocks
-        every network connection — Kenosis AI physically cannot phone home. No network, no cloud,
-        no telemetry. It works in airplane mode.
+        Kenosis AI reads your ePub and PDF library aloud, answers questions about it, and chats
+        on-device — with no internet permission.
       </p>
-      <p class="lead">
-        And it still does everything: AI chat and hands-free voice conversation (Beta), offline
-        dictation and translate, video transcription and dubbing, an eBook reader with read-aloud
-        and audiobooks, word tools, and RAG over your own documents — all on-device. The interface
-        runs in English, Deutsch and Français. Need the live web? An
-        <a href="plugins.html">open-source plugin</a> adds web search — the host itself stays offline.
-      </p>
+      <div class="hero-tiles">
+        <a class="hero-tile" href="#reading">
+          <span class="feature-icon" aria-hidden="true">📚</span>
+          <span class="hero-tile-text"><strong>Read &amp; listen</strong><span>ePub/PDF reader with AI read-aloud and audiobooks</span></span>
+        </a>
+        <a class="hero-tile" href="#chat-feature">
+          <span class="feature-icon" aria-hidden="true">💬</span>
+          <span class="hero-tile-text"><strong>AI assistant</strong><span>chat, hands-free voice, dictation and translate, all on-device</span></span>
+        </a>
+        <a class="hero-tile" href="#privacy">
+          <span class="feature-icon" aria-hidden="true">🔒</span>
+          <span class="hero-tile-text"><strong>Private by architecture</strong><span>no INTERNET permission — Android blocks every network call</span></span>
+        </a>
+      </div>
       <div class="cta-row">
         <a class="btn primary" href="#features">See it in action</a>
         <a class="btn ghost" href="#demos">Watch demos</a>
       </div>
-      <p class="hero-note">No account. No upload. Microphone only when you choose voice.</p>
+      <p class="hero-note">No account. No upload. Microphone only when you choose voice. English &middot; Deutsch &middot; Fran&ccedil;ais.</p>
     </div>
-    <div class="hero-phone reveal">
-      <div class="phone">
-        <img src="assets/screenshots/chat.png" alt="Kenosis AI chat running in airplane mode" loading="eager">
-      </div>
+    <div class="hero-phones reveal">
+      <a class="phone mini" href="#reading">
+        <img src="assets/screenshots/epub-new-03.png" alt="eBook reader reading Pride and Prejudice aloud" loading="eager">
+        <span class="phone-caption">Read &amp; listen</span>
+      </a>
+      <a class="phone mini" href="#chat-feature">
+        <img src="assets/screenshots/chat.png" alt="AI chat with suggested follow-ups" loading="eager">
+        <span class="phone-caption">AI assistant</span>
+      </a>
+      <a class="phone mini" href="#privacy">
+        <img src="assets/screenshots/privacy.png" alt="Privacy lock with PIN protection" loading="eager">
+        <span class="phone-caption">Private by design</span>
+      </a>
     </div>
   </div>
 </header>
@@ -125,7 +140,7 @@
   <p class="section-sub reveal">Every built-in feature runs entirely on-device. Live animated demos are right below.</p>
   <div class="feature-grid">
 
-    <div class="feature card reveal">
+    <div class="feature card reveal" id="chat-feature">
       <div class="feature-media">
         <img class="zoomable" src="assets/screenshots/chat.png" alt="AI chat with suggested follow-ups" loading="lazy">
         <img class="zoomable" src="assets/screenshots/imports.png" alt="Add to chat — video, audio, images, e-books, PDF and Office docs" loading="lazy">
@@ -135,9 +150,9 @@
       <p>Chat with a local LLM that runs entirely on your phone — even in airplane mode. Suggested follow-ups keep the conversation going, and attached images are read by Ask Image — OCR plus chat about the picture. Dictate into the message field fully offline, or use Translate mode: pick the language you speak and the language to translate into, with the transcript above the translation and both replayable. Hands-free voice conversation is in Beta. Nothing you say or type leaves the device.</p>
     </div>
 
-    <div class="feature card reveal">
+    <div class="feature card reveal" id="reading">
       <div class="feature-media single">
-        <img class="zoomable" src="assets/screenshots/ebook03.png" alt="Book-style reader with read-aloud" loading="lazy">
+        <img class="zoomable" src="assets/screenshots/epub-new-03.png" alt="Book-style reader with read-aloud" loading="lazy">
       </div>
       <div class="feature-icon">📚</div>
       <h3>Read &amp; listen</h3>
@@ -146,7 +161,7 @@
 
     <div class="feature card reveal">
       <div class="feature-media single">
-        <img class="zoomable" src="assets/screenshots/epub-audiobook-export02.png" alt="Narrated sentence highlighted in an imported audiobook" loading="lazy">
+        <img class="zoomable" src="assets/screenshots/epub-new-04.png" alt="Audiobook options: play from this page, play the audiobook, transcription status" loading="lazy">
       </div>
       <div class="feature-icon">🎧</div>
       <h3>Audiobooks that read along</h3>
@@ -156,7 +171,7 @@
     <div class="feature card reveal">
       <div class="feature-media">
         <img class="zoomable" src="assets/screenshots/transcription.png" alt="Live transcription screen" loading="lazy">
-        <img class="zoomable" src="assets/screenshots/features01.png" alt="Model manager — Gemma 4, MiniCPM 5 1B, Whisper and Kokoro" loading="lazy">
+        <img class="zoomable" src="assets/screenshots/dubb-new-02.png" alt="Dubbing subtitles: burn subtitles into the video, maximum rows per subtitle" loading="lazy">
       </div>
       <div class="feature-icon">🎙️</div>
       <h3>Video transcription &amp; dubbing</h3>

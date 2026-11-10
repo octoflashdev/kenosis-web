@@ -69,6 +69,62 @@
 <section class="section" id="releases">
   <div class="release-list">
 
+    <article class="release card" id="shelf-imports">
+      <div class="release-head"><h3>Fill a shelf in one go</h3><span class="release-version">v1.9.44</span></div>
+      <p>Books and audiobook transcription now happen in bulk, without holding the reader open.</p>
+      <ul>
+        <li>Add a whole shelf of books at once: pick several ePubs from Files — including your Download folder — or scan a folder and import everything inside. Books you already have are skipped, and the scan can be cancelled.</li>
+        <li>Transcription keeps going when you leave the reader: a small floating window shows progress for every book, with pause, resume and stop. The separate audiobook notifications are gone.</li>
+        <li>Find your audiobooks in the Library: eBooks with an audiobook wear a headphones badge, and a new All / With audiobook filter narrows the shelf.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="own-model">
+      <div class="release-head"><h3>Bring your own model (BETA)</h3><span class="release-version">v1.9.43</span></div>
+      <p>Pick a GGUF model of your own from the Models screen, after accepting an at-your-own-risk notice.</p>
+      <ul>
+        <li>Imported models follow their own chat templates, support thinking mode, and offer follow-up questions and smarter document searches. Only MiniCPM5-2B Q4_M has been tried so far — other files may not work.</li>
+        <li>Faster first answers on imported models: each turn reuses the previous turn's work, and tuned CPU builds ship with the app.</li>
+        <li>Kenosis opens on a black splash with the wordmark instead of flashing the intro screens.</li>
+        <li>Model downloads that fail now tell you why: the failure panel shows a reportable error code with a copy button for support.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="book-chats">
+      <div class="release-head"><h3>Book chats, kept and exported</h3><span class="release-version">v1.9.42</span></div>
+      <p>Open a book's chat list from the reader — each row previews the first answer — and export all of a book's questions and answers as a .docx with the book's details.</p>
+      <ul>
+        <li>Opus and Ogg audiobooks: embedded chapter marks appear in the chapter list and jump within the file.</li>
+        <li>LibriVox intro skip: when the file opens with a spoken announcement, playback starts where the text does.</li>
+        <li>The chapter control sits on the slider row, the slider covers the current chapter, and the whole-book Total appears after 90 seconds of measured listening.</li>
+        <li>Pages follow the narration reliably, even for long paragraphs spanning several columns, and Play at the end of a book replays the last file's beginning.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="audiobook-player">
+      <div class="release-head"><h3>An audiobook-grade player</h3><span class="release-version">v1.9.40 – v1.9.41</span></div>
+      <p>Imported audiobooks play in a full player view — cover, chapter, transport, toasts — laid out for phones as well as tablets.</p>
+      <ul>
+        <li>The info header shows the book's title, author and year, plus the chapter time, the time listened and the whole-book Total — all at 1&times;, so they stay fixed when you change pace.</li>
+        <li>Jump controls: previous/next chapter and &minus;15 s / +30 s, with instant starts into audio you've already heard.</li>
+        <li>Karaoke playback for imported audio: the exact spoken word is highlighted in step, the Full Script follows the spoken row, and tapping any sentence seeks there — &asymp; marks a position the app can only estimate until playback corrects it.</li>
+        <li>Listening bookmarks: mark a spot mid-playback and seek straight back to it; delete or clear them from the panel.</li>
+        <li>An acoustics panel picks the narrator and the pace, and on wide screens the player and the dashboard sit side by side in two columns.</li>
+        <li>Full Script drift: your scroll stays where you leave it, and a floating resync badge appears only while you're drifted, re-arming the follow when tapped.</li>
+      </ul>
+    </article>
+
+    <article class="release card" id="karaoke">
+      <div class="release-head"><h3>Karaoke read-aloud</h3><span class="release-version">v1.9.39</span></div>
+      <p>The exact word being spoken is highlighted — in the player bar and on the book page — in step with the voice.</p>
+      <ul>
+        <li>Word timings come straight from the TTS model's own duration output; the voices-pack is rebuilt for clean audio with the timings (same voices, same sound; ~190&nbsp;MB update, downloaded once).</li>
+        <li>Start read-aloud anywhere: select text on the page and tap the voice badge to have speech begin exactly there.</li>
+        <li>The reader's buttons and the playing pill are 20% bigger, and the narrator picker moved to Now Playing.</li>
+        <li>Listening is smoother: fewer pauses between sentences, the page always turns to what's being read, and read-aloud continues into the next file instead of stalling at the end.</li>
+      </ul>
+    </article>
+
     <article class="release card" id="reader">
       <div class="release-head"><h3>The reader, rebuilt</h3><span class="release-version">v1.9.34 – v1.9.37</span></div>
       <p>Reading is now distraction-free: the toolbars are gone, replaced by one floating bar, and eBooks is a proper library.</p>

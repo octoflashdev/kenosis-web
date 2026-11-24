@@ -1,8 +1,8 @@
-# Kenosis AI — website
+# Kenosis AI, website
 
-Static landing page for **Kenosis AI** (app source at `../kenosis-ai`, not open source). No build step — plain HTML/CSS/JS, deployed to GitHub Pages.
+Static landing page for **Kenosis AI** (app source at `../kenosis-ai`, not open source). No build step, plain HTML/CSS/JS, deployed to GitHub Pages.
 
-- Live site: **[Kenosis AI — private, offline AI for Android](https://www.kenosis-ai.com/)**
+- Live site: **[Kenosis AI, private, offline AI for Android](https://www.kenosis-ai.com/)**
 - Play Store: https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai
 - Bug reports: octoflash.sup@gmail.com (revealed on-site behind a human check to deter scrapers)
 
@@ -15,7 +15,7 @@ python3 -m http.server 8000
 
 ## Media
 
-The site ships **no video files** — demos are animated PNGs (APNG), so the page stays light.
+The site ships **no video files**, demos are animated PNGs (APNG), so the page stays light.
 
 ### Adding a screenshot
 
@@ -31,7 +31,7 @@ The site ships **no video files** — demos are animated PNGs (APNG), so the pag
 ffmpeg -t 8 -i foo.mp4 -vf "fps=10,scale=360:-2:flags=lanczos" -plays 0 -f apng assets/previews/foo.png
 ```
 
-Keep exports under ~3 MB each — they load on the homepage.
+Keep exports under ~3 MB each, they load on the homepage.
 
 ## Deploy (GitHub Pages)
 
@@ -50,9 +50,9 @@ release range from the notes, and get the copy approved before committing.
 
 ## Structure
 
-- `index.html` — all sections (hero, features, demos, privacy, FAQ, footer)
-- `changelog.html` — major-feature changelog
-- `css/style.css` — dark theme design tokens
-- `js/main.js` — scroll-reveal, lightbox, bug-report captcha
-- `assets/screenshots/` — feature screenshots
-- `assets/previews/` — animated PNG demos
+- `index.html`, all sections (hero, features, demos, privacy, FAQ, footer)
+- `changelog.html`, major-feature changelog
+- `css/style.css`, dark theme design tokens
+- `js/main.js`, scroll-reveal, lightbox, bug-report captcha
+- `assets/screenshots/`, feature screenshots
+- `assets/previews/`, animated PNG demos

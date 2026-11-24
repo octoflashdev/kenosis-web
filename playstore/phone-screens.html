@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <style>
-  /* Kenosis AI — Play Store phone screenshot 1080x1920 (site palette) */
+  /* Kenosis AI, Play Store phone screenshot 1080x1920 (site palette) */
   :root {
     --bg: #0a0e14;
     --accent-1: #4f8cff;
@@ -72,7 +72,7 @@
   .m-mid   { width: 300px; height: 600px; left: 315px; top: 165px; transform: rotate(3deg); }
   .m-front { width: 300px; height: 600px; left: 390px; top: 330px; transform: rotate(-2deg); }
 
-  /* pitch chips (stack mode) — pill claims like the Reddit image */
+  /* pitch chips (stack mode), pill claims like the Reddit image */
   .chips { display: none; }
   body.stack .chips {
     display: grid; grid-template-columns: repeat(2, max-content); gap: 20px;
@@ -119,8 +119,8 @@
   </div>
   <div class="fan" id="fan"></div>
 <script>
-  // ?shot=<file under assets/screenshots/>&t1=&t2=&sub=   — single phone
-  // ?shots=a.png,b.png,c.png&...                          — stacked fan (back to front)
+  // ?shot=<file under assets/screenshots/>&t1=&t2=&sub= : single phone
+  // ?shots=a.png,b.png,c.png&...                        : stacked fan (back to front)
   const q = new URLSearchParams(location.search);
   document.getElementById('title').innerHTML =
     (q.get('t1') || '') + '<br><span class="grad">' + (q.get('t2') || '') + '</span>';

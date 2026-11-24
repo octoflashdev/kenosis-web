@@ -1,5 +1,5 @@
-// Kenosis AI site — interactive bits.
-// Demos are animated PNGs (APNG) in assets/previews/ — no video files on the site.
+// Kenosis AI site, interactive bits.
+// Demos are animated PNGs (APNG) in assets/previews/, no video files on the site.
 
 (function () {
   document.documentElement.classList.add('js'); // enables scroll-reveal only when JS runs
@@ -34,7 +34,7 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLb(); });
   }
 
-  // Bug report — email hidden behind a human check so scrapers don't harvest it
+  // Bug report, email hidden behind a human check so scrapers don't harvest it
   const bugLink = document.getElementById('bug-report-link');
   const bugReveal = document.getElementById('bug-reveal');
   const bugAnswer = document.getElementById('bug-answer');

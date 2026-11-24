@@ -1,4 +1,4 @@
-/* Kenosis AI — dark futuristic landing */
+/* Kenosis AI, dark futuristic landing */
 :root {
   --bg: #0a0e14;
   --bg-soft: #10151f;
@@ -62,7 +62,7 @@ a:hover { text-decoration: underline; }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
 @media (max-width: 600px) { .nav-links a:not(:nth-child(-n+2)) { display: none; } }
 
-/* Hero — glow painted directly on the section (no separate layer, no banding) */
+/* Hero, glow painted directly on the section (no separate layer, no banding) */
 .hero {
   position: relative;
   padding: clamp(3rem, 9vw, 7rem) clamp(1rem, 5vw, 3rem) 4rem;
@@ -169,7 +169,7 @@ a:hover { text-decoration: underline; }
   background: var(--grad); color: #fff;
 }
 
-/* Feature cards — screenshots */
+/* Feature cards, screenshots */
 .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
 @media (max-width: 900px) { .feature-grid { grid-template-columns: 1fr; } }
 .feature-media {
@@ -187,7 +187,7 @@ a:hover { text-decoration: underline; }
   cursor: zoom-in;
 }
 
-/* Live demos — animated PNGs, all in one row */
+/* Live demos, animated PNGs, all in one row */
 .demo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
 .demo img {
   border-radius: var(--radius);
@@ -233,7 +233,7 @@ a:hover { text-decoration: underline; }
   background: none; border: none; color: #fff; font-size: 2.4rem; cursor: pointer;
 }
 
-/* Reveal on scroll — only hides elements when JS is running (html.js) */
+/* Reveal on scroll, only hides elements when JS is running (html.js) */
 .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .js .reveal.visible { opacity: 1; transform: none; }
 

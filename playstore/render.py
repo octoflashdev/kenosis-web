@@ -19,7 +19,7 @@ W, H = 1080, 1920
 # In sub-line: **bold**, <br> for a line break.
 # "fs": "small" shrinks the headline for long titles.
 SHOTS = [
-    # Shot 1: pitch hero — headline + claim chips on the upper half,
+    # Shot 1: pitch hero, headline + claim chips on the upper half,
     # three small phones stacked below (back to front).
     dict(shots="transcription.png,RAG02.png,chat-mock.png", fs="small",
          t1="The only AI app without", t2="INTERNET permission",
@@ -36,7 +36,7 @@ SHOTS = [
          sub="With read-aloud in **natural voices**, English, German, French, Spanish, Italian support."),
     dict(shot="epub-audiobook-export02.png",
          t1="Turn any EPUB", t2="into an audiobook",
-         sub="Exported as a **chaptered .m4a** — rendered right on your phone."),
+         sub="Exported as a **chaptered .m4a**, rendered right on your phone."),
     dict(shot="imports02.png",
          t1="Add anything to", t2="the conversation",
          sub="Video, audio, images, e-books, **PDF & Office docs.**"),

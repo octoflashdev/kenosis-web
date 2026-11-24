@@ -60,7 +60,23 @@ a:hover { text-decoration: underline; }
 .nav-links { display: flex; gap: 1.4rem; }
 .nav-links a { color: var(--text-dim); font-size: .92rem; }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
-@media (max-width: 600px) { .nav-links a:not(:nth-child(-n+2)) { display: none; } }
+/* Mobile: every nav link stays reachable, the link strip scrolls sideways */
+@media (max-width: 600px) {
+  .brand { flex-shrink: 0; }
+  .nav-links {
+    flex: 0 1 auto;
+    margin-left: auto;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - .6rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - .6rem), transparent);
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { display: inline-flex; flex: 0 0 auto; }
+}
 
 /* Hero, glow painted directly on the section (no separate layer, no banding) */
 .hero {
@@ -215,7 +231,7 @@ a:hover { text-decoration: underline; }
   color: var(--text-dim); font-size: .85rem;
 }
 .footer-inner p { max-width: 46rem; }
-.footer-links { display: grid; gap: .3rem; }
+.footer-links { display: grid; gap: .3rem; overflow-wrap: anywhere; }
 .bug-reveal { margin-top: .6rem; font-size: .85rem; color: var(--text-dim); }
 .bug-reveal input { background: var(--card); border: 1px solid var(--card-border); border-radius: 6px; color: var(--text); padding: .2rem .5rem; margin-left: .4rem; }
 .bug-error { color: #ff6b81; }

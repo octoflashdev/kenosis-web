@@ -292,6 +292,8 @@ a:hover { text-decoration: underline; }
 /* CTA band */
 .cta-band { text-align: center; padding-bottom: 5rem; }
 .cta-band h2 { margin-bottom: 1.4rem; }
+.play-badge { display: inline-block; margin: .2rem 0; }
+.play-badge img { display: block; height: 50px; width: auto; border-radius: 6px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

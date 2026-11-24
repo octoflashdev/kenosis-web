@@ -60,3 +60,34 @@
     });
   }
 })();
+
+// Hover tooltips for [data-tip] elements (blog capability grid).
+// One delegated listener: creates a fixed-position label near the hovered icon.
+(function () {
+  var tip = null;
+  function hide() { if (tip) { tip.remove(); tip = null; } }
+  function show(el) {
+    hide();
+    tip = document.createElement('div');
+    tip.className = 'tip';
+    tip.textContent = el.getAttribute('data-tip');
+    document.body.appendChild(tip);
+    var r = el.getBoundingClientRect();
+    var left = r.left + r.width / 2 - tip.offsetWidth / 2;
+    left = Math.max(8, Math.min(left, document.documentElement.clientWidth - tip.offsetWidth - 8));
+    var top = r.top - tip.offsetHeight - 8;
+    if (top < 8) top = r.bottom + 8;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  document.addEventListener('mouseover', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-tip]') : null;
+    if (el) show(el); else hide();
+  });
+  document.addEventListener('focusin', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-tip]') : null;
+    if (el) show(el);
+  });
+  document.addEventListener('focusout', hide);
+  document.addEventListener('scroll', hide, true);
+})();

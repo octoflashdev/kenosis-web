@@ -1,20 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.kenosis-ai.com/</loc>
-    <lastmod>2026-11-07</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <lastmod>2026-11-07</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.kenosis-ai.com/changelog.html</loc>
-    <lastmod>2026-11-07</lastmod>
+    <lastmod>2026-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.kenosis-ai.com/blog/</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kenosis-ai.com/blog/is-your-app-really-offline-android.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kenosis-ai.com/blog/best-offline-reading-apps-android.html</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-import.webp</image:loc>
+      <image:title>Importing books into Kenosis AI with the storage choice explained</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-library.webp</image:loc>
+      <image:title>Kenosis AI eBook library with audiobooks and a continue-reading card</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-readaloud.webp</image:loc>
+      <image:title>Kenosis AI read-aloud with the sentence being read highlighted</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-lookup.webp</image:loc>
+      <image:title>Word lookup in context in Kenosis AI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-notes.webp</image:loc>
+      <image:title>Bookmarks, highlights and notes per book in Kenosis AI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-search.webp</image:loc>
+      <image:title>Search inside the book in Kenosis AI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/reader-rag.webp</image:loc>
+      <image:title>Ask AI (RAG) answering from a book in Kenosis AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.kenosis-ai.com/blog/best-offline-ai-apps-android.html</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/gemma-4-e2b-refusal.png</image:loc>
+      <image:title>Gemma 4 E2B refusing a harmless question in Kenosis AI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kenosis-ai.com/assets/screenshots/abliterated-ling-3-tiny-answer.png</image:loc>
+      <image:title>Abliterated Ling 3 Tiny answering the same question in Kenosis AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.kenosis-ai.com/privacy.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

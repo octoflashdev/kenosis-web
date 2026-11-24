@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Is Your Android App Really Offline? Check the INTERNET Permission</title>
+<meta name="description" content="An app is offline exactly when it lacks the Android INTERNET permission. Here's what that permission means, why Settings hides it, and how to check any app in one tap.">
+<link rel="canonical" href="https://www.kenosis-ai.com/blog/is-your-app-really-offline-android.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kenosis AI">
+<meta property="og:title" content="Is Your Android App Really Offline?">
+<meta property="og:description" content="What the INTERNET permission means, why Settings hides it, and how to check any app in one tap.">
+<meta property="og:url" content="https://www.kenosis-ai.com/blog/is-your-app-really-offline-android.html">
+<meta property="og:image" content="https://www.kenosis-ai.com/assets/blog/is-your-app-really-offline-android-og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Is your Android app really offline? : checking the INTERNET permission">
+<meta property="article:published_time" content="2026-11-19">
+<meta property="article:modified_time" content="2026-11-19">
+<meta property="article:author" content="https://www.kenosis-ai.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Is Your Android App Really Offline?">
+<meta name="twitter:description" content="What the INTERNET permission means, why Settings hides it, and how to check any app in one tap.">
+<meta name="twitter:image" content="https://www.kenosis-ai.com/assets/blog/is-your-app-really-offline-android-og.png">
+<meta name="twitter:image:alt" content="Is your Android app really offline? : checking the INTERNET permission">
+<link rel="icon" href="../assets/favicon.ico" sizes="48x48 32x32 16x16">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon-192.png">
+<link rel="manifest" href="../assets/site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<meta name="theme-color" content="#0a0e14">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Is Your Android App Really Offline? What the INTERNET Permission Says, and How to Check It",
+  "description": "An app is offline exactly when it lacks the Android INTERNET permission. Here's what that permission means, why Settings hides it, and how to check any app in one tap.",
+  "image": "https://www.kenosis-ai.com/assets/blog/is-your-app-really-offline-android-og.png",
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "inLanguage": "en",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.kenosis-ai.com/blog/is-your-app-really-offline-android.html"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Kenosis AI",
+    "url": "https://www.kenosis-ai.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Kenosis AI",
+    "url": "https://www.kenosis-ai.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.kenosis-ai.com/assets/icon.png"
+    }
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.kenosis-ai.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.kenosis-ai.com/blog/" },
+    { "@type": "ListItem", "position": 3, "name": "Is Your Android App Really Offline?" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why doesn't Settings show which apps have the INTERNET permission?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "INTERNET is a \"normal\" permission in Android: it is granted automatically at install time and, unlike location or contacts, it does not appear in the per-app permissions page in Settings. The shortcut needs nothing installed: an app's Play Store listing shows its permission list under About this app → App permissions. For a full manifest audit, use a tool that reads the manifests of every installed app, such as Offline Checker or Exodus Privacy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can an app connect to the internet without the INTERNET permission?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Without android.permission.INTERNET the operating system blocks an app from opening any network connection on its own, sockets, DNS, everything. Apps that share a UID (installed together as an APK with a shared UID) inherit each other's permissions, and a few system components bypass the sandbox, but for normal installed apps the check holds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does high data usage prove an app is sending my data somewhere bad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Byte totals say how much, not where to. The number could be a sync engine, an ad SDK refreshing banners in the background, downloads you asked for, or telemetry. Android does not expose destinations (domains, IPs, URLs) to normal apps; seeing those requires a local VPN tool such as a firewall app."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does airplane mode keep an app offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only as long as it is on. Airplane mode pauses all traffic; the moment you switch radios back on, any app holding the INTERNET permission resumes whatever it was doing. A permission check is the durable answer: an app without INTERNET permission stays offline with the radio on or off."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I check a permission without installing anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "With adb from a computer: adb shell dumpsys package com.example.app lists the package's permissions, including android.permission.INTERNET. APK manifest viewer sites can also show the manifest of an APK before you even install it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Offline Checker free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It is free, open source under MIT, with APKs and source at github.com/octoflashdev/offline-checker. It itself holds no INTERNET permission, so it cannot call home."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which Android apps are really offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Apps whose manifest declares no android.permission.INTERNET, for example Kenosis AI, an offline AI assistant that ships without the permission, so Android itself blocks every network call. Rather than trusting a vendor's word, check any app's manifest and data usage on your own device."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="../index.html">
+    <img src="../assets/icon.png" alt="Kenosis AI logo" class="brand-icon">
+    <span>Kenosis <em>AI</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html#features">Features</a>
+    <a href="../index.html#privacy">Privacy</a>
+    <a href="../index.html#faq">FAQ</a>
+    <a href="../changelog.html">Changelog</a>
+    <a href="index.html">Blog</a>
+  </div>
+    <a href="https://github.com/octoflashdev/kenosis-web/discussions">Forum</a>
+  </div>
+</nav>
+
+<main class="article-wrap">
+<article class="article">
+
+<header class="article-head">
+  <p class="eyebrow">Guide</p>
+  <h1>Is Your App Really Offline? What the INTERNET Permission Says, and How to Check It</h1>
+  <p class="lead">
+    "Offline" is written all over app descriptions. Android, meanwhile, has a precise
+    answer to whether an app can reach the internet: one permission in its manifest
+    that Settings never shows you. Here is what that permission means, why it is
+    hidden, and how to check every app on your phone in one tap.
+  </p>
+  <p class="article-meta">
+    <span>By the Kenosis AI team</span>
+    <span class="dot">·</span>
+    <span>Updated 19 November 2026</span>
+    <span class="dot">·</span>
+    <span>7 min read</span>
+    <span class="dot">·</span>
+    <span>Android documentation and app manifests checked on 19 November 2026</span>
+  </p>
+  <div class="disclosure">
+    <strong>Disclosure:</strong> this site belongs to the makers of Kenosis AI, and
+    the checking tool in this guide, Offline Checker, is also ours, free and open
+    source. Every method below works the same way regardless of whose app you use to
+    check, and every claim links to its source.
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#short-answer">The short answer</a></li>
+      <li><a href="#permission">What the INTERNET permission actually means</a></li>
+      <li><a href="#settings">Why Settings doesn't show it</a></li>
+      <li><a href="#check">Four ways to check any app</a></li>
+      <li><a href="#offline-checker">The one-tap way: Offline Checker</a></li>
+      <li><a href="#reading">Reading the data usage numbers</a></li>
+      <li><a href="#limits">Limits to keep in mind</a></li>
+      <li><a href="#really-offline">What a really-offline app looks like</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#verdict">Verdict</a></li>
+    </ol>
+  </nav>
+</header>
+
+<section class="prose" id="short-answer">
+  <h2>The short answer</h2>
+  <ul>
+    <li><strong>An Android app is offline exactly when its manifest lacks <code>android.permission.INTERNET</code>.</strong> Without it, the operating system blocks the app from opening any network connection, sockets, DNS, HTTP, everything. The promise is enforced by the OS, not by the vendor's good will.</li>
+    <li><strong>Settings will never show you this.</strong> INTERNET is a <em>normal</em> permission: granted automatically at install, and invisible on the per-app permissions page you visit every day., <a href="#settings">why it's hidden</a></li>
+    <li><strong>Permission and traffic are two different checks.</strong> The permission says what an app <em>can</em> do; its data usage says what it <em>does</em>. A news app you read offline may hold INTERNET for background sync and use exactly zero bytes on your quiet weeks., <a href="#reading">reading the data</a></li>
+    <li><strong>The fastest way to check everything at once:</strong> open the free, open-source Offline Checker and get one list with every visible app marked, <em>No INTERNET permission</em> for the truly offline, and received/sent byte totals for the rest., <a href="#offline-checker">how it works</a></li>
+  </ul>
+</section>
+
+<section class="prose" id="permission">
+  <h2>What the INTERNET permission actually means</h2>
+  <p>
+    Every Android app ships a manifest that lists the permissions it needs. When the
+    manifest declares <code>android.permission.INTERNET</code>, the app can open
+    network connections: TCP sockets, DNS lookups, web requests, WebSocket streams,
+    any traffic, to any host, at any time, in the background included. There is no
+    prompt and no toggle anywhere in the system UI.
+  </p>
+  <p>
+    When it does not declare INTERNET, the sandbox simply denies every attempt. An
+    app without the permission cannot open a socket, cannot resolve a name, cannot
+    hit an endpoint under any circumstances on your device, flipping in airplane
+    mode changes nothing about that. This is the strongest form of "offline" Android
+    can express, and it is the only one that survives the vendor's next update: the
+    check lives in the OS, not in anyone's promise.
+  </p>
+  <p>
+    Notice what the permission does <em>not</em> tell you. Holding it means an app
+    <em>can</em> call home; it says nothing about how much it does. That is why the
+    real check has two halves, the permission for <em>can it</em>, and per-app
+    network statistics from Android itself for <em>how much</em>. Together they turn
+    "the description says offline" into a fact you measured.
+  </p>
+</section>
+
+<section class="prose" id="settings">
+  <h2>Why Settings doesn't show it</h2>
+  <p>
+    Android sorts permissions into two families. <em>Dangerous</em> permissions,
+    location, microphone, contacts, guard data that can harm you, so they get the
+    famous runtime prompt and a toggle in Settings. <em>Normal</em> permissions guard
+    capabilities the system treats as routine, and among them lives
+    <code>INTERNET</code>, alongside VIBRATE and WAKE_LOCK.
+  </p>
+  <p>
+    Normal permissions are granted at install time without a prompt, and they do not
+    appear on the app permissions page in Settings. Open any app's page from your
+    launcher: you will see Camera, Microphone, Notifications, Storage, but the app
+    may be exchanging bytes with five servers in the background, and that page has
+    nothing to say about it. The one permission most relevant to your privacy is the
+    one the settings UI was built to hide from its toggles.
+  </p>
+  <p>
+    That gap is the reason most people never find out that their offline notepad
+    carries the full internet stack. The information is on the device the whole
+    time, in every app's manifest; it just needs a reader.
+  </p>
+</section>
+
+<section class="prose" id="check">
+  <h2>Four ways to check any app</h2>
+  <p>
+    All of them read the same manifest, so pick by how much of your phone
+    you want to sweep.
+  </p>
+  <ol>
+    <li>
+      <strong>Exodus Privacy</strong>, an open-source app, installable from F-Droid,
+      that scans your installed apps locally and lists the permissions and tracker
+      libraries inside each one. Best when you want an audit of one app in detail,
+      trackers included.
+    </li>
+    <li>
+      <strong>adb from a computer</strong>, plug the phone in and run
+      <code>adb shell dumpsys package com.example.app</code>. Somewhere in the long
+      output sits the <code>requested permissions</code> list, and
+      <code>android.permission.INTERNET</code> either is or is not in it.
+      One app per command, no install at all.
+    </li>
+    <li>
+      <strong>APK manifest viewers</strong>, sites that parse an APK before you
+      install it. When the question is about an app you have not downloaded yet,
+      this answers it first.
+    </li>
+    <li>
+      <strong>Offline Checker</strong>, free and open source, it sweeps every
+      visible app on the phone in one pass and puts the permission verdict and the
+      data usage in a single list. Built exactly for the question in this article;
+      detailed below.
+    </li>
+  </ol>
+  <p>
+    Methods 1–3 answer "does <em>this</em> app have INTERNET?", one app at a time.
+    The question that actually matters is usually different: <em>of everything on my
+    phone, which apps can call home?</em> That sweep is where a purpose-built tool
+    earns its place.
+  </p>
+</section>
+
+<section class="prose" id="offline-checker">
+  <h2>The one-tap way: Offline Checker</h2>
+  <p>
+    Offline Checker lists every visible app on your phone and marks each one. Apps
+    with the INTERNET permission show received and sent traffic for the last 24
+    hours or 7 days, switchable, 7 days by default. Apps without it are marked
+    <strong>No INTERNET permission</strong>, and that verdict is a fact straight
+    from the manifest, not anyone's word.
+  </p>
+  <ul>
+    <li><strong>One list, every app, one verdict.</strong> The default sort puts the apps that reach the internet at the top, ordered by total traffic, with the rest appended by name, a glance shows what can talk and what it costs you.</li>
+    <li><strong>Data usage straight from Android.</strong> The send/receive totals come from Android's own per-app network statistics, the same accounting the system Settings shows you in aggregate, now per app and per window.</li>
+    <li><strong>Sorted the way you think.</strong> A Usage/Name switch in the sort badge reorders the list alphabetically when you are hunting a specific app instead of auditing the phone.</li>
+    <li><strong>System apps stay out of the way.</strong> They are hidden by default; one toggle in the top bar brings them in when you want the full accounting.</li>
+    <li><strong>The checker itself is offline.</strong> Offline Checker ships without the INTERNET permission: Android blocks every network call it could ever make. Its one special grant is Usage access, the pass Android requires before an app may read other apps' network statistics, and the app's button takes you straight to that grant screen.</li>
+    <li><strong>Auditable by design.</strong> One Activity, plain platform views, no third-party libraries, MIT-licensed source on GitHub, small enough to read the whole thing in a sitting, open exactly as it runs.</li>
+  </ul>
+  <p>
+    <a class="btn primary" href="https://github.com/octoflashdev/offline-checker/releases" rel="noopener noreferrer">Get Offline Checker (free, open source)</a>
+  </p>
+</section>
+
+<section class="prose" id="reading">
+  <h2>Reading the data usage numbers</h2>
+  <p>
+    The received and sent bytes answer "how much," and they reward a minute of
+    context. Android attributes your phone's traffic to apps by UID, exactly the
+    same way the Data usage screen in Settings does it, so the numbers add up
+    consistently with what your carrier and the system have seen. Received plus sent
+    over Wi-Fi and mobile, per app, for the window you pick.
+  </p>
+  <p>
+    What the window choice buys you: 24 hours is for catching a new install in the
+    act, install something, open it once, and see by morning how much it pulled.
+    Seven days smooths out that one heavy session and shows the steady baseline, the
+    traffic you would not otherwise notice because it never announces itself. An
+    app that sits at a few hundred bytes over a week and holds INTERNET is behaving
+    like a polite optional-sync citizen; an app that burns hundreds of megabytes
+    while you think of it as a viewer has earned a closer look.
+  </p>
+  <p>
+    And the strongest reading in the whole list is the absence of one: <em>No
+    INTERNET permission</em> is not "used no data this week", it is "cannot use
+    data, ever." Traffic totals are a snapshot; the missing permission is a
+    structural fact.
+  </p>
+</section>
+
+<section class="prose" id="limits">
+  <h2>Limits to keep in mind</h2>
+  <p>
+    Every method in this guide reads what Android makes available, and Android
+    applies the same boundaries to all of them. Knowing them makes the results
+    sharper rather than weaker.
+  </p>
+  <ul>
+    <li><strong>Bytes, not destinations.</strong> Android exposes per-app totals to normal apps, not which domains, IPs or URLs they visited. Getting destinations requires a local VPN tool that routes traffic through itself, a heavier but more invasive view. For "how much" versus "cannot at all," the totals are precisely what you want.</li>
+    <li><strong>Package visibility on Android 11+.</strong> Since Android 11, an app sees only the packages it declares interest in. Offline Checker deliberately declines the Play-restricted <code>QUERY_ALL_PACKAGES</code> permission that lifts that filter, so unlaunchable background components, Google Play Services, on devices that carry it, can be absent from the list. The apps you launch are all there.</li>
+    <li><strong>Shared UIDs count together.</strong> Apps installed to share a UID are billed as one entry, under one package name. In practice this is rare outside vendor app suites and enterprise installs.</li>
+    <li><strong>History depth varies by device.</strong> Android keeps network statistics for a limited stretch, so a 7-day window can be partially empty on some devices. The totals are honest snapshots; the window is a rolling period, not an exact calendar week.</li>
+    <li><strong>Attribution beats carrier bills, not equals them.</strong> VPNs, tethering and shared UIDs make the OS's accounting and the carrier's diverge. When they disagree, the carrier is charging for raw volume on the wire; the app numbers describe per-app attribution.</li>
+  </ul>
+</section>
+
+<section class="prose" id="really-offline">
+  <h2>What a really-offline app looks like</h2>
+  <p>
+    Once you can see the list, the landscape of your phone changes shape. The apps
+    that genuinely cannot connect carry the <em>No INTERNET permission</em> mark,
+    and among visible third-party apps that set is usually small. That is not a
+    scandal: plenty of apps earn their INTERNET permission honestly for features
+    you chose, sync, streaming, updates. The point of the check is not that
+    permission holders are doing something wrong. It is that you can finally tell
+    the difference between a capability you approved and a capability you assumed
+    away.
+  </p>
+  <p>
+    A few patterns repeat everywhere once you know to look:
+  </p>
+  <ul>
+    <li><strong>Offline-first, with a tether.</strong> Many notepads, galleries and file tools keep your data local and still carry INTERNET for optional sync or telemetry. Their traffic column tells you which. If the bytes are zero for weeks, the permission is dormancy, not destiny, and now you know rather than hope.</li>
+    <li><strong>Big apps, small silence.</strong> The best-behaved heavy apps hold INTERNET and use it sparingly: token refreshes, update pings, error reports. The list shows exactly this instead of forcing you to imagine it.</li>
+    <li><strong>The wall apps.</strong> Apps built to run entirely on-device skip the permission, and Android enforces the boundary. We build one ourselves, <a href="../index.html">Kenosis AI</a>, the offline AI assistant behind this site: chat, document reading and AI read-aloud over your own files run on models stored on the phone, the app ships without the INTERNET permission, and Android blocks every network call it could ever make. The promise holds no matter who wrote the description.</li>
+  </ul>
+  <p>
+    The useful habit is trivial: whenever you install something new, open the list
+    once. Ten seconds, and "offline" becomes something you measured on your own
+    device instead of something you were told.
+  </p>
+</section>
+
+<section class="prose faq" id="faq">
+  <h2>FAQ</h2>
+  <div class="faq">
+    <details>
+      <summary>Why doesn't Settings show which apps have the INTERNET permission?</summary>
+      <p>INTERNET is a "normal" permission in Android: it is granted automatically at install time and, unlike location or contacts, it does not appear on the per-app permissions page in Settings. The shortcut needs nothing installed: an app's Play Store listing shows its permission list under About this app → App permissions. For a full manifest audit, use a tool that reads the manifests of every installed app, such as Offline Checker or Exodus Privacy.</p>
+    </details>
+    <details>
+      <summary>Can an app connect to the internet without the INTERNET permission?</summary>
+      <p>No. Without <code>android.permission.INTERNET</code> the operating system blocks an app from opening any network connection on its own, sockets, DNS, everything. Apps that share a UID (installed together as one APK suite) inherit each other's permissions, and a few system components live outside the sandbox, but for normal installed apps the check holds.</p>
+    </details>
+    <details>
+      <summary>Does high data usage prove an app is sending my data somewhere bad?</summary>
+      <p>No. Byte totals say how much, not to where. The number could be a sync engine, an ad SDK refreshing banners in the background, downloads you asked for, or telemetry. Android does not expose destinations (domains, IPs, URLs) to normal apps; seeing those requires a local VPN tool such as a firewall app.</p>
+    </details>
+    <details>
+      <summary>Does airplane mode keep an app offline?</summary>
+      <p>Only as long as it is on. Airplane mode pauses all traffic; the moment you switch radios back on, any app holding the INTERNET permission resumes whatever it was doing. A permission check is the durable answer: an app without INTERNET permission stays offline with the radio on or off.</p>
+    </details>
+    <details>
+      <summary>How can I check a permission without installing anything?</summary>
+      <p>With adb from a computer: <code>adb shell dumpsys package com.example.app</code> lists the package's permissions, including <code>android.permission.INTERNET</code>. APK manifest viewer sites can also show the manifest of an APK before you install it.</p>
+    </details>
+    <details>
+      <summary>Is Offline Checker free?</summary>
+      <p>Yes. It is free, open source under MIT, with APKs and source at github.com/octoflashdev/offline-checker. It itself holds no INTERNET permission, so it cannot call home.</p>
+    </details>
+    <details>
+      <summary>Which Android apps are really offline?</summary>
+      <p>Apps whose manifest declares no <code>android.permission.INTERNET</code>, for example Kenosis AI, an offline AI assistant that ships without the permission, so Android itself blocks every network call. Rather than trusting a vendor's word, check any app's manifest and data usage on your own device.</p>
+    </details>
+  </div>
+</section>
+
+<section class="prose" id="verdict">
+  <h2>Verdict</h2>
+  <p>
+    "Offline" is a checkable fact, and Android hides the check in the least visited
+    corner of its permission model. The INTERNET permission is a normal permission,
+invisible in Settings, granted without a prompt, and decisive: held, the app
+    can reach any host it likes; missing, Android blocks everything. Pair the
+    manifest answer with per-app data usage and you have both halves of the story,
+    <em>can it</em> and <em>how much</em>, measured on your own device rather than
+    inferred from a description.
+  </p>
+  <p>
+    If you want the whole phone audited in one pass, Offline Checker does it free
+    and offline; if what you wanted all along was an AI assistant that needs none of
+    this checking, no INTERNET permission, no account, no cloud copy of your
+    files, that is the app behind this site.
+  </p>
+  <p>
+    Going deeper on comparing apps: <a href="best-offline-ai-apps-android.html">how
+    the most popular offline AI apps for Android compare</a>.
+  </p>
+  <p>
+    <a class="play-badge" href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai&utm_source=website"><img src="../assets/badges/get-it-on-google-play.png" alt="Get it on Google Play" width="129" height="50" loading="lazy"></a>
+    <a class="btn ghost" href="https://github.com/octoflashdev/offline-checker/releases" rel="noopener noreferrer">Check your apps with Offline Checker</a>
+  </p>
+</section>
+
+<section class="sources">
+  <h2>Sources and method</h2>
+  <ul>
+    <li><a href="https://developer.android.com/reference/android/Manifest.permission#INTERNET">android.permission.INTERNET</a> and <a href="https://developer.android.com/guide/topics/permissions/overview">App permissions overview</a>, Android documentation; normal vs dangerous permission classes and how INTERNET is granted.</li>
+    <li><a href="https://developer.android.com/training/package-visibility">Package visibility in Android 11</a>, why launchable apps are visible and background packages are filtered without <code>QUERY_ALL_PACKAGES</code>.</li>
+    <li><a href="https://developer.android.com/reference/android/app/usage/NetworkStatsManager">NetworkStatsManager</a>, the API behind per-app network totals, guarded by the Usage access grant.</li>
+    <li><a href="https://github.com/octoflashdev/offline-checker">Offline Checker on GitHub</a>, manifest of one declared permission (<code>PACKAGE_USAGE_STATS</code>), no <code>INTERNET</code>, MIT source, and its README limits section.</li>
+    <li><a href="https://www.kenosis-ai.com/">kenosis-ai.com</a>, Kenosis AI product and privacy claims: no INTERNET permission, Android blocks every network call.</li>
+  </ul>
+  <p>
+    Android behaviour was read from the official developer documentation on
+    19 November 2026. Offline Checker's manifest and README were read from its
+    public repository on the same date. Kenosis AI's no-INTERNET claim comes from
+    this site's own product pages, treat it with that relationship in mind, which
+    is exactly why every method in this guide works the same way for any app, ours
+    included.
+  </p>
+</section>
+
+</article>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <img src="../assets/icon.png" alt="Kenosis AI" class="brand-icon">
+    <div class="footer-links">
+      <p>
+        Kenosis AI, the fully offline AI assistant. The bundled LLMs are distributed under
+        Google's <a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a> and the
+        <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0 license</a> (MiniCPM).
+      </p>
+      <p class="footer-social">
+        <a href="https://play.google.com/store/apps/details?id=hr.exel.kenosis_ai&utm_source=website" title="Google Play" aria-label="Google Play">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C21.11,11.4 21.11,12.6 20.16,13.19L17.89,14.5L15.38,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>Google Play</a> ·
+        <a href="https://github.com/octoflashdev/kenosis-web/discussions" title="Forum" aria-label="Community forum on GitHub Discussions">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12Z"/></svg>Community forum</a> ·
+        <a href="../blog/">Blog</a> ·
+        <a href="../changelog.html">What's new</a> ·
+        <a href="#" id="bug-report-link">Report a bug</a> ·
+        <a href="../privacy.html">Privacy policy</a>
+      </p>
+      <p class="footer-social footer-share">Share:
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fis-your-app-really-offline-android.html&amp;text=Is%20Your%20Android%20App%20Really%20Offline%3F" target="_blank" rel="noopener noreferrer">X</a> ·
+        <a href="https://bsky.app/intent/compose?text=Is%20Your%20Android%20App%20Really%20Offline%3F%20https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fis-your-app-really-offline-android.html" target="_blank" rel="noopener noreferrer">Bluesky</a> ·
+        <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fis-your-app-really-offline-android.html&amp;title=Is%20Your%20Android%20App%20Really%20Offline%3F" target="_blank" rel="noopener noreferrer">Reddit</a> ·
+        <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fis-your-app-really-offline-android.html&amp;t=Is%20Your%20Android%20App%20Really%20Offline%3F" target="_blank" rel="noopener noreferrer">Hacker News</a> ·
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fis-your-app-really-offline-android.html" target="_blank" rel="noopener noreferrer">LinkedIn</a> ·
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.kenosis-ai.com%2Fblog%2Fis-your-app-really-offline-android.html" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </p>
+      <div class="bug-reveal" id="bug-reveal" hidden>
+        <label id="bug-captcha">Human check, what is 7 + 5? <input id="bug-answer" type="number" inputmode="numeric" style="width:5rem" autocomplete="off"></label>
+        <p id="bug-email" hidden>✉️ octoflash.sup@gmail.com</p>
+        <p id="bug-error" class="bug-error" hidden>Not quite, try again.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

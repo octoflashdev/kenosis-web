@@ -22,7 +22,7 @@ SHOTS = [
     # Shot 1: pitch hero, headline + claim chips on the upper half,
     # three small phones stacked below (back to front).
     dict(shots="transcription.png,RAG02.png,chat-mock.png", fs="small",
-         t1="The only AI app without", t2="INTERNET permission",
+         t1="An AI app that works", t2="with no INTERNET permission",
          sub="**No network. No cloud. No telemetry.**",
          chips="✈ Airplane mode|✕ No ads|✕ No subscriptions|✕ No account"),
     dict(shot="transcription.png",

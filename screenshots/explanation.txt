@@ -1,0 +1,43 @@
+Features:
+
+- AI chat - screenshot + video with suggestions
+- Video transcription - screenshot + video of import of video and transcribe
+- eBook reader - screenshot + video with TTS (US) and audiobook export
+- RAG - screenshot + video of answering
+- Features view - screenshot + video of downloading
+- Model config - screenshot
+- Privacy button - screenshot + PIN screenshot
+- About - screenshot
+- Permissions - Play store screenshot
+
+# confirm the lowered resolution/ppi is actually applied
+  adb shell wm size
+  adb shell wm density
+
+  (To change/check later: adb shell wm size 1080x2400 / adb shell wm density 420, and adb shell wm size reset + adb shell wm density reset to restore.)
+ 
+  Screenshots — one per navigation step
+
+  adb exec-out screencap -p > screenshots/01-onboarding.png
+  adb exec-out screencap -p > screenshots/02-chat.png
+
+  Name them as you go (exec-out gives a clean PNG; adb shell screencap can corrupt bytes on some shells, so prefer exec-out). Quick sanity check after: file screenshots/*.png — each should say "PNG image data".
+
+  Video capture
+
+  # on-device recording, max 3 min per file (Ctrl-C / kill to stop early)
+  adb shell screenrecord --bit-rate 12000000 /sdcard/cap1.mp4
+
+  # stop early from another terminal:  adb shell pkill -INT screenrecord
+ 
+  # then pull it
+  adb pull /sdcard/cap1.mp4 screenshots/cap1.mp4
+
+  Useful flags:
+
+  --time-limit 180 — hard cap, 180 s max
+  --bit-rate 12000000 — 12 Mbps, clean for UI text (default ~8 Mbps can look mushy)
+  --size 1080x2400 — force output size if needed
+  --bugreport — adds timestamps/frame info (not for store video)
+
+If you need longer than 3 min, record sequential files (cap1.mp4, cap2.mp4…) and stitch later, or restart recording per segment.

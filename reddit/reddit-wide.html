@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  /* Kenosis AI — Reddit wide promo 1920x1080 (site palette + design cues) */
+  :root {
+    --bg: #0a0e14;
+    --accent-1: #4f8cff;
+    --accent-2: #a26bff;
+    --text: #e6ebf4;
+    --text-dim: #8b94a8;
+    --card-border: rgba(120, 150, 255, 0.25);
+    --card-bg: rgba(79, 140, 255, 0.06);
+    --grad: linear-gradient(100deg, var(--accent-1), var(--accent-2));
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(55% 80% at 18% 35%, rgba(79,140,255,.18), transparent 70%),
+      radial-gradient(50% 70% at 55% 15%, rgba(162,107,255,.14), transparent 70%),
+      radial-gradient(40% 55% at 85% 85%, rgba(79,140,255,.10), transparent 70%),
+      var(--bg);
+    color: var(--text);
+    font-family: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  /* faint grid, like a blueprint — subtle web-design hint */
+  .grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(120,150,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,150,255,.045) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: radial-gradient(70% 70% at 40% 45%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(70% 70% at 40% 45%, #000 30%, transparent 100%);
+  }
+
+  .wrap { position: relative; display: flex; align-items: center; height: 100%; padding: 0 110px; }
+
+  /* ---- left: copy ---- */
+  .copy { max-width: 900px; }
+  .brandrow { display: flex; align-items: center; gap: 22px; margin-bottom: 44px; }
+  .brandrow img {
+    width: 76px; height: 76px; border-radius: 18px; display: block;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 0 40px rgba(79,140,255,.25);
+  }
+  .brandname { font-size: 34px; font-weight: 800; letter-spacing: -0.01em; }
+  .brandname em { font-style: normal; color: var(--accent-1); }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: .22em; font-size: 22px;
+    color: var(--accent-1); font-weight: 700; margin-bottom: 20px;
+  }
+  h1 { font-size: 78px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; }
+  .grad {
+    background: var(--grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sub { margin-top: 26px; color: var(--text-dim); font-size: 32px; font-weight: 600; }
+  .sub strong { color: var(--text); }
+  .plane { margin-top: 14px; color: var(--text); font-size: 26px; font-weight: 700; }
+  .plane .sym { color: var(--accent-1); }
+
+  /* feature chips — small cards, like the site's feature grid */
+  .chips { display: grid; grid-template-columns: repeat(2, max-content); gap: 16px; margin-top: 40px; }
+  .chip {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 24px; border-radius: 999px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    font-size: 24px; font-weight: 700; color: var(--text);
+  }
+  .chip .sym { font-size: 24px; }
+  .chip small { color: var(--text-dim); font-weight: 600; }
+
+  .foot { margin-top: 44px; display: flex; align-items: center; gap: 14px; color: var(--text-dim); font-size: 23px; font-weight: 600; }
+  .foot .dot { opacity: .5; }
+
+  /* ---- right: fan of phones ---- */
+  .phones { position: relative; margin-left: auto; width: 760px; height: 960px; flex-shrink: 0; }
+  .phone {
+    position: absolute; border-radius: 44px; overflow: hidden;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 40px 100px rgba(0,0,0,.65), 0 0 60px rgba(79,140,255,.16);
+    background: #0d1219;
+  }
+  .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .p-left  { width: 300px; height: 600px; left: 0; top: 140px; transform: rotate(-9deg); opacity: .92; }
+  .p-right { width: 300px; height: 600px; left: 210px; top: 310px; transform: rotate(9deg); opacity: .95; }
+  .p-main  { width: 360px; height: 720px; left: 390px; top: 80px; transform: rotate(0deg); z-index: 3; }
+  /* notch pill */
+  .phone::before {
+    content: ""; position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    width: 96px; height: 20px; border-radius: 999px;
+    background: rgba(10,14,20,.9); z-index: 2;
+  }
+  .p-left::before, .p-right::before { width: 78px; height: 16px; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="wrap">
+    <div class="copy">
+      <div class="brandrow">
+        <img src="../assets/icon.png" alt="">
+        <div class="brandname">Kenosis <em>AI</em></div>
+      </div>
+      <div class="eyebrow">Privacy first &middot; 100% offline &middot; Android</div>
+      <h1>The only AI app<br>without <span class="grad">INTERNET<br>permission</span></h1>
+      <div class="sub"><strong>No network. No cloud. No telemetry.</strong></div>
+      <div class="plane"><span class="sym">✈</span>&nbsp; Works in airplane mode</div>
+      <div class="plane"><span class="sym">✕</span>&nbsp; No ads &nbsp;&middot;&nbsp; <span class="sym">✕</span>&nbsp; No subscriptions &nbsp;&middot;&nbsp; <span class="sym">✕</span>&nbsp; No account</div>
+      <div class="chips">
+        <div class="chip"><span class="sym">💬</span> AI chat</div>
+        <div class="chip"><span class="sym">🎙️</span> Transcription</div>
+        <div class="chip"><span class="sym">📚</span> eBooks &amp; audiobooks</div>
+        <div class="chip"><span class="sym">🔎</span> RAG on-device</div>
+      </div>
+      <div class="foot">
+        Android <span class="dot">·</span> 100% on-device <span class="dot">·</span> kenosis-ai.com
+      </div>
+    </div>
+    <div class="phones">
+      <div class="phone p-left"><img src="../assets/screenshots/transcription.png" alt=""></div>
+      <div class="phone p-right"><img src="../assets/screenshots/epub-new-03.png" alt=""></div>
+      <div class="phone p-main"><img src="../assets/screenshots/chat.png" alt=""></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -33,7 +33,7 @@ SHOTS = [
          sub="Answers grounded in **your** books and files. ePub, pdf, docx, ppt, md, txt supported."),
     dict(shot="ebook03.png",
          t1="Read EPUBs", t2="laid out like a book",
-         sub="With read-aloud in **natural voices**, English, German, French, Spanish, Italian support."),
+         sub="With read-aloud in **natural voices**, English, German, French, Spanish, Italian, Portuguese support."),
     dict(shot="epub-audiobook-export02.png",
          t1="Turn any EPUB", t2="into an audiobook",
          sub="Exported as a **chaptered .m4a**, rendered right on your phone."),

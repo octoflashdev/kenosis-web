@@ -2,3 +2,6 @@ __pycache__/
 scripts/
 todo/
 docs/
+# media policy: the web uses png and apng only, videos and archives stay out of git
+*.mp4
+*.zip

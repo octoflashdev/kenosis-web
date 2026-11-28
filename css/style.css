@@ -190,7 +190,7 @@ a:hover { text-decoration: underline; }
 @media (max-width: 900px) { .feature-grid { grid-template-columns: 1fr; } }
 .feature-media {
   display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 .feature-media.single { grid-template-columns: minmax(0, 240px); justify-content: center; }
 .feature-media img {
